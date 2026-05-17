@@ -23,6 +23,12 @@
   --mono:'IBM Plex Mono',monospace;--body:'IBM Plex Sans',sans-serif;
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--body);font-size:13px;overflow:hidden;}
+/* Dark theme scrollbars */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:#243350;border-radius:2px;}
+::-webkit-scrollbar-thumb:hover{background:#344a66;}
+* {scrollbar-width:thin;scrollbar-color:#243350 transparent;}
 @media(max-width:768px){
   html,body{overflow:auto!important;height:auto!important;-webkit-overflow-scrolling:touch;}
   .topbar{padding:0 8px;height:44px;}
@@ -155,7 +161,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
 .pairs-search{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border2);border-radius:3px;padding:3px 8px;flex:1;}
 .pairs-search input{background:transparent;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:11px;width:100%;}
 .pairs-cols{display:grid;grid-template-columns:1.5fr 1fr 0.8fr;padding:4px 10px;font-size:10px;color:var(--text2);border-bottom:1px solid var(--border);}
-.pairs-list{flex:1;overflow-y:auto;scrollbar-width:thin;}
+.pairs-list{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#243350 transparent;}
 .pair-row{cursor:pointer;display:grid;grid-template-columns:1.2fr 1fr 0.8fr;padding:5px 8px;align-items:center;border-bottom:1px solid #0d1520;transition:background .15s;}
 .pair-row:hover{background:#0f1824;}
 .pair-row.active-pair{background:#0f1824;border-left:2px solid #0ff;}
@@ -262,7 +268,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
 .about-section{margin-bottom:20px;}
 .about-section-title{font-family:var(--mono);font-size:13px;font-weight:700;color:#0ff;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #1e2a40;}
 .about-text{font-family:var(--mono);font-size:11px;color:#607a99;line-height:2;}
-.about-stat{display:inline-flex;flex-direction:column;align-items:center;background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:12px 20px;margin:4px;}
+.about-stat{display:inline-flex;flex-direction:column;align-items:center;background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:12px 20px;margin:4px;transition:all .2s;}
+.about-stat:hover{border-color:#f0b90b;background:#182030;transform:translateY(-2px);}
 .about-stat-val{font-family:var(--mono);font-size:20px;font-weight:700;color:#f0b90b;}
 .about-stat-lbl{font-family:var(--mono);font-size:9px;color:#607a99;margin-top:2px;}
 .home-drop{position:fixed;top:48px;left:0;width:300px;background:#0b0f1a;border:1px solid #1e2a40;border-radius:0 0 10px 10px;z-index:600;display:none;box-shadow:0 8px 32px rgba(0,0,0,0.6);}
@@ -570,10 +577,18 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
     <div class="info-sub">AI-powered cryptocurrency forecasting platform</div>
     <div class="about-section"><div class="about-section-title">OUR TECHNOLOGY</div><div class="about-text">ZEUS Vision uses proprietary LSTM neural networks trained on millions of candlesticks. Our models achieve 99%+ accuracy on moving average predictions.</div></div>
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin:16px 0;">
-      <div class="about-stat"><div class="about-stat-val">500+</div><div class="about-stat-lbl">PAIRS</div></div>
-      <div class="about-stat"><div class="about-stat-val">99%+</div><div class="about-stat-lbl">ACCURACY</div></div>
-      <div class="about-stat"><div class="about-stat-val">6</div><div class="about-stat-lbl">AI MODELS</div></div>
-      <div class="about-stat"><div class="about-stat-val">24/7</div><div class="about-stat-lbl">LIVE DATA</div></div>
+      <div class="about-stat" onclick="closeInfo('about-modal');showMarkets()" style="cursor:pointer;" title="View all trading pairs">
+        <div class="about-stat-val">500+</div><div class="about-stat-lbl">PAIRS</div>
+      </div>
+      <div class="about-stat" onclick="closeInfo('about-modal');showTutorial()" style="cursor:pointer;" title="Learn about our accuracy">
+        <div class="about-stat-val">99%+</div><div class="about-stat-lbl">ACCURACY</div>
+      </div>
+      <div class="about-stat" onclick="closeInfo('about-modal');showTutorial()" style="cursor:pointer;" title="Learn about our AI models">
+        <div class="about-stat-val">6</div><div class="about-stat-lbl">AI MODELS</div>
+      </div>
+      <div class="about-stat" onclick="openChat()" style="cursor:pointer;" title="Open live chat">
+        <div class="about-stat-val">24/7</div><div class="about-stat-lbl">💬 CHAT</div>
+      </div>
     </div>
     <div class="about-section"><div class="about-section-title">DISCLAIMER</div><div class="about-text">ZEUS Vision forecasts are for informational purposes only and do not constitute financial advice.</div></div>
   </div>
