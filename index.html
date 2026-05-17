@@ -12,7 +12,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
   --bg:#060810;--bg2:#0b0f1a;--bg3:#0f1520;--surface:#131926;--surface2:#182030;
@@ -20,7 +20,7 @@
   --green:#0ecb81;--red:#f6465d;--accent:#f0b90b;--accent2:#ffd84d;
   --text:#d0e0f0;--text2:#607a99;--text3:#344a66;
   --purple:#a78bfa;--blue:#0af;--glow:#0ff;
-  --mono:'Share Tech Mono',monospace;--body:'Rajdhani',sans-serif;
+  --mono:'IBM Plex Mono',monospace;--body:'IBM Plex Sans',sans-serif;
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--body);font-size:13px;overflow:hidden;}
 @media(max-width:768px){
@@ -167,6 +167,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
 .quote-tabs{display:flex;gap:2px;padding:0 6px;border-right:1px solid var(--border);}
 .qtab{background:transparent;border:1px solid transparent;color:#607a99;font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:3px;cursor:pointer;}
 .qtab.active{background:rgba(240,185,11,0.15);border-color:#f0b90b;color:#f0b90b;}
+.qtab2{background:transparent;border:none;border-bottom:2px solid transparent;color:#607a99;font-family:var(--body);font-size:11px;font-weight:500;padding:6px 10px;cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0;}
+.qtab2:hover{color:var(--text);}
+.qtab2.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600;}
+#quote-tab-bar::-webkit-scrollbar{display:none;}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center;}
 .modal-overlay.hidden{display:none;}
 .modal{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;width:440px;max-width:95vw;padding:28px;position:relative;}
@@ -444,6 +448,16 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
         <span style="color:var(--text3);font-size:11px;">⚲</span>
         <input type="text" placeholder="Search..." oninput="filterPairs(this.value)">
       </div>
+    </div>
+    <!-- Scrollable quote tabs like Binance -->
+    <div style="display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border);padding:0 8px;gap:0;" id="quote-tab-bar">
+      <button onclick="setQuote(this,'USDT')" class="qtab2 active">USDT</button>
+      <button onclick="setQuote(this,'USDC')" class="qtab2">USDC</button>
+      <button onclick="setQuote(this,'BNB')" class="qtab2">BNB</button>
+      <button onclick="setQuote(this,'BTC')" class="qtab2">BTC</button>
+      <button onclick="setQuote(this,'ETH')" class="qtab2">ETH</button>
+      <button onclick="setQuote(this,'FDUSD')" class="qtab2">FDUSD</button>
+      <button onclick="setQuote(this,'ALTS')" class="qtab2">ALTS</button>
     </div>
     <div class="pairs-cols"><span>Pair</span><span>Last Price</span><span>Change</span></div>
     <div class="pairs-list" id="pairs-list"></div>
@@ -781,7 +795,12 @@ function zoomChart(dir) {
   try{var ts=window._lwChart.timeScale(),range=ts.getVisibleRange();if(!range)return;var mid=(range.from+range.to)/2,half=(range.to-range.from)/2,factor=dir<0?0.7:1.4;ts.setVisibleRange({from:Math.round(mid-half*factor),to:Math.round(mid+half*factor)});}catch(e){}
 }
 function resetZoom(){if(chartData)renderChart(chartData);}
-function setQuote(el,q){currentQuote=q;document.querySelectorAll('.qtab').forEach(function(t){t.classList.remove('active');});el.classList.add('active');updatePairsList();}
+function setQuote(el,q){
+  currentQuote=q;
+  document.querySelectorAll('.qtab,.qtab2').forEach(function(t){t.classList.remove('active');});
+  if(el) el.classList.add('active');
+  updatePairsList();
+}
 function filterPairs(q){var query=q.toUpperCase().trim();document.querySelectorAll('.pair-row').forEach(function(row){var sym=(row.getAttribute('data-sym')||'').toUpperCase();row.style.display=(!query||sym.includes(query))?'':'none';});}
 // Store live ticker data for all quotes
 var allTickerData = {};
