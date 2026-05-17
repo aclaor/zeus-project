@@ -805,6 +805,13 @@ function setQuote(el,q){
   document.querySelectorAll('.qtab,.qtab2').forEach(function(t){
     t.classList.toggle('active', t.textContent.trim()===q);
   });
+  // Update search box to show default pair for selected quote
+  var defaultPairs = {
+    'USDT':'BTCUSDT','USDC':'BTCUSDC','BNB':'ETHBNB',
+    'BTC':'ETHBTC','ETH':'BNBETH','FDUSD':'BTCFDUSD','ALTS':'ADAETH'
+  };
+  var input = document.getElementById('pair-input');
+  if(input && defaultPairs[q]) input.value = defaultPairs[q];
   updatePairsList();
 }
 function filterPairs(q){var query=q.toUpperCase().trim();document.querySelectorAll('.pair-row').forEach(function(row){var sym=(row.getAttribute('data-sym')||'').toUpperCase();row.style.display=(!query||sym.includes(query))?'':'none';});}
