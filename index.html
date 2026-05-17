@@ -987,8 +987,9 @@ function renderChart(data) {
   addForecast(data.forecast_ma25,data.ma25[data.ma25.length-1],'#00cc44');
   addForecast(data.forecast_vwap600,data.vwap600[data.vwap600.length-1],'#f0b90b');
   addForecast(data.forecast_vwap200,data.vwap200[data.vwap200.length-1],'#ff69b4');
-  // Show all candles - backend already sends the right amount
-  var vis = lwCandles.length;
+  // Show last 200 candles by default - user can scroll left for more history
+  var defaultVis = {'1m':200,'5m':200,'15m':150,'1h':150,'4h':100,'1d':100};
+  var vis = Math.min(defaultVis[currentInterval]||200, lwCandles.length);
   var fromTime=lwCandles[Math.max(0,lwCandles.length-vis)].time,toTime=lastTime+61*stepSec;
   try{chart.timeScale().setVisibleRange({from:fromTime,to:toTime});}catch(e){}
   window._lwResizeObs=new ResizeObserver(function(){if(!window._lwChart)return;try{var rw=container.clientWidth||800,rh=container.clientHeight||400;if(rw>0&&rh>0)window._lwChart.resize(rw,rh);}catch(e){}});
