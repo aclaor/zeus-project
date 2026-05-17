@@ -801,8 +801,10 @@ function zoomChart(dir) {
 function resetZoom(){if(chartData)renderChart(chartData);}
 function setQuote(el,q){
   currentQuote=q;
-  document.querySelectorAll('.qtab,.qtab2').forEach(function(t){t.classList.remove('active');});
-  if(el) el.classList.add('active');
+  // Update ALL quote tabs - both in chart controls and right panel
+  document.querySelectorAll('.qtab,.qtab2').forEach(function(t){
+    t.classList.toggle('active', t.textContent.trim()===q);
+  });
   updatePairsList();
 }
 function filterPairs(q){var query=q.toUpperCase().trim();document.querySelectorAll('.pair-row').forEach(function(row){var sym=(row.getAttribute('data-sym')||'').toUpperCase();row.style.display=(!query||sym.includes(query))?'':'none';});}
@@ -1009,7 +1011,7 @@ function renderAll(data) {
   if(el('hdr-chg2')){el('hdr-chg2').textContent=(isUp?'+':'')+pct.toFixed(2)+'%';el('hdr-chg2').style.color=isUp?'var(--green)':'var(--red)';}
   renderChart(data);renderOrderBook(data.last_close);renderTrades(data.last_close);
   document.getElementById('pair-input').value=sym;
-  for(var qi2=0;qi2<quotes.length;qi2++){if(sym.endsWith(quotes[qi2])){if(currentQuote!==quotes[qi2]){currentQuote=quotes[qi2];document.querySelectorAll('.qtab').forEach(function(t){t.classList.toggle('active',t.textContent.trim()===currentQuote);});updatePairsList();}break;}}
+  for(var qi2=0;qi2<quotes.length;qi2++){if(sym.endsWith(quotes[qi2])){if(currentQuote!==quotes[qi2]){currentQuote=quotes[qi2];document.querySelectorAll('.qtab,.qtab2').forEach(function(t){t.classList.toggle('active',t.textContent.trim()===currentQuote);});updatePairsList();}break;}}
 }
 
 // ── RUN FORECAST ──────────────────────────────
@@ -1020,7 +1022,7 @@ async function runForecast(){
   var symbol=document.getElementById('pair-input').value.trim().toUpperCase().replace(/[\/\-\s]/g,'')||'BTCUSDT';
   document.getElementById('pair-input').value=symbol;
   var quotes=['FDUSD','USDC','USDT','BNB','BTC','ETH'];
-  for(var qi=0;qi<quotes.length;qi++){if(symbol.endsWith(quotes[qi])){if(currentQuote!==quotes[qi]){currentQuote=quotes[qi];document.querySelectorAll('.qtab').forEach(function(t){t.classList.toggle('active',t.textContent.trim()===currentQuote);});updatePairsList();}break;}}
+  for(var qi=0;qi<quotes.length;qi++){if(symbol.endsWith(quotes[qi])){if(currentQuote!==quotes[qi]){currentQuote=quotes[qi];document.querySelectorAll('.qtab,.qtab2').forEach(function(t){t.classList.toggle('active',t.textContent.trim()===currentQuote);});updatePairsList();}break;}}
   var btn=document.getElementById('run-btn');
   if(btn){btn.disabled=true;btn.textContent='... COMPUTING';}
   showOverlay(true);
