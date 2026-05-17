@@ -623,13 +623,34 @@ const PAIRS = [
   {sym:'HBAR',p:0,c:0},{sym:'SAND',p:0,c:0},{sym:'MANA',p:0,c:0},{sym:'GRT',p:0,c:0},{sym:'RUNE',p:0,c:0},
 ];
 var quotePairs = {
-  'USDT':['BTCUSDT','ETHUSDT','BNBUSDT','SOLUSDT','XRPUSDT','DOGEUSDT','ADAUSDT','AVAXUSDT','SHIBUSDT','DOTUSDT','LINKUSDT','LTCUSDT','UNIUSDT','ATOMUSDT','NEARUSDT','MATICUSDT','INJUSDT','ARBUSDT','OPUSDT','APTUSDT','AAVEUSDT','ALGOUSDT','AXSUSDT','BCHUSDT','CAKEUSDT','ETCUSDT','FILUSDT','GALAUSDT','GRTUSDT','HBARUSDT','ICPUSDT','LDOUSDT','MANAUSDT','MKRUSDT','RUNEUSDT','SANDUSDT','SUIUSDT','SEIUSDT','PEPEUSDT','BONKUSDT','WIFUSDT','JUPUSDT'],
-  'USDC':['BTCUSDC','ETHUSDC','BNBUSDC','SOLUSDC','XRPUSDC','ADAUSDC','DOGEUSDC','AVAXUSDC','DOTUSDC','LINKUSDC','LTCUSDC','UNIUSDC','ATOMUSDC','MATICUSDC','NEARUSDC','ARBUSDC','AAVEUSDC','APTUSDC'],
-  'BNB':['ETHBNB','ADABNB','XRPBNB','DOTBNB','LTCBNB','LINKBNB','ATOMBNB','AVAXBNB','MATICBNB','SOLBNB','NEARBNB','DOGEBNB','SANDBNB','MANABNB','CAKEBNB','SHIBBNB','INJBNB'],
-  'BTC':['ETHBTC','BNBBTC','XRPBTC','ADABTC','SOLBTC','DOTBTC','LTCBTC','LINKBTC','ATOMBTC','UNIBTC','AVAXBTC','MATICBTC','NEARBTC','DOGEBTC','AAVEBTC','SANDBTC','MANABTC','FTMBTC','ALGOBTC','ICPBTC','HBARBTC','INJBTC','GRTBTC'],
-  'ETH':['BNBETH','ADAETH','XRPETH','DOTETH','LTCETH','LINKETH','ATOMETH','UNIETH','AVAXETH','MATICETH','NEARETH','SANDETH','MANAETH','FTMETH','ALGOETH','ICPETH','INJETH','GRTETH'],
-  'FDUSD':['BTCFDUSD','ETHFDUSD','BNBFDUSD','SOLFDUSD','XRPFDUSD','ADAFDUSD','DOGEFDUSD','AVAXFDUSD','DOTFDUSD','LINKFDUSD'],
+  'USDT':['BTCUSDT','ETHUSDT','BNBUSDT','SOLUSDT','XRPUSDT','DOGEUSDT','ADAUSDT','AVAXUSDT','SHIBUSDT','DOTUSDT','LINKUSDT','LTCUSDT','UNIUSDT','ATOMUSDT','NEARUSDT','MATICUSDT','INJUSDT','ARBUSDT','OPUSDT','APTUSDT','AAVEUSDT','ALGOUSDT','AXSUSDT','BCHUSDT','CAKEUSDT','ETCUSDT','FILUSDT','GALAUSDT','GRTUSDT','HBARUSDT','ICPUSDT','LDOUSDT','MANAUSDT','MKRUSDT','RUNEUSDT','SANDUSDT','SUIUSDT','SEIUSDT','PEPEUSDT','BONKUSDT','WIFUSDT','JUPUSDT','NOTUSDT','ENAUSDT','WUSDT','STRKUSDT','PYTHUSDT','JTOUSDT','TIAUSDT','DYMUSDT','ALTUSDT'],
+  'USDC':['BTCUSDC','ETHUSDC','BNBUSDC','SOLUSDC','XRPUSDC','ADAUSDC','DOGEUSDC','AVAXUSDC','DOTUSDC','LINKUSDC','LTCUSDC','UNIUSDC','ATOMUSDC','MATICUSDC','NEARUSDC','ARBUSDC','AAVEUSDC','APTUSDC','INJUSDC','OPUSDC','SUIUSDC','SEIUSDC','PEPEUSDC','WIFUSDC'],
+  'BNB':['BTCBNB','ETHBNB','ADABNB','XRPBNB','DOTBNB','LTCBNB','LINKBNB','ATOMBNB','AVAXBNB','MATICBNB','SOLBNB','NEARBNB','DOGEBNB','SANDBNB','MANABNB','CAKEBNB','SHIBBNB','INJBNB','UNIBNB','AAVEBNB','FTMBNB','ALGOBNB','ICPBNB','AXSBNB','GALBNB','RUNEBNB','GRTBNB','HBARBNB','ANKRBNB','BANDBNB'],
+  'BTC':['ETHBTC','BNBBTC','XRPBTC','ADABTC','SOLBTC','DOTBTC','LTCBTC','LINKBTC','ATOMBTC','UNIBTC','AVAXBTC','MATICBTC','NEARBTC','DOGEBTC','AAVEBTC','SANDBTC','MANABTC','FTMBTC','ALGOBTC','ICPBTC','HBARBTC','INJBTC','GRTBTC','RUNEBTC','COMPBTC','MKRBTC','SHIBBTC','GALBTC','BCHBTC','ETCBTC','FILATC','CHZBTC','CRVBTC','APEBTC','ZECBTC','DASHBTC','XMRBTC','BATBTC','ENJBTC'],
+  'ETH':['BNBETH','ADAETH','XRPETH','DOTETH','LTCETH','LINKETH','ATOMETH','UNIETH','AVAXETH','MATICETH','NEARETH','SANDETH','MANAETH','FTMETH','ALGOETH','ICPETH','INJETH','GRTETH','RUNEETH','COMPETH','AAVEETH','MKRETH','SHIBETH','GALETH','BCHETH','ETCETH','CHZETH','CRVETH','APEETH'],
+  'FDUSD':['BTCFDUSD','ETHFDUSD','BNBFDUSD','SOLFDUSD','XRPFDUSD','ADAFDUSD','DOGEFDUSD','AVAXFDUSD','DOTFDUSD','LINKFDUSD','LTCFDUSD','UNIFDUSD','ATOMFDUSD','NEARFDUSD','INJFDUSD','ARBFDUSD','SUIFDUSD','PEPETUSD'],
+  'ALTS':['ADAETH','SOLBNB','XRPBTC','DOTBNB','LINKBTC','ATOMBNB','AVAXBNB','MATICBNB','NEARBNB','INJBNB','GALBNB','CAKEBNB','SANDBNB'],
 };
+
+// Fetch live pairs from Binance and update quotePairs dynamically
+async function fetchLivePairs() {
+  try {
+    var r = await fetch('https://api.binance.com/api/v3/exchangeInfo');
+    if (!r.ok) return;
+    var data = await r.json();
+    var symbols = data.symbols.filter(function(s){ return s.status === 'TRADING'; });
+    var quotes = ['USDT','USDC','BNB','BTC','ETH','FDUSD'];
+    quotes.forEach(function(q){
+      quotePairs[q] = symbols
+        .filter(function(s){ return s.quoteAsset === q && s.baseAsset !== q; })
+        .map(function(s){ return s.symbol; })
+        .slice(0, 60);
+    });
+    updatePairsList();
+  } catch(e) { console.log('fetchLivePairs error:', e); }
+}
+
+
 
 // ── UTILITY ───────────────────────────────────
 function fmt(v) {
@@ -762,14 +783,40 @@ function zoomChart(dir) {
 function resetZoom(){if(chartData)renderChart(chartData);}
 function setQuote(el,q){currentQuote=q;document.querySelectorAll('.qtab').forEach(function(t){t.classList.remove('active');});el.classList.add('active');updatePairsList();}
 function filterPairs(q){var query=q.toUpperCase().trim();document.querySelectorAll('.pair-row').forEach(function(row){var sym=(row.getAttribute('data-sym')||'').toUpperCase();row.style.display=(!query||sym.includes(query))?'':'none';});}
+// Store live ticker data for all quotes
+var allTickerData = {};
+
+async function fetchAllTickers() {
+  try {
+    var r = await fetch('https://api.binance.com/api/v3/ticker/24hr');
+    if (!r.ok) return;
+    var tickers = await r.json();
+    tickers.forEach(function(t){
+      allTickerData[t.symbol] = {
+        p: parseFloat(t.lastPrice),
+        c: parseFloat(t.priceChangePercent)
+      };
+    });
+    updatePairsList();
+  } catch(e){}
+}
+
 function updatePairsList() {
   var pairs=quotePairs[currentQuote]||quotePairs['USDT'];
   var listEl=document.getElementById('pairs-list'); if(!listEl) return;
-  listEl.innerHTML=pairs.map(function(sym){
-    var base=sym.replace(currentQuote,'');
-    var info=currentQuote==='USDT'?(PAIRS.find(function(p){return p.sym===base;})||{p:0,c:0}):{p:0,c:0};
-    var up=info.c>=0,priceStr=info.p>0?'$'+info.p.toLocaleString(undefined,{maximumFractionDigits:6}):'',chgStr=info.c!==0?(up?'+':'')+info.c.toFixed(2)+'%':'';
-    return '<div class="pair-row" data-sym="'+sym+'"><span class="pr-sym">'+base+'<span class="pr-quote">/'+currentQuote+'</span></span><span class="pr-price '+(up?'up':'dn')+'">'+priceStr+'</span><span class="pr-chg '+(up?'up':'dn')+'">'+chgStr+'</span></div>';
+  
+  // Sort by volume/change - put active pairs first
+  var pairsWithData = pairs.map(function(sym){
+    var ticker = allTickerData[sym] || {p:0,c:0};
+    return {sym:sym, p:ticker.p, c:ticker.c};
+  }).sort(function(a,b){ return Math.abs(b.c)-Math.abs(a.c); });
+
+  listEl.innerHTML=pairsWithData.map(function(item){
+    var sym=item.sym, base=sym.replace(currentQuote,'');
+    var up=item.c>=0;
+    var priceStr=item.p>0?item.p.toLocaleString(undefined,{maximumFractionDigits:8}):'—';
+    var chgStr=item.c!==0?(up?'+':'')+item.c.toFixed(2)+'%':'—';
+    return '<div class="pair-row" data-sym="'+sym+'"><span class="pr-sym">'+base+'<span class="pr-quote">/'+currentQuote+'</span></span><span class="pr-price '+(up&&item.p>0?'up':'dn')+'">'+priceStr+'</span><span class="pr-chg '+(up?'up':'dn')+'">'+chgStr+'</span></div>';
   }).join('');
   listEl.querySelectorAll('.pair-row').forEach(function(row){row.addEventListener('click',function(){document.getElementById('pair-input').value=this.getAttribute('data-sym');listEl.querySelectorAll('.pair-row').forEach(function(r){r.classList.remove('active-pair');});this.classList.add('active-pair');runForecast();});});
 }
@@ -983,9 +1030,10 @@ async function runForecast(){
 window.addEventListener('DOMContentLoaded',function(){
   var logobtn=document.getElementById('logo-btn');
   if(logobtn){logobtn.addEventListener('click',function(e){e.stopPropagation();showHomeDrop();});document.addEventListener('click',function(e){var d=document.getElementById('home-drop'),lb=document.getElementById('logo-btn');if(d&&lb&&!d.contains(e.target)&&!lb.contains(e.target))d.classList.remove('open');});}
-  fetchLiveTicker();updatePairsList();
+  fetchLiveTicker();fetchAllTickers();fetchLivePairs();updatePairsList();
   setTimeout(runForecast,1000);
   setInterval(fetchLiveTicker,10000);
+  setInterval(fetchAllTickers,10000);
 });
 </script>
 </body>
