@@ -397,7 +397,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
           onkeydown="if(event.key==='Enter')runForecast()">
       </div>
       <button class="run-btn" id="run-btn" onclick="runForecast()">▶ ZEUS-AI</button>
-
+      <div class="zoom-btns" style="margin-left:6px;">
+        <button class="zbtn" onclick="zoomChart(-1)" title="Zoom In">+</button>
+        <button class="zbtn" onclick="zoomChart(1)" title="Zoom Out">−</button>
+        <button class="zbtn" onclick="resetZoom()" style="font-size:11px;width:30px;" title="Reset">⟳</button>
+      </div>
       <div class="zeus-tag"><div class="zeus-dot"></div>ZEUS-AI · PROPRIETARY</div>
     </div>
     <div class="chart-area">
@@ -1028,7 +1032,7 @@ async function runForecast(){
     var data=await res.json();renderAll(data);showOverlay(false);
   }catch(e){
     var msg=e.message||'';
-    if(msg.includes('404')||msg.includes('not found'))showToast('❌ '+symbol+' not found on Binance.','error');
+    if(msg.includes('404')||msg.includes('not found')||msg.includes('insufficient'))showToast('⚠️ '+symbol+' has limited data. Try 1H or 4H interval, or use a major pair.','error');
     else if(msg.includes('500'))showToast('⚠️ Server error. Try 1H interval.','error');
     else showToast('Error: '+msg,'error');
     showOverlay(false);
