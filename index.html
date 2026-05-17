@@ -490,6 +490,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
     <button class="close-btn2" onclick="closeMarkets()">×</button>
     <div class="markets-title">CRYPTO MARKETS</div>
     <div class="markets-sub">Live prices · Click any pair to run ZEUS-AI forecast</div>
+    <div style="display:flex;gap:8px;margin-bottom:16px;">
+      <button onclick="switchMarketQuote(this,'USDT')" class="mq-tab active" style="background:rgba(240,185,11,0.15);border:1px solid #f0b90b;color:#f0b90b;font-family:'Share Tech Mono',monospace;font-size:10px;padding:4px 12px;border-radius:3px;cursor:pointer;">USDT</button>
+      <button onclick="switchMarketQuote(this,'BTC')" class="mq-tab" style="background:transparent;border:1px solid #243350;color:#607a99;font-family:'Share Tech Mono',monospace;font-size:10px;padding:4px 12px;border-radius:3px;cursor:pointer;">BTC</button>
+      <button onclick="switchMarketQuote(this,'ETH')" class="mq-tab" style="background:transparent;border:1px solid #243350;color:#607a99;font-family:'Share Tech Mono',monospace;font-size:10px;padding:4px 12px;border-radius:3px;cursor:pointer;">ETH</button>
+      <button onclick="switchMarketQuote(this,'BNB')" class="mq-tab" style="background:transparent;border:1px solid #243350;color:#607a99;font-family:'Share Tech Mono',monospace;font-size:10px;padding:4px 12px;border-radius:3px;cursor:pointer;">BNB</button>
+    </div>
     <div class="markets-grid">
       <div class="market-card"><div class="market-card-title">🔥 Hot Coins</div><table class="market-table"><thead><tr><th># Name</th><th>Price</th><th>24h Change</th></tr></thead><tbody id="hot-coins"></tbody></table></div>
       <div class="market-card"><div class="market-card-title">📈 Top Gainers</div><table class="market-table"><thead><tr><th># Name</th><th>Price</th><th>24h Change</th></tr></thead><tbody id="top-gainers"></tbody></table></div>
@@ -797,12 +803,31 @@ function renderTrades(lastClose){
 }
 
 // ── MARKETS ───────────────────────────────────
+var currentMarketQuote = 'USDT';
+function switchMarketQuote(el, quote) {
+  currentMarketQuote = quote;
+  document.querySelectorAll('.mq-tab').forEach(function(t){
+    t.style.background='transparent';t.style.borderColor='#243350';t.style.color='#607a99';
+  });
+  el.style.background='rgba(240,185,11,0.15)';el.style.borderColor='#f0b90b';el.style.color='#f0b90b';
+  fetchLiveMarkets();
+}
 async function fetchLiveMarkets(){
   ['hot-coins','top-gainers','top-losers'].forEach(function(id){var el=document.getElementById(id);if(el)el.innerHTML='<tr><td colspan="3" style="text-align:center;padding:20px;color:#607a99;font-size:11px;">Loading...</td></tr>';});
   try{
     var res=await fetch('https://api.binance.com/api/v3/ticker/24hr');if(!res.ok)throw new Error('err');
     var tickers=await res.json();
-    var allUsdt=tickers.filter(function(t){return t.symbol.endsWith('USDT')&&!t.symbol.includes('DOWN')&&!t.symbol.includes('UP')&&!t.symbol.includes('BEAR')&&!t.symbol.includes('BULL')&&parseFloat(t.lastPrice)>0&&parseFloat(t.quoteVolume)>10000;});
+    // Filter for liquid, established pairs only (matching Binance top markets)
+    var minVolume = 1000000; // $1M minimum 24h volume
+    var allUsdt=tickers.filter(function(t){
+      return t.symbol.endsWith(currentMarketQuote)
+        &&!t.symbol.includes('DOWN')&&!t.symbol.includes('UP')
+        &&!t.symbol.includes('BEAR')&&!t.symbol.includes('BULL')
+        &&!t.symbol.includes('1000')&&!t.symbol.includes('TUSD')
+        &&parseFloat(t.lastPrice)>0
+        &&parseFloat(t.quoteVolume)>minVolume
+        &&parseInt(t.count)>1000;
+    });
     var byVol=allUsdt.slice().sort(function(a,b){return parseFloat(b.quoteVolume)-parseFloat(a.quoteVolume);}).slice(0,10);
     var gainers=allUsdt.slice().sort(function(a,b){return parseFloat(b.priceChangePercent)-parseFloat(a.priceChangePercent);}).slice(0,10);
     var losers=allUsdt.slice().sort(function(a,b){return parseFloat(a.priceChangePercent)-parseFloat(b.priceChangePercent);}).slice(0,10);
@@ -812,7 +837,14 @@ async function fetchLiveMarkets(){
     var h=document.getElementById('hot-coins');if(h)h.innerHTML=makeRows(byVol);
     var g=document.getElementById('top-gainers');if(g)g.innerHTML=makeRows(gainers);
     var l=document.getElementById('top-losers');if(l)l.innerHTML=makeRows(losers);
-    document.querySelectorAll('.market-row').forEach(function(row){row.addEventListener('click',function(){closeMarkets();loadPair(this.getAttribute('data-sym'));});});
+    document.querySelectorAll('.market-row').forEach(function(row){row.addEventListener('click',function(){
+      closeMarkets();
+      var sym=this.getAttribute('data-sym');
+      // Switch to 1H for market clicks (more reliable)
+      currentInterval='1h';
+      document.querySelectorAll('.itab').forEach(function(t){t.classList.toggle('active',t.textContent.trim()==='1H');});
+      loadPair(sym);
+    });});
   }catch(e){console.error(e);}
 }
 async function loadHDCoins(){
