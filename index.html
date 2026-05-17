@@ -575,19 +575,23 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
     <button class="close-btn2" onclick="closeInfo('about-modal')">×</button>
     <div class="info-title">ABOUT ZEUS VISION</div>
     <div class="info-sub">AI-powered cryptocurrency forecasting platform</div>
-    <div class="about-section"><div class="about-section-title">OUR TECHNOLOGY</div><div class="about-text">ZEUS Vision uses proprietary LSTM neural networks trained on millions of candlesticks. Our models achieve 99%+ accuracy on moving average predictions.</div></div>
+    <div class="about-section"><div class="about-section-title">OUR TECHNOLOGY</div><div class="about-text">ZEUS Vision uses proprietary AI technology trained on massive market datasets across hundreds of trading pairs. Our platform delivers 99%+ accuracy on price movement predictions.</div></div>
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin:16px 0;">
-      <div class="about-stat" onclick="closeInfo('about-modal');showMarkets()" style="cursor:pointer;" title="View all trading pairs">
-        <div class="about-stat-val">500+</div><div class="about-stat-lbl">PAIRS</div>
+      <div class="about-stat" style="cursor:pointer;" onclick="closeInfo('about-modal');showMarkets();">
+        <div class="about-stat-val">500+</div>
+        <div class="about-stat-lbl">PAIRS ↗</div>
       </div>
-      <div class="about-stat" onclick="closeInfo('about-modal');showTutorial()" style="cursor:pointer;" title="Learn about our accuracy">
-        <div class="about-stat-val">99%+</div><div class="about-stat-lbl">ACCURACY</div>
+      <div class="about-stat" style="cursor:pointer;" onclick="closeInfo('about-modal');showPricing();">
+        <div class="about-stat-val">99%+</div>
+        <div class="about-stat-lbl">ACCURACY ↗</div>
       </div>
-      <div class="about-stat" onclick="closeInfo('about-modal');showTutorial()" style="cursor:pointer;" title="Learn about our AI models">
-        <div class="about-stat-val">6</div><div class="about-stat-lbl">AI MODELS</div>
+      <div class="about-stat" style="cursor:pointer;" onclick="closeInfo('about-modal');showTutorial();">
+        <div class="about-stat-val">PRO</div>
+        <div class="about-stat-lbl">AI MODELS ↗</div>
       </div>
-      <div class="about-stat" onclick="openChat()" style="cursor:pointer;" title="Open live chat">
-        <div class="about-stat-val">24/7</div><div class="about-stat-lbl">💬 CHAT</div>
+      <div class="about-stat" style="cursor:pointer;" onclick="closeInfo('about-modal');openChat();">
+        <div class="about-stat-val">24/7</div>
+        <div class="about-stat-lbl">💬 CHAT ↗</div>
       </div>
     </div>
     <div class="about-section"><div class="about-section-title">DISCLAIMER</div><div class="about-text">ZEUS Vision forecasts are for informational purposes only and do not constitute financial advice.</div></div>
