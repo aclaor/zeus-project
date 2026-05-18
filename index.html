@@ -54,8 +54,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
   .trades-panel{height:120px!important;}
 }
 @media(min-width:769px){
-  #mobile-nav{display:none!important;}
-  .hamburger{display:none!important;}
+  /* mobile-nav shown via JS */
 }
 .topbar{display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 16px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
 .logo{font-family:var(--mono);font-size:16px;font-weight:700;color:#0ff;letter-spacing:1px;text-shadow:0 0 14px rgba(0,255,255,0.5);}
@@ -305,7 +304,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
   .plans-grid{grid-template-columns:1fr!important;}
 }
 @media(min-width:769px){
-  #mobile-nav{display:none!important;}
+  /* mobile-nav shown via JS */
 }
 </style>
 </head>
@@ -313,7 +312,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:12px;">
     <div class="logo" id="logo-btn" style="cursor:pointer;user-select:none;">Stock<span>Vision</span></div>
-    <nav class="nav" id="desktop-nav">
+    <nav class="nav" id="desktop-nav" style="display:none;">
       <button class="nav-btn" onclick="showMarkets()">Markets</button>
       <button class="nav-btn" onclick="showPricing()">Pricing</button>
       <button class="nav-btn" onclick="showTutorial()">Tutorial</button>
@@ -540,7 +539,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
         <div class="plan-badge free">FREE TRIAL</div>
         <div class="plan-name">Explorer</div>
         <div class="plan-price">$0<small style="font-size:11px;color:var(--text2);font-weight:400;">/7 days</small></div>
-        <div class="plan-feat">30 forecasts/day<br>Any US stock or ETF<br>Basic charts</div>
+        <div class="plan-feat">15-day free trial<br>Any US stock or ETF<br>Basic charts</div>
       </div>
       <div class="plan" id="plan-pro" onclick="selectPlan(this)">
         <div class="plan-badge hot">POPULAR</div>
@@ -629,7 +628,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
         <span class="plan-badge2 free">FREE TRIAL</span>
         <div class="plan-name2">Explorer</div>
         <div class="plan-price2">$0<small>/7 days</small></div>
-        <ul class="plan-features"><li>30 forecasts/day</li><li>Any US stock or ETF</li><li>Basic charts</li><li class="no">Unlimited access</li></ul>
+        <ul class="plan-features"><li>15-day free trial</li><li>Any US stock or ETF</li><li>Basic charts</li><li class="no">Unlimited access</li></ul>
         <button class="plan-btn free-btn" onclick="closePricing();showModal('signup')">START FREE TRIAL</button>
       </div>
       <div class="plan-card featured">
@@ -1187,7 +1186,7 @@ async function loadHDCoins(){
 function showGuestLimit(){
   var o=document.getElementById('guest-limit-overlay');
   if(!o){o=document.createElement('div');o.id='guest-limit-overlay';o.style.cssText='position:fixed;inset:0;background:rgba(6,8,16,0.92);z-index:700;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);';
-  o.innerHTML='<div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:12px;padding:32px;max-width:400px;width:90%;text-align:center;font-family:Share Tech Mono,monospace;"><div style="font-size:32px;margin-bottom:12px;">⚡</div><div style="font-size:18px;font-weight:700;color:#0ff;margin-bottom:8px;">FREE TRIAL USED UP</div><div style="font-size:12px;color:#607a99;margin-bottom:20px;line-height:1.7;">Sign up for <span style="color:#0ecb81;font-weight:700;">30 free/day</span> or <span style="color:#f0b90b;font-weight:700;">Pro unlimited</span>.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;"><div style="background:#131926;border:1px solid #1e2a40;border-radius:8px;padding:16px;"><div style="color:#0ecb81;font-weight:700;margin-bottom:4px;">FREE</div><button onclick="closeGuestLimit();showModal(\'signup\')" style="margin-top:8px;width:100%;padding:8px;background:#0ecb8122;border:1px solid #0ecb81;border-radius:4px;color:#0ecb81;font-size:11px;cursor:pointer;font-weight:700;">Start Free</button></div><div style="background:#131926;border:1px solid #f0b90b44;border-radius:8px;padding:16px;"><div style="color:#f0b90b;font-weight:700;margin-bottom:4px;">PRO $99.99/mo</div><button onclick="closeGuestLimit();selectedPlan=\'pro\';showModal(\'signup\')" style="margin-top:8px;width:100%;padding:8px;background:linear-gradient(135deg,#f0b90b,#f0d060);border:none;border-radius:4px;color:#000;font-size:11px;cursor:pointer;font-weight:700;">Go Pro ⚡</button></div></div><button onclick="closeGuestLimit()" style="background:transparent;border:none;color:#344a66;font-size:10px;cursor:pointer;">Maybe later</button></div>';
+  o.innerHTML='<div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:12px;padding:32px;max-width:400px;width:90%;text-align:center;font-family:Share Tech Mono,monospace;"><div style="font-size:32px;margin-bottom:12px;">⚡</div><div style="font-size:18px;font-weight:700;color:#0ff;margin-bottom:8px;">FREE TRIAL </div><div style="font-size:12px;color:#607a99;margin-bottom:20px;line-height:1.7;">Sign up for <span style="color:#0ecb81;font-weight:700;">15-day free trial</span> or <span style="color:#f0b90b;font-weight:700;">Pro unlimited</span>.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;"><div style="background:#131926;border:1px solid #1e2a40;border-radius:8px;padding:16px;"><div style="color:#0ecb81;font-weight:700;margin-bottom:4px;">FREE TRIAL</div><button onclick="closeGuestLimit();showModal(\'signup\')" style="margin-top:8px;width:100%;padding:8px;background:#0ecb8122;border:1px solid #0ecb81;border-radius:4px;color:#0ecb81;font-size:11px;cursor:pointer;font-weight:700;">Start Free</button></div><div style="background:#131926;border:1px solid #f0b90b44;border-radius:8px;padding:16px;"><div style="color:#f0b90b;font-weight:700;margin-bottom:4px;">PRO $99.99/mo</div><button onclick="closeGuestLimit();selectedPlan=\'pro\';showModal(\'signup\')" style="margin-top:8px;width:100%;padding:8px;background:linear-gradient(135deg,#f0b90b,#f0d060);border:none;border-radius:4px;color:#000;font-size:11px;cursor:pointer;font-weight:700;">Go Pro ⚡</button></div></div><button onclick="closeGuestLimit()" style="background:transparent;border:none;color:#344a66;font-size:10px;cursor:pointer;">Maybe later</button></div>';
   document.body.appendChild(o);}else{o.style.display='flex';}
 }
 function closeGuestLimit(){var o=document.getElementById('guest-limit-overlay');if(o)o.style.display='none';}
