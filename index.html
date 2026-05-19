@@ -54,8 +54,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
   .trades-panel{height:120px!important;}
 }
 @media(min-width:769px){
-  /* mobile-nav shown via JS */
-}
+  .hamburger{display:none!important;}
 .topbar{display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 16px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
 .logo{font-family:var(--mono);font-size:16px;font-weight:700;color:#0ff;letter-spacing:1px;text-shadow:0 0 14px rgba(0,255,255,0.5);}
 .logo span{color:var(--text);font-weight:400;}
@@ -304,8 +303,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
   .plans-grid{grid-template-columns:1fr!important;}
 }
 @media(min-width:769px){
-  /* mobile-nav shown via JS */
-}
+  .hamburger{display:none!important;}
 </style>
 </head>
 <body>
@@ -313,11 +311,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:12px;">
     <div class="logo" id="logo-btn" style="cursor:pointer;user-select:none;">Crypto<span>Vision</span></div>
-    <nav class="nav" id="desktop-nav" style="display:none;">
+    <nav class="nav" id="desktop-nav">
       <button class="nav-btn" onclick="showMarkets()">Markets</button>
       <button class="nav-btn" onclick="showPricing()">Pricing</button>
       <button class="nav-btn" onclick="showTutorial()">Tutorial</button>
       <button class="nav-btn" onclick="showAbout()">About</button>
+      <button class="nav-btn" onclick="showNews()" style="border-color:#0af;color:#0af;">📰 News</button>
     </nav>
     <button class="hamburger" onclick="toggleMobileNav()"><span></span><span></span><span></span></button>
   </div>
@@ -330,11 +329,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
   </div>
 </div>
 
-<div id="mobile-nav" style="position:fixed;top:48px;left:0;right:0;background:#0b0f1a;border-bottom:1px solid #1e2a40;z-index:500;flex-direction:column;padding:6px;">
+<div id="mobile-nav" style="display:none;position:fixed;top:48px;left:0;right:0;background:#0b0f1a;border-bottom:1px solid #1e2a40;z-index:500;flex-direction:column;padding:6px;">
   <button class="nav-btn" style="width:100%;text-align:left;padding:10px 12px;margin-bottom:3px;" onclick="showMarkets();toggleMobileNav()">Markets</button>
   <button class="nav-btn" style="width:100%;text-align:left;padding:10px 12px;margin-bottom:3px;" onclick="showPricing();toggleMobileNav()">Pricing</button>
   <button class="nav-btn" style="width:100%;text-align:left;padding:10px 12px;margin-bottom:3px;" onclick="showTutorial();toggleMobileNav()">Tutorial</button>
   <button class="nav-btn" style="width:100%;text-align:left;padding:10px 12px;" onclick="showAbout();toggleMobileNav()">About</button>
+  <button class="nav-btn" style="width:100%;text-align:left;padding:10px 12px;border-color:#0af;color:#0af;" onclick="showNews();toggleMobileNav()">📰 News</button>
 </div>
 
 <div class="ticker-bar" id="ticker-bar">
