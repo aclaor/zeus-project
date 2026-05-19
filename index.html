@@ -776,7 +776,27 @@ async function handleSignOut() {
 }
 
 // ── MODALS ────────────────────────────────────
-function showPricing(){var el=document.getElementById('pricing-modal');if(el)el.classList.remove('hidden');}
+async function handleForgotPassword(){
+    var email = document.getElementById('auth-email').value.trim();
+    if(!email){
+      document.getElementById('auth-error').textContent='Please enter your email address first.';
+      document.getElementById('auth-error').style.display='block';
+      return;
+    }
+    try{
+      var supabase = window._supabase;
+      var redirectUrl = window.location.origin + '/?type=recovery';
+      var {error} = await supabase.auth.resetPasswordForEmail(email, {redirectTo: redirectUrl});
+      if(error) throw error;
+      document.getElementById('auth-error').style.display='none';
+      document.getElementById('forgot-pwd-link').style.display='none';
+      showToast('Password reset email sent! Check your inbox.','success');
+    }catch(e){
+      document.getElementById('auth-error').textContent='Error: '+(e.message||'Could not send reset email.');
+      document.getElementById('auth-error').style.display='block';
+    }
+  }
+  function showPricing(){var el=document.getElementById('pricing-modal');if(el)el.classList.remove('hidden');}
 function closePricing(){var el=document.getElementById('pricing-modal');if(el)el.classList.add('hidden');}
 function showMarkets(){var el=document.getElementById('markets-modal');if(el)el.classList.remove('hidden');fetchLiveMarkets();marketsRefreshTimer=setInterval(fetchLiveMarkets,30000);}
 function closeMarkets(){var el=document.getElementById('markets-modal');if(el)el.classList.add('hidden');if(marketsRefreshTimer){clearInterval(marketsRefreshTimer);marketsRefreshTimer=null;}}
