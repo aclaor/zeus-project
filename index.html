@@ -893,7 +893,7 @@ var allTickerData = {};
 async function fetchAllTickers() {
   try {
     var r = await fetch('https://api.binance.com/api/v3/ticker/24hr');
-    if (!r.ok) return;
+    if (!r.ok) throw new Error('Binance blocked');
     var tickers = await r.json();
     tickers.forEach(function(t){
       allTickerData[t.symbol] = {
@@ -902,7 +902,22 @@ async function fetchAllTickers() {
       };
     });
     updatePairsList();
-  } catch(e){}
+  } catch(e){
+    // Fallback to CoinGecko if Binance is blocked
+    try {
+      var cg = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1');
+      if(!cg.ok) return;
+      var coins = await cg.json();
+      coins.forEach(function(c){
+        var sym = c.symbol.toUpperCase()+'USDT';
+        allTickerData[sym] = {
+          p: c.current_price||0,
+          c: c.price_change_percentage_24h||0
+        };
+      });
+      updatePairsList();
+    } catch(e2){}
+  }
 }
 
 function updatePairsList() {
