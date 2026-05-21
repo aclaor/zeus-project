@@ -293,6 +293,16 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
 .hd-btn-s{flex:1;padding:8px;border-radius:4px;font-family:var(--mono);font-size:10px;cursor:pointer;background:transparent;border:1px solid #243350;color:#607a99;}
 .hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:4px;background:transparent;border:none;}
 .hamburger span{width:20px;height:2px;background:#607a99;border-radius:1px;}
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;height:28px;background:#0b0f1a;border-top:1px solid #1e2a40;z-index:400;overflow:hidden;display:flex;align-items:center;}
+.bottom-bar-inner{display:flex;white-space:nowrap;animation:btscroll 60s linear infinite;}
+.bottom-bar-inner:hover{animation-play-state:paused;}
+@keyframes btscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.bt{display:inline-flex;gap:6px;padding:0 16px;border-right:1px solid #1e2a40;font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;white-space:nowrap;}
+.bt:hover{background:rgba(0,255,255,0.05);}
+.bt-s{color:#d0e0f0;}
+.bt-p{color:#d0e0f0;}
+.bt-c{color:#0ecb81;}
+.bt-c.dn{color:#f6465d;}
 @media(max-width:768px){
   .hamburger{display:flex!important;}
   #desktop-nav{display:none!important;}
