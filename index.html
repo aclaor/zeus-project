@@ -1161,9 +1161,7 @@ window.addEventListener('DOMContentLoaded',function(){
   if(logobtn){logobtn.addEventListener('click',function(e){e.stopPropagation();showHomeDrop();});document.addEventListener('click',function(e){var d=document.getElementById('home-drop'),lb=document.getElementById('logo-btn');if(d&&lb&&!d.contains(e.target)&&!lb.contains(e.target))d.classList.remove('open');});}
   fetchLiveTicker();fetchAllTickers();fetchLivePairs();updatePairsList();
   setTimeout(runForecast,1000);
-  setInterval(fetchLiveTicker,10000);
-  setInterval(fetchAllTickers,10000);
-});
+  });
 </script>
 </body>
 </html>
