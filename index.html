@@ -786,6 +786,10 @@ async function handleAuth(e) {
     }
   } catch(err) {
     if (errEl) {errEl.textContent=err.message;errEl.style.display='block';}
+    if (authMode==='login') {
+      var fpLink = document.getElementById('forgot-pwd-link');
+      if (fpLink) fpLink.style.display='block';
+    }
   }
 }
 function updateAuthUI(user) {
