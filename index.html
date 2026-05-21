@@ -508,6 +508,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
       <input type="email" id="auth-email" placeholder="Email address">
       <input type="password" id="auth-password" placeholder="Password">
       <div class="modal-err" id="modal-err"></div>
+      <div id="forgot-pwd-link" style="display:none;text-align:right;position:relative;z-index:10;">
+        <button onclick="handleForgotPassword();" style="background:none;border:none;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;cursor:pointer;padding:4px 0;text-decoration:underline;">Forgot password?</button>
+      </div>
       <button class="modal-submit" onclick="handleAuth(event)">CREATE ACCOUNT</button>
     </div>
     <div class="modal-footer">Already have an account? <span style="color:#0ff;cursor:pointer;" onclick="showModal('login')">Sign In</span></div>
