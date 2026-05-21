@@ -902,7 +902,7 @@ var allTickerData = {};
 
 async function fetchAllTickers() {
   try {
-    var r = await fetch(API_BASE+'/ticker');
+    var r = await fetch(API_BASE+'/ticker/top');
     if (!r.ok) throw new Error('proxy failed');
     var tickers = await r.json();
     tickers.forEach(function(t){
@@ -912,7 +912,8 @@ async function fetchAllTickers() {
       };
     });
     updatePairsList();
-  } catch(e){ console.log('Ticker unavailable'); }
+    renderBottomTicker();
+  } catch(e){ console.log('Ticker unavailable:', e); }
 }
 
 function updatePairsList() {
