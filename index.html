@@ -927,21 +927,24 @@ async function fetchAllTickers() {
     updatePairsList();
     renderBottomTicker();
   } catch(e){ console.log('Ticker unavailable:', e); }
-  // Fetch markets (Binance exact data via Railway)
+  // Fetch markets (via Railway CoinGecko proxy)
   try{
     var mr = await fetch(API_BASE+'/markets');
     if(mr.ok){
       var mdata = await mr.json();
-      if(mdata.hot||mdata.gainers||mdata.losers){
+      var hasData = (mdata.hot&&mdata.hot.length>0)||(mdata.gainers&&mdata.gainers.length>0);
+      if(hasData){
         renderCryptoGridsFromMarkets(mdata);
         return;
       }
     }
   }catch(me){ console.log('Markets fetch failed:', me); }
-  // Fallback to ticker data
-  renderCryptoGrids(Object.keys(allTickerData).map(function(sym){
+  // Fallback to ticker data only if we have it
+  var tickerList = Object.keys(allTickerData).map(function(sym){
     return {symbol:sym, lastPrice:String(allTickerData[sym].p), priceChangePercent:String(allTickerData[sym].c), quoteVolume:'0'};
-  }));
+  }).filter(function(t){return parseFloat(t.lastPrice)>0;});
+  if(tickerList.length > 0) renderCryptoGrids(tickerList);
+  // else keep static fallback showing
 }
 
 function renderCryptoGridsFromMarkets(data){
@@ -1342,7 +1345,10 @@ window.addEventListener('DOMContentLoaded',function(){
   var logobtn=document.getElementById('logo-btn');
   if(logobtn){logobtn.addEventListener('click',function(e){e.stopPropagation();showHomeDrop();});document.addEventListener('click',function(e){var d=document.getElementById('home-drop'),lb=document.getElementById('logo-btn');if(d&&lb&&!d.contains(e.target)&&!lb.contains(e.target))d.classList.remove('open');});}
   fetchLiveTicker();fetchAllTickers();fetchLivePairs();updatePairsList();
-  setTimeout(function(){renderCryptoGrids([]);},500);
+  setTimeout(function(){
+    var hg=document.getElementById('hot-coins-grid');
+    if(!hg||!hg.innerHTML) renderCryptoGrids([]);
+  },500);
   setInterval(function(){fetchAllTickers();},30000);
   setTimeout(runForecast,1000);
   });
