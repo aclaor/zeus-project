@@ -920,13 +920,52 @@ async function fetchAllTickers() {
     var tickers = await r.json();
     tickers.forEach(function(t){
       allTickerData[t.symbol] = {
-        p: parseFloat(t.lastPrice),
-        c: parseFloat(t.priceChangePercent)
+        p: parseFloat(t.lastPrice||0),
+        c: parseFloat(t.priceChangePercent||0)
       };
     });
     updatePairsList();
     renderBottomTicker();
   } catch(e){ console.log('Ticker unavailable:', e); }
+  // Fetch markets (Binance exact data via Railway)
+  try{
+    var mr = await fetch(API_BASE+'/markets');
+    if(mr.ok){
+      var mdata = await mr.json();
+      if(mdata.hot||mdata.gainers||mdata.losers){
+        renderCryptoGridsFromMarkets(mdata);
+        return;
+      }
+    }
+  }catch(me){ console.log('Markets fetch failed:', me); }
+  // Fallback to ticker data
+  renderCryptoGrids(Object.keys(allTickerData).map(function(sym){
+    return {symbol:sym, lastPrice:String(allTickerData[sym].p), priceChangePercent:String(allTickerData[sym].c), quoteVolume:'0'};
+  }));
+}
+
+function renderCryptoGridsFromMarkets(data){
+  var hg=document.getElementById('hot-coins-grid');
+  var gg=document.getElementById('gainers-coins-grid');
+  var lg=document.getElementById('losers-coins-grid');
+  function makeMarketCard(t){
+    var sym=t.symbol||'';
+    var base=sym.replace(/USDT$|USDC$|FDUSD$|BUSD$/,'');
+    if(!base) base=sym;
+    var price=parseFloat(t.lastPrice||0);
+    var chg=parseFloat(t.priceChangePercent||0);
+    var up=chg>=0;
+    var priceStr=price>=1000?'$'+price.toLocaleString(undefined,{maximumFractionDigits:2}):price>=1?'$'+price.toFixed(3):'$'+price.toFixed(6);
+    return '<div class="crypto-card" style="border-color:'+(up?'rgba(14,203,129,0.3)':'rgba(246,70,93,0.3)')+';background:'+(up?'rgba(14,203,129,0.06)':'rgba(246,70,93,0.06)')+'" data-sym="'+sym+'" onclick="loadPair(this.dataset.sym)">'
+      +'<div class="cc-sym">'+base+'</div>'
+      +'<div class="cc-price">'+priceStr+'</div>'
+      +'<div class="cc-chg" style="color:'+(up?'#0ecb81':'#f6465d')+'">'+(up?'+':'')+chg.toFixed(2)+'%</div>'
+      +'</div>';
+  }
+  if(hg&&data.hot) hg.innerHTML=data.hot.map(makeMarketCard).join('');
+  if(gg&&data.gainers) gg.innerHTML=data.gainers.map(makeMarketCard).join('');
+  if(lg&&data.losers) lg.innerHTML=data.losers.map(makeMarketCard).join('');
+  console.log('Markets grids: hot='+((data.hot||[]).length)+' gainers='+((data.gainers||[]).length)+' losers='+((data.losers||[]).length));
 }
 
 function renderCryptoGrids(tickers){
