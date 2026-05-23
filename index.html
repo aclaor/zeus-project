@@ -204,7 +204,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
 .toast.success{background:rgba(14,203,129,0.12);border:1px solid rgba(14,203,129,0.4);color:var(--green);}
 .toast.show{transform:translateY(0);opacity:1;}
 .bottom-bar{position:fixed;bottom:0;left:0;right:0;height:28px;background:#0b0f1a;border-top:1px solid #1e2a40;overflow:hidden;z-index:400;display:flex;align-items:center;}
-.bottom-bar-inner{display:flex;white-space:nowrap;animation:btscroll 50s linear infinite;}
+.bottom-bar-inner{display:flex;white-space:nowrap;animation:btscroll 90s linear infinite;}
 @keyframes btscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .bt{display:inline-flex;align-items:center;gap:5px;padding:0 14px;border-right:1px solid #1e2a40;font-size:10px;font-family:var(--mono);cursor:pointer;}
 .bt-s{color:#d0e0f0;font-weight:700;}
@@ -296,7 +296,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
 .hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:4px;background:transparent;border:none;}
 .hamburger span{width:20px;height:2px;background:#607a99;border-radius:1px;}
 .bottom-bar{position:fixed;bottom:0;left:0;right:0;height:28px;background:#0b0f1a;border-top:1px solid #1e2a40;z-index:400;overflow:hidden;display:flex;align-items:center;}
-.bottom-bar-inner{display:flex;white-space:nowrap;animation:btscroll 60s linear infinite;}
+.bottom-bar-inner{display:flex;white-space:nowrap;animation:btscroll 90s linear infinite;}
 .bottom-bar-inner:hover{animation-play-state:paused;}
 @keyframes btscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .bt{display:inline-flex;gap:6px;padding:0 16px;border-right:1px solid #1e2a40;font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;white-space:nowrap;}
@@ -1277,6 +1277,7 @@ window.addEventListener('DOMContentLoaded',function(){
   var logobtn=document.getElementById('logo-btn');
   if(logobtn){logobtn.addEventListener('click',function(e){e.stopPropagation();showHomeDrop();});document.addEventListener('click',function(e){var d=document.getElementById('home-drop'),lb=document.getElementById('logo-btn');if(d&&lb&&!d.contains(e.target)&&!lb.contains(e.target))d.classList.remove('open');});}
   fetchLiveTicker();fetchAllTickers();fetchLivePairs();updatePairsList();
+  setTimeout(function(){renderCryptoGrids([]);},500);
   setTimeout(runForecast,1000);
   });
 </script>
