@@ -305,6 +305,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
 .bt-p{color:#d0e0f0;}
 .bt-c{color:#0ecb81;}
 .bt-c.dn{color:#f6465d;}
+.crypto-card{background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:10px;cursor:pointer;transition:all .15s;text-align:center;}
+.crypto-card:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(14,203,129,0.1);}
+.cc-sym{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;margin-bottom:3px;}
+.cc-price{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;margin-bottom:3px;}
+.cc-chg{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;}
 @media(max-width:768px){
   .hamburger{display:flex!important;}
   #desktop-nav{display:none!important;}
@@ -319,7 +324,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
 </style>
 </head>
 <body>
-
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:12px;">
     <div class="logo" id="logo-btn" style="cursor:pointer;user-select:none;">Crypto<span>Vision</span></div>
@@ -484,6 +488,20 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--b
     <div class="pairs-cols"><span>Pair</span><span>Last Price</span><span>Change</span></div>
     <div class="pairs-list" id="pairs-list"></div>
   </div>
+</div>
+
+<div id="crypto-market-overview" style="background:var(--bg);padding:24px 20px 120px 20px;">
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;color:#0ecb81;margin-bottom:4px;letter-spacing:2px;">🔥 CRYPTO MARKETS</div>
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;margin-bottom:20px;">Live data · Click any coin to run ZEUS-AI forecast</div>
+
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#f0b90b;margin-bottom:12px;letter-spacing:1px;">⚡ HOT COINS — Most traded right now</div>
+  <div id="hot-coins-grid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:24px;"></div>
+
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#0ecb81;margin-bottom:12px;letter-spacing:1px;">📈 TOP GAINERS — Best performing today</div>
+  <div id="gainers-coins-grid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:24px;"></div>
+
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#f6465d;margin-bottom:12px;letter-spacing:1px;">📉 TOP LOSERS — Biggest decliners today</div>
+  <div id="losers-coins-grid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:24px;"></div>
 </div>
 
 <!-- AUTH MODAL -->
@@ -703,20 +721,8 @@ var quotePairs = {
 
 // Fetch live pairs from Binance and update quotePairs dynamically
 async function fetchLivePairs() {
-  try {
-    var r = await fetch('https://api.binance.com/api/v3/exchangeInfo');
-    if (!r.ok) return;
-    var data = await r.json();
-    var symbols = data.symbols.filter(function(s){ return s.status === 'TRADING'; });
-    var quotes = ['USDT','USDC','BNB','BTC','ETH','FDUSD'];
-    quotes.forEach(function(q){
-      quotePairs[q] = symbols
-        .filter(function(s){ return s.quoteAsset === q && s.baseAsset !== q; })
-        .map(function(s){ return s.symbol; })
-        .slice(0, 60);
-    });
-    updatePairsList();
-  } catch(e) { console.log('fetchLivePairs error:', e); }
+  // Pairs are hardcoded - no need to fetch from Binance (blocked in some regions)
+  updatePairsList();
 }
 
 
@@ -923,6 +929,60 @@ async function fetchAllTickers() {
   } catch(e){ console.log('Ticker unavailable:', e); }
 }
 
+function renderCryptoGrids(tickers){
+  // Static fallback if no live data
+  if(!tickers||!tickers.length){
+    tickers=[
+      {symbol:'BTCUSDT',lastPrice:'77000',priceChangePercent:'1.2',quoteVolume:'2000000000'},
+      {symbol:'ETHUSDT',lastPrice:'2100',priceChangePercent:'0.8',quoteVolume:'800000000'},
+      {symbol:'SOLUSDT',lastPrice:'86',priceChangePercent:'3.0',quoteVolume:'500000000'},
+      {symbol:'BNBUSDT',lastPrice:'650',priceChangePercent:'2.2',quoteVolume:'400000000'},
+      {symbol:'XRPUSDT',lastPrice:'1.38',priceChangePercent:'2.1',quoteVolume:'300000000'},
+      {symbol:'DOGEUSDT',lastPrice:'0.104',priceChangePercent:'2.0',quoteVolume:'250000000'},
+      {symbol:'ADAUSDT',lastPrice:'0.25',priceChangePercent:'1.4',quoteVolume:'200000000'},
+      {symbol:'AVAXUSDT',lastPrice:'9.3',priceChangePercent:'2.9',quoteVolume:'150000000'},
+      {symbol:'LINKUSDT',lastPrice:'9.7',priceChangePercent:'2.9',quoteVolume:'140000000'},
+      {symbol:'DOTUSDT',lastPrice:'1.26',priceChangePercent:'3.0',quoteVolume:'130000000'},
+      {symbol:'SHIBUSDT',lastPrice:'0.00001',priceChangePercent:'-1.2',quoteVolume:'120000000'},
+      {symbol:'UNIUSDT',lastPrice:'5.2',priceChangePercent:'1.5',quoteVolume:'110000000'},
+      {symbol:'ATOMUSDT',lastPrice:'4.5',priceChangePercent:'-0.8',quoteVolume:'100000000'},
+      {symbol:'LTCUSDT',lastPrice:'85',priceChangePercent:'1.1',quoteVolume:'90000000'},
+      {symbol:'NEARUSDT',lastPrice:'2.1',priceChangePercent:'1.8',quoteVolume:'80000000'},
+      {symbol:'INJUSDT',lastPrice:'12',priceChangePercent:'-2.1',quoteVolume:'70000000'},
+      {symbol:'ARBUSDT',lastPrice:'0.35',priceChangePercent:'0.9',quoteVolume:'60000000'},
+      {symbol:'OPUSDT',lastPrice:'0.7',priceChangePercent:'1.3',quoteVolume:'50000000'},
+    ];
+  }
+  // Sort by different criteria
+  var sorted = tickers.slice().filter(function(t){return parseFloat(t.lastPrice)>0;});
+  var byVol = sorted.slice().sort(function(a,b){return parseFloat(b.quoteVolume||0)-parseFloat(a.quoteVolume||0);}).slice(0,18);
+  var gainers = sorted.slice().filter(function(t){return parseFloat(t.priceChangePercent)>0;}).sort(function(a,b){return parseFloat(b.priceChangePercent)-parseFloat(a.priceChangePercent);}).slice(0,18);
+  var losers = sorted.slice().filter(function(t){return parseFloat(t.priceChangePercent)<0;}).sort(function(a,b){return parseFloat(a.priceChangePercent)-parseFloat(b.priceChangePercent);}).slice(0,18);
+
+  function makeCard(t, borderColor){
+    var sym = t.symbol;
+    var base = sym.replace('USDT','').replace('USDC','').replace('BTC','').replace('ETH','');
+    var price = parseFloat(t.lastPrice||t.price||0);
+    var chg = parseFloat(t.priceChangePercent||t.changesPercentage||0);
+    var up = chg >= 0;
+    var border = borderColor||(up?'rgba(14,203,129,0.3)':'rgba(246,70,93,0.3)');
+    var bg = borderColor?'rgba('+borderColor.replace('rgba(','').split(',').slice(0,3).join(',')+',0.06)':( up?'rgba(14,203,129,0.08)':'rgba(246,70,93,0.08)');
+    var priceStr = price>=1000?'$'+price.toLocaleString(undefined,{maximumFractionDigits:2}):price>=1?'$'+price.toFixed(3):'$'+price.toFixed(6);
+    return '<div class="crypto-card" style="border-color:'+border+';background:'+(up?'rgba(14,203,129,0.06)':'rgba(246,70,93,0.06)')+'" data-sym="'+sym+'" onclick="loadPair(this.dataset.sym)">'
+      +'<div class="cc-sym">'+base+'</div>'
+      +'<div class="cc-price">'+priceStr+'</div>'
+      +'<div class="cc-chg" style="color:'+(up?'#0ecb81':'#f6465d')+'">'+(up?'+':'')+chg.toFixed(2)+'%</div>'
+      +'</div>';
+  }
+
+  var hg=document.getElementById('hot-coins-grid');
+  var gg=document.getElementById('gainers-coins-grid');
+  var lg=document.getElementById('losers-coins-grid');
+  if(hg) hg.innerHTML=byVol.map(function(t){return makeCard(t,null);}).join('');
+  if(gg) gg.innerHTML=gainers.map(function(t){return makeCard(t,null);}).join('');
+  if(lg) lg.innerHTML=losers.map(function(t){return makeCard(t,null);}).join('');
+}
+
 function updatePairsList() {
   var pairs=quotePairs[currentQuote]||quotePairs['USDT'];
   var listEl=document.getElementById('pairs-list'); if(!listEl) return;
@@ -947,11 +1007,50 @@ function loadPair(sym){var clean=sym.toUpperCase().replace(/[\/\-\s]/g,'');docum
 // ── LIVE DATA ─────────────────────────────────
 function renderBottomTicker(){var inner=document.getElementById('bottom-bar-inner');if(!inner)return;inner.innerHTML=btData.concat(btData).map(function(d){var up=d.c>=0;return '<div class="bt" onclick="loadPair(\''+d.s.replace('/','')+'\')">'+'<span class="bt-s">'+d.s+'</span> <span class="bt-p">$'+d.p.toLocaleString(undefined,{maximumFractionDigits:4})+'</span> <span class="bt-c '+(up?'':'dn')+'">'+(up?'+':'')+d.c.toFixed(2)+'%</span></div>';}).join('');}
 async function fetchLiveTicker(){
-  try{var r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbols=["BTCUSDT","ETHUSDT","SOLUSDT","BNBUSDT","XRPUSDT","DOGEUSDT","ADAUSDT","AVAXUSDT","LINKUSDT","DOTUSDT","UNIUSDT","MATICUSDT","ATOMUSDT","LTCUSDT","NEARUSDT","INJUSDT","ARBUSDT","OPUSDT","APTUSDT","FILUSDT"]');
-  if(!r.ok)return;var data=await r.json();
-  btData=data.map(function(t){return{s:t.symbol.replace('USDT','/USDT'),p:parseFloat(t.lastPrice),c:parseFloat(t.priceChangePercent)};});
-  btData.forEach(function(d){var base=d.s.replace('/USDT','');var pair=PAIRS.find(function(p){return p.sym===base;});if(pair){pair.p=d.p;pair.c=d.c;}});
-  renderBottomTicker();if(currentQuote==='USDT')updatePairsList();}catch(e){}
+  try{
+    var r=await fetch(API_BASE+'/ticker/top');
+    if(!r.ok) throw new Error('failed');
+    var data=await r.json();
+    if(!Array.isArray(data)||data.length===0) throw new Error('empty');
+    
+    // Update btData for bottom scrolling ticker
+    btData=data.map(function(t){
+      var sym=t.symbol||'';
+      var base=sym.replace('USDT','/USDT');
+      return {s:base, p:parseFloat(t.lastPrice||0), c:parseFloat(t.priceChangePercent||0)};
+    });
+    
+    // Update static top ticker IDs
+    var tkMap={'BTCUSDT':'tk-btc','ETHUSDT':'tk-eth','SOLUSDT':'tk-sol','BNBUSDT':'tk-bnb','XRPUSDT':'tk-xrp','DOGEUSDT':'tk-doge','ADAUSDT':'tk-ada'};
+    data.forEach(function(t){
+      var id=tkMap[t.symbol];
+      if(id){
+        var el=document.getElementById(id);
+        var p=parseFloat(t.lastPrice||0);
+        var c=parseFloat(t.priceChangePercent||0);
+        if(el&&p>0){
+          el.textContent='$'+p.toLocaleString(undefined,{maximumFractionDigits:p>=1000?2:p>=1?3:6});
+          el.className='tick-p'+(c<0?' dn':'');
+        }
+      }
+    });
+    
+    // Update allTickerData for pairs list
+    data.forEach(function(t){
+      allTickerData[t.symbol]={p:parseFloat(t.lastPrice||0),c:parseFloat(t.priceChangePercent||0)};
+    });
+    
+    renderBottomTicker();
+    if(currentQuote==='USDT') updatePairsList();
+    
+    // Render crypto grids with this data
+    renderCryptoGrids(data);
+    
+  }catch(e){
+    console.log('Ticker unavailable:', e);
+    // Still render grids with static fallback
+    renderCryptoGrids([]);
+  }
 }
 
 // ── ORDER BOOK & TRADES ───────────────────────
@@ -1181,5 +1280,8 @@ window.addEventListener('DOMContentLoaded',function(){
   setTimeout(runForecast,1000);
   });
 </script>
+</body>
+</html>
+
 </body>
 </html>
