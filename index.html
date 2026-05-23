@@ -509,13 +509,13 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
   <div class="modal">
     <button class="close-btn" onclick="hideModal()">×</button>
     <div class="modal-title" id="modal-title">CREATE ACCOUNT</div>
-    <div class="modal-sub" id="modal-sub">7 days free — no credit card needed.</div>
+    <div class="modal-sub" id="modal-sub">15-day free trial — no credit card needed.</div>
     <div class="plan-grid">
       <div class="plan selected" id="plan-free" onclick="selectPlan(this)">
         <div class="plan-badge free">FREE TRIAL</div>
         <div class="plan-name">Explorer</div>
-        <div class="plan-price">$0<small style="font-size:11px;color:var(--text2);font-weight:400;">/7 days</small></div>
-        <div class="plan-feat">15-day free trial<br>Unlimited forecasts<br>All ZEUS-AI features</div>
+        <div class="plan-price">$0<small style="font-size:11px;color:var(--text2);font-weight:400;">/15 days</small></div>
+        <div class="plan-feat">✅ 15-day free trial<br>Unlimited forecasts<br>All ZEUS-AI features</div>
       </div>
       <div class="plan" id="plan-pro" onclick="selectPlan(this)">
         <div class="plan-badge hot">POPULAR</div>
@@ -581,6 +581,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
     <button class="close-btn2" onclick="closePricing()">×</button>
     <div class="pricing-title">⚡ ZEUS VISION PLANS</div>
     <div class="pricing-sub">Unlock the power of AI crypto forecasting</div>
+    <div style="text-align:center;margin-bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#0ecb81;">⭐ Join 500+ traders already using ZEUS-AI</div>
     <div class="plans-grid">
       <div class="plan-card">
         <span class="plan-badge2 free">FREE TRIAL</span>
@@ -761,7 +762,7 @@ function showModal(mode) {
   var err = document.getElementById('modal-err')||document.getElementById('auth-err');
   var btn = document.querySelector('.modal-submit');
   if (title) title.textContent = mode==='login'?'SIGN IN':'CREATE ACCOUNT';
-  if (sub) sub.textContent = mode==='login'?'Welcome back to ZEUS Vision':'7 days free — no credit card needed.';
+  if (sub) sub.textContent = mode==='login'?'Welcome back to ZEUS Vision':'15-day free trial — no credit card needed.';
   if (err) err.style.display='none';
   var fpLink2 = document.getElementById('forgot-pwd-link');
   if (fpLink2) fpLink2.style.display='none';
