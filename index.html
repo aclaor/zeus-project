@@ -971,19 +971,21 @@ function renderCryptoGrids(tickers){
   // Hot coins - by volume
   var byVol = sorted.slice().sort(function(a,b){return parseFloat(b.quoteVolume||b.volume||0)-parseFloat(a.quoteVolume||a.volume||0);});
   if(byVol.length < 18) byVol = sorted.slice(); // fallback to all if not enough
-  byVol = byVol.slice(0,18);
+  byVol = byVol.slice(0,20);
   // Gainers - positive change, fill with best available if not enough
   var gainers = sorted.slice().filter(function(t){return parseFloat(t.priceChangePercent||t.changesPercentage||0)>0;}).sort(function(a,b){return parseFloat(b.priceChangePercent||b.changesPercentage||0)-parseFloat(a.priceChangePercent||a.changesPercentage||0);});
   if(gainers.length < 6) gainers = sorted.slice().sort(function(a,b){return parseFloat(b.priceChangePercent||b.changesPercentage||0)-parseFloat(a.priceChangePercent||a.changesPercentage||0);});
-  gainers = gainers.slice(0,18);
+  gainers = gainers.slice(0,20);
   // Losers - negative change, fill with worst available if not enough
   var losers = sorted.slice().filter(function(t){return parseFloat(t.priceChangePercent||t.changesPercentage||0)<0;}).sort(function(a,b){return parseFloat(a.priceChangePercent||a.changesPercentage||0)-parseFloat(b.priceChangePercent||b.changesPercentage||0);});
   if(losers.length < 6) losers = sorted.slice().sort(function(a,b){return parseFloat(a.priceChangePercent||a.changesPercentage||0)-parseFloat(b.priceChangePercent||b.changesPercentage||0);});
   losers = losers.slice(0,18);
 
   function makeCard(t, borderColor){
-    var sym = t.symbol;
-    var base = sym.replace('USDT','').replace('USDC','').replace('BTC','').replace('ETH','');
+    var sym = t.symbol||'';
+    // Remove quote currency from end only
+    var base = sym.replace(/USDT$|USDC$|FDUSD$|BUSD$/,'');
+    if(!base) base = sym; // fallback to full symbol
     var price = parseFloat(t.lastPrice||t.price||0);
     var chg = parseFloat(t.priceChangePercent||t.changesPercentage||0);
     var up = chg >= 0;
@@ -1003,6 +1005,8 @@ function renderCryptoGrids(tickers){
   if(hg) hg.innerHTML=byVol.map(function(t){return makeCard(t,null);}).join('');
   if(gg) gg.innerHTML=gainers.map(function(t){return makeCard(t,null);}).join('');
   if(lg) lg.innerHTML=losers.map(function(t){return makeCard(t,null);}).join('');
+  // Update grids every 30 seconds when live
+  console.log('Crypto grids: hot='+byVol.length+' gainers='+gainers.length+' losers='+losers.length);
 }
 
 function updatePairsList() {
@@ -1300,6 +1304,7 @@ window.addEventListener('DOMContentLoaded',function(){
   if(logobtn){logobtn.addEventListener('click',function(e){e.stopPropagation();showHomeDrop();});document.addEventListener('click',function(e){var d=document.getElementById('home-drop'),lb=document.getElementById('logo-btn');if(d&&lb&&!d.contains(e.target)&&!lb.contains(e.target))d.classList.remove('open');});}
   fetchLiveTicker();fetchAllTickers();fetchLivePairs();updatePairsList();
   setTimeout(function(){renderCryptoGrids([]);},500);
+  setInterval(function(){fetchAllTickers();},30000);
   setTimeout(runForecast,1000);
   });
 </script>
