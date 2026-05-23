@@ -951,13 +951,35 @@ function renderCryptoGrids(tickers){
       {symbol:'INJUSDT',lastPrice:'12',priceChangePercent:'-2.1',quoteVolume:'70000000'},
       {symbol:'ARBUSDT',lastPrice:'0.35',priceChangePercent:'0.9',quoteVolume:'60000000'},
       {symbol:'OPUSDT',lastPrice:'0.7',priceChangePercent:'1.3',quoteVolume:'50000000'},
+      {symbol:'SUIUSDT',lastPrice:'3.1',priceChangePercent:'4.2',quoteVolume:'45000000'},
+      {symbol:'PEPEUSDT',lastPrice:'0.000012',priceChangePercent:'-3.1',quoteVolume:'40000000'},
+      {symbol:'BONKUSDT',lastPrice:'0.000021',priceChangePercent:'-2.8',quoteVolume:'35000000'},
+      {symbol:'WIFUSDT',lastPrice:'1.2',priceChangePercent:'5.1',quoteVolume:'30000000'},
+      {symbol:'JUPUSDT',lastPrice:'0.8',priceChangePercent:'2.3',quoteVolume:'25000000'},
+      {symbol:'TIAUSDT',lastPrice:'2.8',priceChangePercent:'-1.9',quoteVolume:'20000000'},
+      {symbol:'SEIUSDT',lastPrice:'0.22',priceChangePercent:'3.5',quoteVolume:'18000000'},
+      {symbol:'PYTHUSDT',lastPrice:'0.18',priceChangePercent:'-2.5',quoteVolume:'15000000'},
+      {symbol:'STRKUSDT',lastPrice:'0.15',priceChangePercent:'1.8',quoteVolume:'12000000'},
+      {symbol:'ALTUSDT',lastPrice:'0.08',priceChangePercent:'-4.2',quoteVolume:'10000000'},
+      {symbol:'DYMUSDT',lastPrice:'0.35',priceChangePercent:'6.1',quoteVolume:'8000000'},
+      {symbol:'NOTUSDT',lastPrice:'0.005',priceChangePercent:'-5.3',quoteVolume:'7000000'},
+      {symbol:'ENAUSDT',lastPrice:'0.28',priceChangePercent:'3.8',quoteVolume:'6000000'},
     ];
   }
   // Sort by different criteria
-  var sorted = tickers.slice().filter(function(t){return parseFloat(t.lastPrice)>0;});
-  var byVol = sorted.slice().sort(function(a,b){return parseFloat(b.quoteVolume||0)-parseFloat(a.quoteVolume||0);}).slice(0,18);
-  var gainers = sorted.slice().filter(function(t){return parseFloat(t.priceChangePercent)>0;}).sort(function(a,b){return parseFloat(b.priceChangePercent)-parseFloat(a.priceChangePercent);}).slice(0,18);
-  var losers = sorted.slice().filter(function(t){return parseFloat(t.priceChangePercent)<0;}).sort(function(a,b){return parseFloat(a.priceChangePercent)-parseFloat(b.priceChangePercent);}).slice(0,18);
+  var sorted = tickers.slice().filter(function(t){return parseFloat(t.lastPrice||t.price||0)>0;});
+  // Hot coins - by volume
+  var byVol = sorted.slice().sort(function(a,b){return parseFloat(b.quoteVolume||b.volume||0)-parseFloat(a.quoteVolume||a.volume||0);});
+  if(byVol.length < 18) byVol = sorted.slice(); // fallback to all if not enough
+  byVol = byVol.slice(0,18);
+  // Gainers - positive change, fill with best available if not enough
+  var gainers = sorted.slice().filter(function(t){return parseFloat(t.priceChangePercent||t.changesPercentage||0)>0;}).sort(function(a,b){return parseFloat(b.priceChangePercent||b.changesPercentage||0)-parseFloat(a.priceChangePercent||a.changesPercentage||0);});
+  if(gainers.length < 6) gainers = sorted.slice().sort(function(a,b){return parseFloat(b.priceChangePercent||b.changesPercentage||0)-parseFloat(a.priceChangePercent||a.changesPercentage||0);});
+  gainers = gainers.slice(0,18);
+  // Losers - negative change, fill with worst available if not enough
+  var losers = sorted.slice().filter(function(t){return parseFloat(t.priceChangePercent||t.changesPercentage||0)<0;}).sort(function(a,b){return parseFloat(a.priceChangePercent||a.changesPercentage||0)-parseFloat(b.priceChangePercent||b.changesPercentage||0);});
+  if(losers.length < 6) losers = sorted.slice().sort(function(a,b){return parseFloat(a.priceChangePercent||a.changesPercentage||0)-parseFloat(b.priceChangePercent||b.changesPercentage||0);});
+  losers = losers.slice(0,18);
 
   function makeCard(t, borderColor){
     var sym = t.symbol;
