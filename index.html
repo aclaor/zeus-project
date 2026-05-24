@@ -1183,7 +1183,18 @@ function scrollAndLoad(sym){window.scrollTo({top:0,behavior:'smooth'});loadPair(
 function loadPair(sym){var clean=sym.toUpperCase().replace(/[\/\-\s]/g,'');document.getElementById('pair-input').value=clean;document.querySelectorAll('.pair-row').forEach(function(r){r.classList.toggle('active-pair',r.getAttribute('data-sym')===clean);});runForecast();}
 
 // ── LIVE DATA ─────────────────────────────────
-function renderBottomTicker(){var inner=document.getElementById('bottom-bar-inner');if(!inner)return;inner.innerHTML=btData.concat(btData).map(function(d){var up=d.c>=0;return '<div class="bt" onclick="loadPair(\''+d.s.replace('/','')+'\')">'+'<span class="bt-s">'+d.s+'</span> <span class="bt-p">$'+d.p.toLocaleString(undefined,{maximumFractionDigits:4})+'</span> <span class="bt-c '+(up?'':'dn')+'">'+(up?'+':'')+d.c.toFixed(2)+'%</span></div>';}).join('');}
+function renderBottomTicker(){
+  var inner=document.getElementById('bottom-bar-inner');
+  if(!inner) return;
+  var items=btData.filter(function(d){return d.p>0;});
+  if(items.length===0) return;
+  var newHtml=items.concat(items).map(function(d){
+    var up=d.c>=0;
+    var sym=d.s.replace('/','');
+    return '<div class="bt" data-sym="'+sym+'" onclick="loadPair(this.dataset.sym)"><span class="bt-s">'+d.s+'</span> <span class="bt-p">$'+d.p.toLocaleString(undefined,{maximumFractionDigits:d.p>=1?3:6})+'</span> <span class="bt-c '+(up?'':'dn')+'">'+(up?'+':'')+d.c.toFixed(2)+'%</span></div>';
+  }).join('');
+  if(inner.innerHTML !== newHtml) inner.innerHTML = newHtml;
+}
 async function fetchLiveTicker(){
   try{
     var r=await fetch(API_BASE+'/ticker/top');
