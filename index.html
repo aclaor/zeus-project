@@ -1561,6 +1561,46 @@ function updateVisitorCount(){
 }
 setInterval(updateVisitorCount,15000);
 
+
+// ── SOCIAL PROOF NOTIFICATIONS ──────────────────────────
+var _spNames = ['James','Sarah','Michael','Emma','David','Lisa','John','Anna','Chris','Maria',
+  'Kevin','Jessica','Ryan','Ashley','Daniel','Nicole','Alex','Megan','Tyler','Rachel',
+  'Carlos','Priya','Ahmed','Yuki','Marcus','Sofia','Liam','Chloe','Nathan','Zoe'];
+var _spCities = ['New York','London','Singapore','Toronto','Sydney','Dubai','Tokyo','Manila',
+  'Lagos','Mumbai','Berlin','Paris','Seoul','Bangkok','Jakarta','Kuala Lumpur',
+  'São Paulo','Mexico City','Chicago','Los Angeles','Hong Kong','Amsterdam'];
+var _spTimes = ['just now','2 min ago','5 min ago','8 min ago','12 min ago','15 min ago'];
+
+function showSocialProof(){
+  if(currentUser) return; // Don't show if already logged in
+  var name = _spNames[Math.floor(Math.random()*_spNames.length)];
+  var city = _spCities[Math.floor(Math.random()*_spCities.length)];
+  var time = _spTimes[Math.floor(Math.random()*_spTimes.length)];
+
+  var el = document.getElementById('social-proof-popup');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'social-proof-popup';
+    el.style.cssText = 'position:fixed;bottom:60px;left:16px;z-index:1500;background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,0.4);transform:translateX(-120%);transition:transform 0.4s ease;max-width:280px;cursor:pointer;';
+    el.onclick = function(){ showModal('signup'); };
+    document.body.appendChild(el);
+  }
+
+  el.innerHTML = '<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#0ecb81,#0af);display:flex;align-items:center;justify-content:center;font-family:IBM Plex Mono,monospace;font-size:14px;font-weight:700;color:#000;flex-shrink:0;">'+name[0]+'</div>'
+    +'<div><div style="font-family:IBM Plex Mono,monospace;font-size:11px;color:#d0e0f0;font-weight:700;">'+name+' from '+city+'</div>'
+    +'<div style="font-family:IBM Plex Mono,monospace;font-size:10px;color:#0ecb81;">✅ just started free trial</div>'
+    +'<div style="font-family:IBM Plex Mono,monospace;font-size:9px;color:#344a66;">'+time+'</div></div>';
+
+  // Slide in
+  setTimeout(function(){ el.style.transform='translateX(0)'; }, 100);
+  // Slide out after 5 seconds
+  setTimeout(function(){ el.style.transform='translateX(-120%)'; }, 5000);
+}
+
+// Show first one after 15 seconds, then every 45 seconds
+setTimeout(showSocialProof, 15000);
+setInterval(showSocialProof, 45000);
+
 // ── 30-SECOND SIGNUP POPUP ─────────────────────────────
 function closeSignupPopup(){
   var p=document.getElementById('signup-popup');
