@@ -470,10 +470,11 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
         <span class="fc-pill" id="fc-pill-2" style="color:var(--accent);">—</span>
       </div>
       <!-- Persistent signup banner on chart -->
-      <div id="chart-signup-banner" style="position:absolute;bottom:60px;left:50%;transform:translateX(-50%);z-index:6;display:none;background:rgba(11,15,26,0.92);border:1px solid rgba(240,185,11,0.4);border-radius:8px;padding:10px 20px;backdrop-filter:blur(4px);white-space:nowrap;text-align:center;">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;">⚡ Get unlimited forecasts free for 15 days — </span>
-        <button onclick="showModal('signup')" style="background:linear-gradient(135deg,#f0b90b,#ffd84d);border:none;border-radius:4px;padding:4px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;color:#000;cursor:pointer;">Sign Up Free</button>
-        <button onclick="document.getElementById('chart-signup-banner').style.display='none'" style="background:transparent;border:none;color:#344a66;font-size:14px;cursor:pointer;margin-left:6px;vertical-align:middle;">×</button>
+      <div id="chart-signup-banner" style="position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:6;display:none;background:rgba(6,8,16,0.95);border:1px solid rgba(240,185,11,0.6);border-radius:10px;padding:16px 28px;backdrop-filter:blur(8px);white-space:nowrap;text-align:center;box-shadow:0 0 30px rgba(240,185,11,0.15);">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f0b90b;margin-bottom:6px;letter-spacing:1px;">⚡ UNLOCK UNLIMITED AI FORECASTS</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;margin-bottom:12px;">Free 15-day trial · No credit card · Cancel anytime</div>
+        <button onclick="showModal('signup')" style="background:linear-gradient(135deg,#f0b90b,#ffd84d);border:none;border-radius:6px;padding:10px 28px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#000;cursor:pointer;letter-spacing:0.5px;">START FREE TRIAL ⚡</button>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#344a66;margin-top:8px;">Join 500+ traders already using ZEUS-AI</div>
       </div>
     </div>
     <div class="trades-panel">
