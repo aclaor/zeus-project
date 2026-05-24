@@ -1183,23 +1183,40 @@ function scrollAndLoad(sym){window.scrollTo({top:0,behavior:'smooth'});loadPair(
 function loadPair(sym){var clean=sym.toUpperCase().replace(/[\/\-\s]/g,'');document.getElementById('pair-input').value=clean;document.querySelectorAll('.pair-row').forEach(function(r){r.classList.toggle('active-pair',r.getAttribute('data-sym')===clean);});runForecast();}
 
 // ── LIVE DATA ─────────────────────────────────
-var _tickerRendered = false;
+var _tickerBuilt = false;
 function renderBottomTicker(){
-  var inner=document.getElementById('bottom-bar-inner');
+  var inner = document.getElementById('bottom-bar-inner');
   if(!inner) return;
-  var items=btData.filter(function(d){return d.p>0;});
-  if(items.length===0) return;
-  var newHtml=items.concat(items).map(function(d){
-    var up=d.c>=0;
-    var sym=d.s.replace('/','');
-    return '<div class="bt" data-sym="'+sym+'" onclick="loadPair(this.dataset.sym)"><span class="bt-s">'+d.s+'</span> <span class="bt-p">$'+d.p.toLocaleString(undefined,{maximumFractionDigits:d.p>=1?3:6})+'</span> <span class="bt-c '+(up?'':'dn')+'">'+(up?'+':'')+d.c.toFixed(2)+'%</span></div>';
-  }).join('');
-  if(inner.innerHTML !== newHtml){
-    inner.innerHTML = newHtml;
-    if(!_tickerRendered){
-      _tickerRendered = true;
-      inner.style.animation = 'btscroll 90s linear infinite';
-    }
+  var items = btData.filter(function(d){ return d.p > 0; });
+  if(items.length === 0) return;
+
+  if(!_tickerBuilt){
+    // Build HTML once and start animation
+    _tickerBuilt = true;
+    inner.innerHTML = items.concat(items).map(function(d){
+      var up = d.c >= 0;
+      var sym = d.s.replace('/','');
+      return '<div class="bt" data-sym="'+sym+'" onclick="loadPair(this.dataset.sym)">'
+        +'<span class="bt-s">'+d.s+'</span> '
+        +'<span class="bt-p" id="btp-'+sym.toLowerCase()+'">$'+d.p.toLocaleString(undefined,{maximumFractionDigits:d.p>=1?3:6})+'</span> '
+        +'<span class="bt-c '+(up?'':'dn')+'" id="btc-'+sym.toLowerCase()+'">'+(up?'+':'')+d.c.toFixed(2)+'%</span>'
+        +'</div>';
+    }).join('');
+    // Start animation only once
+    inner.style.animation = 'btscroll 90s linear infinite';
+  } else {
+    // Just update prices without rebuilding HTML
+    items.forEach(function(d){
+      var sym = d.s.replace('/','').toLowerCase();
+      var pe = document.getElementById('btp-'+sym);
+      var ce = document.getElementById('btc-'+sym);
+      if(pe) pe.textContent = '$'+d.p.toLocaleString(undefined,{maximumFractionDigits:d.p>=1?3:6});
+      if(ce){
+        var up = d.c >= 0;
+        ce.textContent = (up?'+':'')+d.c.toFixed(2)+'%';
+        ce.className = 'bt-c'+(up?'':' dn');
+      }
+    });
   }
 }
 async function fetchLiveTicker(){
