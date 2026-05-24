@@ -329,7 +329,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:4px;background:transparent;border:none;}
 .hamburger span{width:20px;height:2px;background:#607a99;border-radius:1px;}
 .bottom-bar{position:fixed;bottom:0;left:0;right:0;height:28px;background:#0b0f1a;border-top:1px solid #1e2a40;z-index:400;overflow:hidden;display:flex;align-items:center;}
-.bottom-bar-inner{display:flex;white-space:nowrap;animation:btscroll 90s linear infinite;}
+.bottom-bar-inner{display:flex;white-space:nowrap;animation:none;}
 .bottom-bar-inner:hover{animation-play-state:paused;}
 @keyframes btscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .bt{display:inline-flex;gap:6px;padding:0 16px;border-right:1px solid #1e2a40;font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;white-space:nowrap;}
@@ -1183,6 +1183,7 @@ function scrollAndLoad(sym){window.scrollTo({top:0,behavior:'smooth'});loadPair(
 function loadPair(sym){var clean=sym.toUpperCase().replace(/[\/\-\s]/g,'');document.getElementById('pair-input').value=clean;document.querySelectorAll('.pair-row').forEach(function(r){r.classList.toggle('active-pair',r.getAttribute('data-sym')===clean);});runForecast();}
 
 // ── LIVE DATA ─────────────────────────────────
+var _tickerRendered = false;
 function renderBottomTicker(){
   var inner=document.getElementById('bottom-bar-inner');
   if(!inner) return;
@@ -1193,7 +1194,13 @@ function renderBottomTicker(){
     var sym=d.s.replace('/','');
     return '<div class="bt" data-sym="'+sym+'" onclick="loadPair(this.dataset.sym)"><span class="bt-s">'+d.s+'</span> <span class="bt-p">$'+d.p.toLocaleString(undefined,{maximumFractionDigits:d.p>=1?3:6})+'</span> <span class="bt-c '+(up?'':'dn')+'">'+(up?'+':'')+d.c.toFixed(2)+'%</span></div>';
   }).join('');
-  if(inner.innerHTML !== newHtml) inner.innerHTML = newHtml;
+  if(inner.innerHTML !== newHtml){
+    inner.innerHTML = newHtml;
+    if(!_tickerRendered){
+      _tickerRendered = true;
+      inner.style.animation = 'btscroll 90s linear infinite';
+    }
+  }
 }
 async function fetchLiveTicker(){
   try{
