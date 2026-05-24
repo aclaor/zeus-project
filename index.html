@@ -559,7 +559,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
       <div class="plan" id="plan-pro" onclick="selectPlan(this)">
         <div class="plan-badge hot">POPULAR</div>
         <div class="plan-name">Pro</div>
-        <div class="plan-price">$99.99<small style="font-size:11px;color:var(--text2);font-weight:400;">/mo</small></div>
+        <div class="plan-price">$99<small style="font-size:11px;color:var(--text2);font-weight:400;">/mo</small></div>
         <div class="plan-feat">Unlimited forecasts<br>All trading pairs<br>Full ZEUS-AI suite<br>Priority support</div>
       </div>
     </div>
@@ -632,7 +632,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
       <div class="plan-card featured">
         <span class="plan-badge2 hot">⚡ POPULAR</span>
         <div class="plan-name2">Pro</div>
-        <div class="plan-price2">$99.99<small>/mo</small></div>
+        <div class="plan-price2">$99<small>/mo</small></div>
         <ul class="plan-features"><li>Unlimited forecasts</li><li>Any trading pair</li><li>Full ZEUS-AI suite</li><li>Priority support</li></ul>
         <button class="plan-btn pro-btn" onclick="startPayPal()">UPGRADE TO PRO ⚡</button>
         <div id="paypal-btn-container"></div>
@@ -1237,7 +1237,7 @@ async function loadHDCoins(){
 function showGuestLimit(){
   var o=document.getElementById('guest-limit-overlay');
   if(!o){o=document.createElement('div');o.id='guest-limit-overlay';o.style.cssText='position:fixed;inset:0;background:rgba(6,8,16,0.92);z-index:700;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);';
-  o.innerHTML='<div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:12px;padding:32px;max-width:400px;width:90%;text-align:center;font-family:Share Tech Mono,monospace;"><div style="font-size:32px;margin-bottom:12px;">⚡</div><div style="font-size:18px;font-weight:700;color:#0ff;margin-bottom:8px;">FREE TRIAL </div><div style="font-size:12px;color:#607a99;margin-bottom:20px;line-height:1.7;">Sign up for <span style="color:#0ecb81;font-weight:700;">15-day free trial</span> or <span style="color:#f0b90b;font-weight:700;">Pro unlimited</span>.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;"><div style="background:#131926;border:1px solid #1e2a40;border-radius:8px;padding:16px;"><div style="color:#0ecb81;font-weight:700;margin-bottom:4px;">FREE TRIAL</div><button onclick="closeGuestLimit();showModal(\'signup\')" style="margin-top:8px;width:100%;padding:8px;background:#0ecb8122;border:1px solid #0ecb81;border-radius:4px;color:#0ecb81;font-size:11px;cursor:pointer;font-weight:700;">Start Free</button></div><div style="background:#131926;border:1px solid #f0b90b44;border-radius:8px;padding:16px;"><div style="color:#f0b90b;font-weight:700;margin-bottom:4px;">PRO $99.99/mo</div><button onclick="closeGuestLimit();selectedPlan=\'pro\';showModal(\'signup\')" style="margin-top:8px;width:100%;padding:8px;background:linear-gradient(135deg,#f0b90b,#f0d060);border:none;border-radius:4px;color:#000;font-size:11px;cursor:pointer;font-weight:700;">Go Pro ⚡</button></div></div><button onclick="closeGuestLimit()" style="background:transparent;border:none;color:#344a66;font-size:10px;cursor:pointer;">Maybe later</button></div>';
+  o.innerHTML='<div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:12px;padding:32px;max-width:400px;width:90%;text-align:center;font-family:Share Tech Mono,monospace;"><div style="font-size:32px;margin-bottom:12px;">⚡</div><div style="font-size:18px;font-weight:700;color:#0ff;margin-bottom:8px;">FREE TRIAL </div><div style="font-size:12px;color:#607a99;margin-bottom:20px;line-height:1.7;">Sign up for <span style="color:#0ecb81;font-weight:700;">15-day free trial</span> or <span style="color:#f0b90b;font-weight:700;">Pro unlimited</span>.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;"><div style="background:#131926;border:1px solid #1e2a40;border-radius:8px;padding:16px;"><div style="color:#0ecb81;font-weight:700;margin-bottom:4px;">FREE TRIAL</div><button onclick="closeGuestLimit();showModal(\'signup\')" style="margin-top:8px;width:100%;padding:8px;background:#0ecb8122;border:1px solid #0ecb81;border-radius:4px;color:#0ecb81;font-size:11px;cursor:pointer;font-weight:700;">Start Free</button></div><div style="background:#131926;border:1px solid #f0b90b44;border-radius:8px;padding:16px;"><div style="color:#f0b90b;font-weight:700;margin-bottom:4px;">PRO $99/mo</div><button onclick="closeGuestLimit();selectedPlan=\'pro\';showModal(\'signup\')" style="margin-top:8px;width:100%;padding:8px;background:linear-gradient(135deg,#f0b90b,#f0d060);border:none;border-radius:4px;color:#000;font-size:11px;cursor:pointer;font-weight:700;">Go Pro ⚡</button></div></div><button onclick="closeGuestLimit()" style="background:transparent;border:none;color:#344a66;font-size:10px;cursor:pointer;">Maybe later</button></div>';
   document.body.appendChild(o);}else{o.style.display='flex';}
 }
 function closeGuestLimit(){var o=document.getElementById('guest-limit-overlay');if(o)o.style.display='none';}
