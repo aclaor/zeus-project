@@ -964,7 +964,12 @@ async function handleForgotPassword(){
   }
   function showPricing(){var el=document.getElementById('pricing-modal');if(el)el.classList.remove('hidden');}
 function closePricing(){var el=document.getElementById('pricing-modal');if(el)el.classList.add('hidden');}
-function showMarkets(){var el=document.getElementById('markets-modal');if(el)el.classList.remove('hidden');fetchLiveMarkets();marketsRefreshTimer=setInterval(fetchLiveMarkets,30000);}
+function showMarkets(){
+  var el=document.getElementById('markets-modal');
+  if(el)el.classList.remove('hidden');
+  fetchLiveMarkets();
+  marketsRefreshTimer=setInterval(fetchLiveMarkets,30000);
+}
 function closeMarkets(){var el=document.getElementById('markets-modal');if(el)el.classList.add('hidden');if(marketsRefreshTimer){clearInterval(marketsRefreshTimer);marketsRefreshTimer=null;}}
 function showTutorial(){var el=document.getElementById('tutorial-modal');if(el)el.classList.remove('hidden');}
 function showAbout(){var el=document.getElementById('about-modal');if(el)el.classList.remove('hidden');}
@@ -1321,11 +1326,19 @@ async function fetchLiveMarkets(){
     }).join('');
   }
 
-  function applyRows(hot, gainers, losers){
+  function applyRows(tickers){
+    var usdt=tickers.filter(function(t){
+      return t.symbol.endsWith(currentMarketQuote)
+        &&!t.symbol.includes('DOWN')&&!t.symbol.includes('UP')
+        &&parseFloat(t.lastPrice)>0;
+    });
+    var byVol=usdt.slice(0,10);
+    var gainers=usdt.slice().sort(function(a,b){return parseFloat(b.priceChangePercent)-parseFloat(a.priceChangePercent);}).slice(0,10);
+    var losers=usdt.slice().sort(function(a,b){return parseFloat(a.priceChangePercent)-parseFloat(b.priceChangePercent);}).slice(0,10);
     var h=document.getElementById('hot-coins');
     var g=document.getElementById('top-gainers');
     var l=document.getElementById('top-losers');
-    if(h) h.innerHTML=makeRows(hot);
+    if(h) h.innerHTML=makeRows(byVol);
     if(g) g.innerHTML=makeRows(gainers);
     if(l) l.innerHTML=makeRows(losers);
     document.querySelectorAll('.market-row').forEach(function(row){
@@ -1339,34 +1352,29 @@ async function fetchLiveMarkets(){
     });
   }
 
-  // Try Railway /markets endpoint first
+  // Use allTickerData already loaded on the page
+  var keys=Object.keys(allTickerData);
+  if(keys.length>0){
+    var tickers=keys.map(function(sym){
+      return {symbol:sym,lastPrice:String(allTickerData[sym].p),priceChangePercent:String(allTickerData[sym].c)};
+    });
+    applyRows(tickers);
+    return;
+  }
+
+  // If allTickerData empty, fetch fresh from Railway
   try{
-    var res=await fetch(API_BASE+'/markets');
-    if(!res.ok) throw new Error('markets failed');
+    var res=await fetch(API_BASE+'/ticker/top');
+    if(!res.ok) throw new Error('failed');
     var data=await res.json();
-    if((data.hot&&data.hot.length)||(data.gainers&&data.gainers.length)){
-      applyRows(data.hot||[], data.gainers||[], data.losers||[]);
-      return;
-    }
-  }catch(e){ console.log('Markets endpoint failed, trying ticker:', e); }
-
-  // Fallback: use allTickerData we already have
-  try{
-    var tickers = Object.keys(allTickerData)
-      .filter(function(s){ return s.endsWith(currentMarketQuote) && allTickerData[s].p > 0; })
-      .map(function(s){ return {symbol:s, lastPrice:String(allTickerData[s].p), priceChangePercent:String(allTickerData[s].c)}; });
-
-    if(!tickers.length) throw new Error('no ticker data');
-
-    var byVol = tickers.slice(0,10);
-    var gainers = tickers.slice().sort(function(a,b){ return parseFloat(b.priceChangePercent)-parseFloat(a.priceChangePercent); }).slice(0,10);
-    var losers = tickers.slice().sort(function(a,b){ return parseFloat(a.priceChangePercent)-parseFloat(b.priceChangePercent); }).slice(0,10);
-    applyRows(byVol, gainers, losers);
-  }catch(e2){
-    console.error('Markets fallback failed:', e2);
+    // Store in allTickerData
+    data.forEach(function(t){allTickerData[t.symbol]={p:parseFloat(t.lastPrice||0),c:parseFloat(t.priceChangePercent||0)};});
+    applyRows(data.map(function(t){return {symbol:t.symbol,lastPrice:t.lastPrice,priceChangePercent:t.priceChangePercent};}));
+  }catch(e){
+    console.error('Markets failed:',e);
     ['hot-coins','top-gainers','top-losers'].forEach(function(id){
       var el=document.getElementById(id);
-      if(el)el.innerHTML='<tr><td colspan="3" style="text-align:center;padding:20px;color:#f6465d;font-size:11px;">Unable to load market data.</td></tr>';
+      if(el)el.innerHTML='<tr><td colspan="3" style="text-align:center;padding:20px;color:#f6465d;font-size:11px;">Unable to load. Please wait a moment and try again.</td></tr>';
     });
   }
 }
