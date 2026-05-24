@@ -469,6 +469,12 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
         <span class="fc-pill" id="fc-pill-1" style="color:var(--green);">—</span>
         <span class="fc-pill" id="fc-pill-2" style="color:var(--accent);">—</span>
       </div>
+      <!-- Persistent signup banner on chart -->
+      <div id="chart-signup-banner" style="position:absolute;bottom:60px;left:50%;transform:translateX(-50%);z-index:6;display:none;background:rgba(11,15,26,0.92);border:1px solid rgba(240,185,11,0.4);border-radius:8px;padding:10px 20px;backdrop-filter:blur(4px);white-space:nowrap;text-align:center;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;">⚡ Get unlimited forecasts free for 15 days — </span>
+        <button onclick="showModal('signup')" style="background:linear-gradient(135deg,#f0b90b,#ffd84d);border:none;border-radius:4px;padding:4px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;color:#000;cursor:pointer;">Sign Up Free</button>
+        <button onclick="document.getElementById('chart-signup-banner').style.display='none'" style="background:transparent;border:none;color:#344a66;font-size:14px;cursor:pointer;margin-left:6px;vertical-align:middle;">×</button>
+      </div>
     </div>
     <div class="trades-panel">
       <div class="trades-header">
@@ -906,6 +912,8 @@ async function handleAuth(e) {
 function updateAuthUI(user) {
   var btns=document.getElementById('auth-buttons');
   if (!btns) return;
+  var banner=document.getElementById('chart-signup-banner');
+  if(banner) banner.style.display = user ? 'none' : 'block';
   if (user) {
     var plan=(user.user_metadata&&user.user_metadata.plan)||'free',name=user.email.split('@')[0],isPro=plan==='pro';
     var badge='<span style="background:rgba(240,185,11,0.15);color:#f0b90b;font-size:9px;padding:2px 8px;border-radius:3px;border:1px solid rgba(240,185,11,0.3);'+(isPro?'':'cursor:pointer;')+'" '+(isPro?'':'onclick="showPricing()"')+'>'+plan.toUpperCase()+(!isPro?' ⚡':'')+'</span>';
@@ -1389,6 +1397,11 @@ function renderAll(data) {
   if(el('hdr-chg')){el('hdr-chg').textContent=(isUp?'+':'')+pct.toFixed(2)+'%';el('hdr-chg').className='pair-change'+(isUp?'':' dn');}
   if(el('hdr-chg2')){el('hdr-chg2').textContent=(isUp?'+':'')+pct.toFixed(2)+'%';el('hdr-chg2').style.color=isUp?'var(--green)':'var(--red)';}
   renderChart(data);renderOrderBook(data.last_close);renderTrades(data.last_close);
+  // Show persistent signup banner if not logged in
+  if(!currentUser){
+    var banner=document.getElementById('chart-signup-banner');
+    if(banner) banner.style.display='block';
+  }
   document.getElementById('pair-input').value=sym;
   for(var qi2=0;qi2<quotes.length;qi2++){if(sym.endsWith(quotes[qi2])){if(currentQuote!==quotes[qi2]){currentQuote=quotes[qi2];document.querySelectorAll('.qtab,.qtab2').forEach(function(t){t.classList.toggle('active',t.textContent.trim()===currentQuote);});updatePairsList();}break;}}
 }
