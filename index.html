@@ -1435,7 +1435,7 @@ async function runForecast(){
     var res=await fetch(API_BASE+'/forecast',{method:'POST',headers:getAuthHeaders(),body:JSON.stringify({symbol:symbol,interval:currentInterval}),signal:controller.signal});
     clearTimeout(timeout);
     if(!res.ok){var e2=await res.text().catch(function(){return'';});var ej={};try{ej=JSON.parse(e2);}catch(x){}throw new Error(ej.detail||('Error '+res.status));}
-    var data=await res.json();renderAll(data);showOverlay(false);
+    var data=await res.json();renderAll(data);showOverlay(false);showToast('✅ Forecast complete! Scroll down for AI signal.','success');
   }catch(e){
     var msg=e.message||'';
     if(msg.includes('404')||msg.includes('not found')||msg.includes('insufficient'))showToast('⚠️ '+symbol+' has limited data. Try 1H or 4H interval, or use a major pair.','error');
