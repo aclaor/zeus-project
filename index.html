@@ -1065,7 +1065,7 @@ function renderCryptoGridsFromMarkets(data){
     var chg=parseFloat(t.priceChangePercent||0);
     var up=chg>=0;
     var priceStr=price>=1000?'$'+price.toLocaleString(undefined,{maximumFractionDigits:2}):price>=1?'$'+price.toFixed(3):'$'+price.toFixed(6);
-    return '<div class="crypto-card" style="border-color:'+(up?'rgba(14,203,129,0.3)':'rgba(246,70,93,0.3)')+';background:'+(up?'rgba(14,203,129,0.06)':'rgba(246,70,93,0.06)')+'" data-sym="'+sym+'" onclick="loadPair(this.dataset.sym)">'
+    return '<div class="crypto-card" style="border-color:'+(up?'rgba(14,203,129,0.3)':'rgba(246,70,93,0.3)')+';background:'+(up?'rgba(14,203,129,0.06)':'rgba(246,70,93,0.06)')+'" data-sym="'+sym+'" onclick="scrollAndLoad(this.dataset.sym)">'
       +'<div class="cc-sym">'+base+'</div>'
       +'<div class="cc-price">'+priceStr+'</div>'
       +'<div class="cc-chg" style="color:'+(up?'#0ecb81':'#f6465d')+'">'+(up?'+':'')+chg.toFixed(2)+'%</div>'
@@ -1140,7 +1140,7 @@ function renderCryptoGrids(tickers){
     var border = borderColor||(up?'rgba(14,203,129,0.3)':'rgba(246,70,93,0.3)');
     var bg = borderColor?'rgba('+borderColor.replace('rgba(','').split(',').slice(0,3).join(',')+',0.06)':( up?'rgba(14,203,129,0.08)':'rgba(246,70,93,0.08)');
     var priceStr = price>=1000?'$'+price.toLocaleString(undefined,{maximumFractionDigits:2}):price>=1?'$'+price.toFixed(3):'$'+price.toFixed(6);
-    return '<div class="crypto-card" style="border-color:'+border+';background:'+(up?'rgba(14,203,129,0.06)':'rgba(246,70,93,0.06)')+'" data-sym="'+sym+'" onclick="loadPair(this.dataset.sym)">'
+    return '<div class="crypto-card" style="border-color:'+border+';background:'+(up?'rgba(14,203,129,0.06)':'rgba(246,70,93,0.06)')+'" data-sym="'+sym+'" onclick="scrollAndLoad(this.dataset.sym)">'
       +'<div class="cc-sym">'+base+'</div>'
       +'<div class="cc-price">'+priceStr+'</div>'
       +'<div class="cc-chg" style="color:'+(up?'#0ecb81':'#f6465d')+'">'+(up?'+':'')+chg.toFixed(2)+'%</div>'
