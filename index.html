@@ -1294,40 +1294,63 @@ function switchMarketQuote(el, quote) {
   fetchLiveMarkets();
 }
 async function fetchLiveMarkets(){
-  ['hot-coins','top-gainers','top-losers'].forEach(function(id){var el=document.getElementById(id);if(el)el.innerHTML='<tr><td colspan="3" style="text-align:center;padding:20px;color:#607a99;font-size:11px;">Loading...</td></tr>';});
+  ['hot-coins','top-gainers','top-losers'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el)el.innerHTML='<tr><td colspan="3" style="text-align:center;padding:20px;color:#607a99;font-size:11px;">Loading...</td></tr>';
+  });
   try{
-    var res=await fetch('https://api.binance.com/api/v3/ticker/24hr');if(!res.ok)throw new Error('err');
-    var tickers=await res.json();
-    // Filter for liquid, established pairs only (matching Binance top markets)
-    var minVolume = 1000000; // $1M minimum 24h volume
-    var allUsdt=tickers.filter(function(t){
-      return t.symbol.endsWith(currentMarketQuote)
-        &&!t.symbol.includes('DOWN')&&!t.symbol.includes('UP')
-        &&!t.symbol.includes('BEAR')&&!t.symbol.includes('BULL')
-        &&!t.symbol.includes('1000')&&!t.symbol.includes('TUSD')
-        &&parseFloat(t.lastPrice)>0
-        &&parseFloat(t.quoteVolume)>minVolume
-        &&parseInt(t.count)>1000;
-    });
-    var byVol=allUsdt.slice().sort(function(a,b){return parseFloat(b.quoteVolume)-parseFloat(a.quoteVolume);}).slice(0,10);
-    var gainers=allUsdt.slice().sort(function(a,b){return parseFloat(b.priceChangePercent)-parseFloat(a.priceChangePercent);}).slice(0,10);
-    var losers=allUsdt.slice().sort(function(a,b){return parseFloat(a.priceChangePercent)-parseFloat(b.priceChangePercent);}).slice(0,10);
+    // Use Railway backend /markets endpoint (avoids Binance block in PH)
+    var res = await fetch(API_BASE+'/markets');
+    if(!res.ok) throw new Error('markets failed');
+    var data = await res.json();
+
     var cC={BTC:'#f7931a',ETH:'#627eea',SOL:'#9945ff',BNB:'#f3ba2f',XRP:'#346aa9',DOGE:'#c2a633',ADA:'#0033ad',AVAX:'#e84142',LINK:'#2a5ada',DOT:'#e6007a'};
     var cN={BTC:'Bitcoin',ETH:'Ethereum',SOL:'Solana',BNB:'BNB',XRP:'XRP',DOGE:'Dogecoin',ADA:'Cardano',AVAX:'Avalanche',LINK:'Chainlink',DOT:'Polkadot'};
-    function makeRows(list){return list.map(function(t,i){var b=t.symbol.replace('USDT',''),chg=parseFloat(t.priceChangePercent),price2=parseFloat(t.lastPrice),up=chg>=0,color=cC[b]||'#607a99',ps=price2>=1000?'$'+price2.toLocaleString(undefined,{maximumFractionDigits:2}):price2>=1?'$'+price2.toFixed(4):'$'+price2.toFixed(6);return'<tr class="market-row" data-sym="'+b+'USDT"><td><div class="coin-cell"><span class="coin-rank">'+(i+1)+'</span><div class="coin-icon" style="background:'+color+'20;color:'+color+'">'+b[0]+'</div><div><div class="coin-name">'+b+'</div><div class="coin-sym">'+(cN[b]||b)+'</div></div></div></td><td>'+ps+'</td><td style="color:'+(up?'#0ecb81':'#f6465d')+'">'+(up?'+':'')+chg.toFixed(2)+'%</td></tr>';}).join('');}
-    var h=document.getElementById('hot-coins');if(h)h.innerHTML=makeRows(byVol);
-    var g=document.getElementById('top-gainers');if(g)g.innerHTML=makeRows(gainers);
-    var l=document.getElementById('top-losers');if(l)l.innerHTML=makeRows(losers);
-    document.querySelectorAll('.market-row').forEach(function(row){row.addEventListener('click',function(){
-      closeMarkets();
-      var sym=this.getAttribute('data-sym');
-      // Switch to 1H for market clicks (more reliable)
-      currentInterval='1h';
-      document.querySelectorAll('.itab').forEach(function(t){t.classList.toggle('active',t.textContent.trim()==='1H');});
-      loadPair(sym);
-    });});
-  }catch(e){console.error(e);}
+
+    function makeRows(list){
+      return list.map(function(t,i){
+        var sym=t.symbol||'';
+        var b=sym.replace(/USDT$|USDC$|BUSD$|FDUSD$/,'');
+        var chg=parseFloat(t.priceChangePercent||0);
+        var price=parseFloat(t.lastPrice||0);
+        var up=chg>=0;
+        var color=cC[b]||'#607a99';
+        var ps=price>=1000?'$'+price.toLocaleString(undefined,{maximumFractionDigits:2}):price>=1?'$'+price.toFixed(4):'$'+price.toFixed(6);
+        return '<tr class="market-row" data-sym="'+sym+'"><td>'
+          +'<div class="coin-cell"><span class="coin-rank">'+(i+1)+'</span>'
+          +'<div class="coin-icon" style="background:'+color+'20;color:'+color+'">'+b[0]+'</div>'
+          +'<div><div class="coin-name">'+b+'</div><div class="coin-sym">'+(cN[b]||b)+'</div></div>'
+          +'</div></td>'
+          +'<td>'+ps+'</td>'
+          +'<td style="color:'+(up?'#0ecb81':'#f6465d')+'">'+(up?'+':'')+chg.toFixed(2)+'%</td></tr>';
+      }).join('');
+    }
+
+    var h=document.getElementById('hot-coins');
+    var g=document.getElementById('top-gainers');
+    var l=document.getElementById('top-losers');
+    if(h) h.innerHTML=makeRows(data.hot||[]);
+    if(g) g.innerHTML=makeRows(data.gainers||[]);
+    if(l) l.innerHTML=makeRows(data.losers||[]);
+
+    document.querySelectorAll('.market-row').forEach(function(row){
+      row.addEventListener('click',function(){
+        closeMarkets();
+        var sym=this.getAttribute('data-sym');
+        currentInterval='1h';
+        document.querySelectorAll('.itab').forEach(function(t){t.classList.toggle('active',t.textContent.trim()==='1H');});
+        loadPair(sym);
+      });
+    });
+  }catch(e){
+    console.error('Markets error:',e);
+    ['hot-coins','top-gainers','top-losers'].forEach(function(id){
+      var el=document.getElementById(id);
+      if(el)el.innerHTML='<tr><td colspan="3" style="text-align:center;padding:20px;color:#f6465d;font-size:11px;">Failed to load. Please try again.</td></tr>';
+    });
+  }
 }
+
 async function loadHDCoins(){
   var list=document.getElementById('hd-list');if(!list)return;
   list.innerHTML='<div style="padding:12px;font-family:monospace;font-size:10px;color:#344a66;">Loading...</div>';
