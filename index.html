@@ -544,7 +544,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 </div>
 
 <!-- FAQ SECTION -->
-<div id="faq-section" style="background:var(--bg);padding:24px 20px 40px;display:none;" class="faq-outer">
+<div id="faq-section" style="background:var(--bg);padding:24px 20px 40px;" class="faq-outer">
   <div style="max-width:800px;margin:0 auto;">
     <div style="font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:#0ff;margin-bottom:24px;text-align:center;letter-spacing:2px;">❓ FREQUENTLY ASKED QUESTIONS</div>
 
@@ -1176,6 +1176,7 @@ function updatePairsList() {
   }).join('');
   listEl.querySelectorAll('.pair-row').forEach(function(row){row.addEventListener('click',function(){document.getElementById('pair-input').value=this.getAttribute('data-sym');listEl.querySelectorAll('.pair-row').forEach(function(r){r.classList.remove('active-pair');});this.classList.add('active-pair');runForecast();});});
 }
+function scrollAndLoad(sym){window.scrollTo({top:0,behavior:'smooth'});loadPair(sym);}
 function loadPair(sym){var clean=sym.toUpperCase().replace(/[\/\-\s]/g,'');document.getElementById('pair-input').value=clean;document.querySelectorAll('.pair-row').forEach(function(r){r.classList.toggle('active-pair',r.getAttribute('data-sym')===clean);});runForecast();}
 
 // ── LIVE DATA ─────────────────────────────────
