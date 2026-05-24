@@ -1298,41 +1298,36 @@ async function fetchLiveMarkets(){
     var el=document.getElementById(id);
     if(el)el.innerHTML='<tr><td colspan="3" style="text-align:center;padding:20px;color:#607a99;font-size:11px;">Loading...</td></tr>';
   });
-  try{
-    // Use Railway backend /markets endpoint (avoids Binance block in PH)
-    var res = await fetch(API_BASE+'/markets');
-    if(!res.ok) throw new Error('markets failed');
-    var data = await res.json();
 
-    var cC={BTC:'#f7931a',ETH:'#627eea',SOL:'#9945ff',BNB:'#f3ba2f',XRP:'#346aa9',DOGE:'#c2a633',ADA:'#0033ad',AVAX:'#e84142',LINK:'#2a5ada',DOT:'#e6007a'};
-    var cN={BTC:'Bitcoin',ETH:'Ethereum',SOL:'Solana',BNB:'BNB',XRP:'XRP',DOGE:'Dogecoin',ADA:'Cardano',AVAX:'Avalanche',LINK:'Chainlink',DOT:'Polkadot'};
+  var cC={BTC:'#f7931a',ETH:'#627eea',SOL:'#9945ff',BNB:'#f3ba2f',XRP:'#346aa9',DOGE:'#c2a633',ADA:'#0033ad',AVAX:'#e84142',LINK:'#2a5ada',DOT:'#e6007a'};
+  var cN={BTC:'Bitcoin',ETH:'Ethereum',SOL:'Solana',BNB:'BNB',XRP:'XRP',DOGE:'Dogecoin',ADA:'Cardano',AVAX:'Avalanche',LINK:'Chainlink',DOT:'Polkadot'};
 
-    function makeRows(list){
-      return list.map(function(t,i){
-        var sym=t.symbol||'';
-        var b=sym.replace(/USDT$|USDC$|BUSD$|FDUSD$/,'');
-        var chg=parseFloat(t.priceChangePercent||0);
-        var price=parseFloat(t.lastPrice||0);
-        var up=chg>=0;
-        var color=cC[b]||'#607a99';
-        var ps=price>=1000?'$'+price.toLocaleString(undefined,{maximumFractionDigits:2}):price>=1?'$'+price.toFixed(4):'$'+price.toFixed(6);
-        return '<tr class="market-row" data-sym="'+sym+'"><td>'
-          +'<div class="coin-cell"><span class="coin-rank">'+(i+1)+'</span>'
-          +'<div class="coin-icon" style="background:'+color+'20;color:'+color+'">'+b[0]+'</div>'
-          +'<div><div class="coin-name">'+b+'</div><div class="coin-sym">'+(cN[b]||b)+'</div></div>'
-          +'</div></td>'
-          +'<td>'+ps+'</td>'
-          +'<td style="color:'+(up?'#0ecb81':'#f6465d')+'">'+(up?'+':'')+chg.toFixed(2)+'%</td></tr>';
-      }).join('');
-    }
+  function makeRows(list){
+    if(!list||!list.length) return '<tr><td colspan="3" style="text-align:center;padding:20px;color:#607a99;font-size:11px;">No data</td></tr>';
+    return list.slice(0,10).map(function(t,i){
+      var sym=t.symbol||'';
+      var b=sym.replace(/USDT$|USDC$|BUSD$|FDUSD$/,'');
+      var chg=parseFloat(t.priceChangePercent||0);
+      var price=parseFloat(t.lastPrice||0);
+      var up=chg>=0;
+      var color=cC[b]||'#607a99';
+      var ps=price>=1000?'$'+price.toLocaleString(undefined,{maximumFractionDigits:2}):price>=1?'$'+price.toFixed(4):'$'+price.toFixed(6);
+      return '<tr class="market-row" data-sym="'+sym+'"><td>'
+        +'<div class="coin-cell"><span class="coin-rank">'+(i+1)+'</span>'
+        +'<div class="coin-icon" style="background:'+color+'20;color:'+color+'">'+b[0]+'</div>'
+        +'<div><div class="coin-name">'+b+'</div><div class="coin-sym">'+(cN[b]||b)+'</div></div>'
+        +'</div></td><td>'+ps+'</td>'
+        +'<td style="color:'+(up?'#0ecb81':'#f6465d')+'">'+(up?'+':'')+chg.toFixed(2)+'%</td></tr>';
+    }).join('');
+  }
 
+  function applyRows(hot, gainers, losers){
     var h=document.getElementById('hot-coins');
     var g=document.getElementById('top-gainers');
     var l=document.getElementById('top-losers');
-    if(h) h.innerHTML=makeRows(data.hot||[]);
-    if(g) g.innerHTML=makeRows(data.gainers||[]);
-    if(l) l.innerHTML=makeRows(data.losers||[]);
-
+    if(h) h.innerHTML=makeRows(hot);
+    if(g) g.innerHTML=makeRows(gainers);
+    if(l) l.innerHTML=makeRows(losers);
     document.querySelectorAll('.market-row').forEach(function(row){
       row.addEventListener('click',function(){
         closeMarkets();
@@ -1342,11 +1337,36 @@ async function fetchLiveMarkets(){
         loadPair(sym);
       });
     });
-  }catch(e){
-    console.error('Markets error:',e);
+  }
+
+  // Try Railway /markets endpoint first
+  try{
+    var res=await fetch(API_BASE+'/markets');
+    if(!res.ok) throw new Error('markets failed');
+    var data=await res.json();
+    if((data.hot&&data.hot.length)||(data.gainers&&data.gainers.length)){
+      applyRows(data.hot||[], data.gainers||[], data.losers||[]);
+      return;
+    }
+  }catch(e){ console.log('Markets endpoint failed, trying ticker:', e); }
+
+  // Fallback: use allTickerData we already have
+  try{
+    var tickers = Object.keys(allTickerData)
+      .filter(function(s){ return s.endsWith(currentMarketQuote) && allTickerData[s].p > 0; })
+      .map(function(s){ return {symbol:s, lastPrice:String(allTickerData[s].p), priceChangePercent:String(allTickerData[s].c)}; });
+
+    if(!tickers.length) throw new Error('no ticker data');
+
+    var byVol = tickers.slice(0,10);
+    var gainers = tickers.slice().sort(function(a,b){ return parseFloat(b.priceChangePercent)-parseFloat(a.priceChangePercent); }).slice(0,10);
+    var losers = tickers.slice().sort(function(a,b){ return parseFloat(a.priceChangePercent)-parseFloat(b.priceChangePercent); }).slice(0,10);
+    applyRows(byVol, gainers, losers);
+  }catch(e2){
+    console.error('Markets fallback failed:', e2);
     ['hot-coins','top-gainers','top-losers'].forEach(function(id){
       var el=document.getElementById(id);
-      if(el)el.innerHTML='<tr><td colspan="3" style="text-align:center;padding:20px;color:#f6465d;font-size:11px;">Failed to load. Please try again.</td></tr>';
+      if(el)el.innerHTML='<tr><td colspan="3" style="text-align:center;padding:20px;color:#f6465d;font-size:11px;">Unable to load market data.</td></tr>';
     });
   }
 }
@@ -1354,7 +1374,14 @@ async function fetchLiveMarkets(){
 async function loadHDCoins(){
   var list=document.getElementById('hd-list');if(!list)return;
   list.innerHTML='<div style="padding:12px;font-family:monospace;font-size:10px;color:#344a66;">Loading...</div>';
-  try{var r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbols=["BTCUSDT","ETHUSDT","BNBUSDT","SOLUSDT","XRPUSDT","DOGEUSDT","ADAUSDT","AVAXUSDT"]');var data=await r.json();
+  try{
+    // Use already-fetched ticker data instead of calling Binance directly
+    var syms=['BTCUSDT','ETHUSDT','BNBUSDT','SOLUSDT','XRPUSDT','DOGEUSDT','ADAUSDT','AVAXUSDT'];
+    var data=syms.map(function(sym){
+      var d=allTickerData[sym]||{p:0,c:0};
+      return {symbol:sym,lastPrice:String(d.p),priceChangePercent:String(d.c)};
+    }).filter(function(d){return parseFloat(d.lastPrice)>0;});
+    if(!data.length) throw new Error('no data');
   var C={BTC:'#f7931a',ETH:'#627eea',BNB:'#f3ba2f',SOL:'#9945ff',XRP:'#346aa9',DOGE:'#c2a633',ADA:'#0033ad',AVAX:'#e84142'},I={BTC:'₿',ETH:'Ξ',BNB:'B',SOL:'◎',XRP:'✕',DOGE:'Ð',ADA:'₳',AVAX:'A'},N={BTC:'Bitcoin',ETH:'Ethereum',BNB:'BNB',SOL:'Solana',XRP:'XRP',DOGE:'Dogecoin',ADA:'Cardano',AVAX:'Avalanche'};
   var html='';data.forEach(function(t){var b=t.symbol.replace('USDT',''),chg=parseFloat(t.priceChangePercent),p=parseFloat(t.lastPrice),up=chg>=0,ps=p>=1000?'$'+p.toLocaleString(undefined,{maximumFractionDigits:2}):p>=1?'$'+p.toFixed(3):'$'+p.toFixed(5);html+='<div class="hd-row" data-sym="'+b+'USDT"><div style="display:flex;align-items:center;gap:7px;"><div class="hd-icon" style="background:'+(C[b]||'#607a99')+'20;color:'+(C[b]||'#607a99')+'">'+(I[b]||b[0])+'</div><div><div class="hd-sym">'+b+'</div><div class="hd-fullname">'+(N[b]||b)+'</div></div></div><div class="hd-price">'+ps+'</div><div class="hd-chg" style="color:'+(up?'#0ecb81':'#f6465d')+'">'+(up?'+':'')+chg.toFixed(2)+'%</div></div>';});
   list.innerHTML=html;list.querySelectorAll('.hd-row').forEach(function(row){row.addEventListener('click',function(){closeHomeDrop();loadPair(this.getAttribute('data-sym'));});});}
