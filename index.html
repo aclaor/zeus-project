@@ -780,6 +780,7 @@ let supabaseClient = null, currentUser = null, currentSession = null;
 let chartData = null, currentRange = 200, currentPrice = 0, currentInterval = '1h';
 let currentQuote = 'USDT', authMode = 'signup', selectedPlan = 'free';
 let marketsRefreshTimer = null;
+var _tickerBuilt = false;
 
 // ── SUPABASE INIT ─────────────────────────────
 if (window.supabase) {
@@ -1188,7 +1189,6 @@ function scrollAndLoad(sym){window.scrollTo({top:0,behavior:'smooth'});loadPair(
 function loadPair(sym){var clean=sym.toUpperCase().replace(/[\/\-\s]/g,'');document.getElementById('pair-input').value=clean;document.querySelectorAll('.pair-row').forEach(function(r){r.classList.toggle('active-pair',r.getAttribute('data-sym')===clean);});runForecast();}
 
 // ── LIVE DATA ─────────────────────────────────
-var _tickerBuilt = false;
 function renderBottomTicker(){
   var inner = document.getElementById('bottom-bar-inner');
   if(!inner) return;
