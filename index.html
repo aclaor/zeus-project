@@ -122,7 +122,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .stat{display:flex;flex-direction:column;gap:2px;}
 .stat-label{font-size:10px;color:var(--text2);}
 .stat-val{font-size:12px;font-family:var(--mono);}
-.main-layout{display:grid;grid-template-columns:220px 1fr 280px;height:calc(100vh - 154px);overflow:hidden;position:sticky;top:0;z-index:1;}
+.main-layout{display:grid;grid-template-columns:220px 1fr 280px;height:calc(100vh - 110px);overflow:hidden;position:sticky;top:0;z-index:1;}
 .ob-panel{display:flex;flex-direction:column;background:var(--bg2);border-right:1px solid var(--border);overflow:hidden;}
 .ob-header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--border);}
 .ob-title{font-size:11px;font-weight:700;letter-spacing:0.5px;}
@@ -339,6 +339,13 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .bt-c{color:#0ecb81;}
 .bt-c.dn{color:#f6465d;}
 .crypto-card{background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:10px;cursor:pointer;transition:all .15s;text-align:center;}
+.cov-box{background:#0b0f1a;border:1px solid #1e2a40;border-radius:6px;padding:7px 12px;cursor:pointer;transition:all .15s;min-width:80px;display:flex;flex-direction:column;gap:1px;flex-shrink:0;}
+.cov-box:hover{border-color:#0ff;background:#0f1520;}
+.cov-name{font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;}
+.cov-sym{font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;}
+.cov-price{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;}
+.cov-chg{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;}
+.cov-chg.dn{color:#f6465d;}
 .crypto-card:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(14,203,129,0.1);}
 .cc-sym{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;margin-bottom:3px;}
 .cc-price{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;margin-bottom:3px;}
@@ -386,9 +393,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
   <button class="nav-btn" style="width:100%;text-align:left;padding:10px 12px;border-color:#0af;color:#0af;" onclick="showNews();toggleMobileNav()">📰 News</button>
 </div>
 
-<div class="ticker-bar" id="ticker-bar" style="overflow:hidden;padding:0;">
-  <div id="top-ticker-scroll" style="display:flex;white-space:nowrap;animation:none;"></div>
-</div>
+
 
 <div class="pair-header">
   <div class="pair-info">
@@ -521,6 +526,62 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
     </div>
     <div class="pairs-cols"><span>Pair</span><span>Last Price</span><span>Change</span></div>
     <div class="pairs-list" id="pairs-list"></div>
+  </div>
+</div>
+
+<!-- CRYPTO OVERVIEW BOXES -->
+<div id="crypto-overview-boxes" style="background:#0b0f1a;padding:8px 12px;border-bottom:1px solid #1e2a40;overflow-x:auto;scrollbar-width:none;">
+  <div style="display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;">
+    <div class="cov-box" onclick="scrollAndLoad('BTCUSDT')" id="cov-btc" data-sym="BTCUSDT">
+      <div class="cov-name">Bitcoin</div><div class="cov-sym">BTC</div>
+      <div class="cov-price" id="covp-btc">—</div>
+      <div class="cov-chg" id="covc-btc">—</div>
+    </div>
+    <div class="cov-box" onclick="scrollAndLoad('ETHUSDT')" id="cov-eth" data-sym="ETHUSDT">
+      <div class="cov-name">Ethereum</div><div class="cov-sym">ETH</div>
+      <div class="cov-price" id="covp-eth">—</div>
+      <div class="cov-chg" id="covc-eth">—</div>
+    </div>
+    <div class="cov-box" onclick="scrollAndLoad('SOLUSDT')" id="cov-sol" data-sym="SOLUSDT">
+      <div class="cov-name">Solana</div><div class="cov-sym">SOL</div>
+      <div class="cov-price" id="covp-sol">—</div>
+      <div class="cov-chg" id="covc-sol">—</div>
+    </div>
+    <div class="cov-box" onclick="scrollAndLoad('BNBUSDT')" id="cov-bnb" data-sym="BNBUSDT">
+      <div class="cov-name">BNB</div><div class="cov-sym">BNB</div>
+      <div class="cov-price" id="covp-bnb">—</div>
+      <div class="cov-chg" id="covc-bnb">—</div>
+    </div>
+    <div class="cov-box" onclick="scrollAndLoad('XRPUSDT')" id="cov-xrp" data-sym="XRPUSDT">
+      <div class="cov-name">XRP</div><div class="cov-sym">XRP</div>
+      <div class="cov-price" id="covp-xrp">—</div>
+      <div class="cov-chg" id="covc-xrp">—</div>
+    </div>
+    <div class="cov-box" onclick="scrollAndLoad('DOGEUSDT')" id="cov-doge" data-sym="DOGEUSDT">
+      <div class="cov-name">Dogecoin</div><div class="cov-sym">DOGE</div>
+      <div class="cov-price" id="covp-doge">—</div>
+      <div class="cov-chg" id="covc-doge">—</div>
+    </div>
+    <div class="cov-box" onclick="scrollAndLoad('ADAUSDT')" id="cov-ada" data-sym="ADAUSDT">
+      <div class="cov-name">Cardano</div><div class="cov-sym">ADA</div>
+      <div class="cov-price" id="covp-ada">—</div>
+      <div class="cov-chg" id="covc-ada">—</div>
+    </div>
+    <div class="cov-box" onclick="scrollAndLoad('AVAXUSDT')" id="cov-avax" data-sym="AVAXUSDT">
+      <div class="cov-name">Avalanche</div><div class="cov-sym">AVAX</div>
+      <div class="cov-price" id="covp-avax">—</div>
+      <div class="cov-chg" id="covc-avax">—</div>
+    </div>
+    <div class="cov-box" onclick="scrollAndLoad('LINKUSDT')" id="cov-link" data-sym="LINKUSDT">
+      <div class="cov-name">Chainlink</div><div class="cov-sym">LINK</div>
+      <div class="cov-price" id="covp-link">—</div>
+      <div class="cov-chg" id="covc-link">—</div>
+    </div>
+    <div class="cov-box" onclick="scrollAndLoad('DOTUSDT')" id="cov-dot" data-sym="DOTUSDT">
+      <div class="cov-name">Polkadot</div><div class="cov-sym">DOT</div>
+      <div class="cov-price" id="covp-dot">—</div>
+      <div class="cov-chg" id="covc-dot">—</div>
+    </div>
   </div>
 </div>
 
@@ -1226,6 +1287,28 @@ function drawSparkline(canvas, changePercent){
   ctx.fill();
 }
 
+function updateCryptoBoxes(data){
+  var covMap={
+    'BTCUSDT':'btc','ETHUSDT':'eth','SOLUSDT':'sol','BNBUSDT':'bnb',
+    'XRPUSDT':'xrp','DOGEUSDT':'doge','ADAUSDT':'ada',
+    'AVAXUSDT':'avax','LINKUSDT':'link','DOTUSDT':'dot'
+  };
+  data.forEach(function(t){
+    var key=covMap[t.symbol];
+    if(!key) return;
+    var p=parseFloat(t.lastPrice||0);
+    var c=parseFloat(t.priceChangePercent||0);
+    if(!p) return;
+    var pe=document.getElementById('covp-'+key);
+    var ce=document.getElementById('covc-'+key);
+    var box=document.getElementById('cov-'+key);
+    var ps=p>=1000?'$'+p.toLocaleString(undefined,{maximumFractionDigits:2}):p>=1?'$'+p.toFixed(3):'$'+p.toFixed(6);
+    if(pe) pe.textContent=ps;
+    if(ce){ce.textContent=(c>=0?'+':'')+c.toFixed(2)+'%';ce.className='cov-chg'+(c<0?' dn':'');}
+    if(box) box.style.borderColor=c>=0?'rgba(14,203,129,0.3)':'rgba(246,70,93,0.3)';
+  });
+}
+
 function scrollAndLoad(sym){window.scrollTo({top:0,behavior:'smooth'});loadPair(sym);}
 function loadPair(sym){var clean=sym.toUpperCase().replace(/[\/\-\s]/g,'');document.getElementById('pair-input').value=clean;document.querySelectorAll('.pair-row').forEach(function(r){r.classList.toggle('active-pair',r.getAttribute('data-sym')===clean);});runForecast();}
 
@@ -1280,55 +1363,21 @@ async function fetchLiveTicker(){
     });
     
     // Update static top ticker IDs
-    var tkMap={
-      'BTCUSDT':['tk-btc','spark-btc'],
-      'ETHUSDT':['tk-eth','spark-eth'],
-      'SOLUSDT':['tk-sol','spark-sol'],
-      'BNBUSDT':['tk-bnb','spark-bnb'],
-      'XRPUSDT':['tk-xrp','spark-xrp'],
-      'DOGEUSDT':['tk-doge','spark-doge'],
-      'ADAUSDT':['tk-ada','spark-ada'],
-      'AVAXUSDT':['tk-avax','spark-avax'],
-      'LINKUSDT':['tk-link','spark-link'],
-      'DOTUSDT':['tk-dot','spark-dot'],
-      'MATICUSDT':['tk-matic','spark-matic'],
-      'UNIUSDT':['tk-uni','spark-uni'],
-      'ATOMUSDT':['tk-atom','spark-atom'],
-      'LTCUSDT':['tk-ltc','spark-ltc'],
-      'NEARUSDT':['tk-near','spark-near']
-    };
-    // Build top scrolling ticker with sparklines
-    var topScroll = document.getElementById('top-ticker-scroll');
-    if(topScroll && data.length > 0){
-      var topHtml = data.concat(data).map(function(t){
-        var p = parseFloat(t.lastPrice||0);
-        var c = parseFloat(t.priceChangePercent||0);
-        var up = c >= 0;
-        var sym = (t.symbol||'').replace('USDT','');
-        var ps = p>=1000?'$'+p.toLocaleString(undefined,{maximumFractionDigits:2}):p>=1?'$'+p.toFixed(3):'$'+p.toFixed(5);
-        var sparkId = 'tsp-'+sym.toLowerCase()+'-'+Math.random().toString(36).substr(2,4);
-        return '<div class="tick-item" data-sym="'+t.symbol+'" onclick="loadPair(this.dataset.sym)" style="display:inline-flex;align-items:center;gap:4px;padding:0 10px;border-right:1px solid #1e2a40;cursor:pointer;">'
-          +'<span class="tick-sym" style="font-weight:700;color:#d0e0f0;">'+sym+'</span>'
-          +'<canvas id="'+sparkId+'" width="36" height="18" data-chg="'+c+'" style="vertical-align:middle;"></canvas>'
-          +'<span class="tick-p'+(up?'':' dn')+'">'+ps+' <span style="font-size:9px;">'+(up?'+':'')+c.toFixed(2)+'%</span></span>'
-          +'</div>';
-      }).join('');
-      if(topScroll.innerHTML !== topHtml){
-        topScroll.innerHTML = topHtml;
-        topScroll.style.animation = 'btscroll 60s linear infinite';
-        // Draw sparklines after render
-        setTimeout(function(){
-          topScroll.querySelectorAll('canvas[data-chg]').forEach(function(cv){
-            drawSparkline(cv, parseFloat(cv.dataset.chg||0));
-          });
-        }, 100);
-      } else {
-        // Just update sparklines
-        topScroll.querySelectorAll('canvas[data-chg]').forEach(function(cv){
-          drawSparkline(cv, parseFloat(cv.dataset.chg||0));
-        });
+    var tkMap={'BTCUSDT':'tk-btc','ETHUSDT':'tk-eth','SOLUSDT':'tk-sol','BNBUSDT':'tk-bnb','XRPUSDT':'tk-xrp','DOGEUSDT':'tk-doge','ADAUSDT':'tk-ada'};
+    data.forEach(function(t){
+      var id=tkMap[t.symbol];
+      if(id){
+        var el=document.getElementById(id);
+        var p=parseFloat(t.lastPrice||0);
+        var c=parseFloat(t.priceChangePercent||0);
+        if(el&&p>0){
+          el.textContent='$'+p.toLocaleString(undefined,{maximumFractionDigits:p>=1000?2:p>=1?3:6});
+          el.className='tick-p'+(c<0?' dn':'');
+        }
       }
-    }
+    });
+    // Update crypto overview boxes
+    updateCryptoBoxes(data);
     
     // Update allTickerData for pairs list
     data.forEach(function(t){
