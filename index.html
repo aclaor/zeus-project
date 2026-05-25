@@ -396,120 +396,81 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 
 
 <!-- CRYPTO OVERVIEW BOXES -->
-<div style="background:#0b0f1a;padding:8px 12px;border-bottom:1px solid #1e2a40;overflow-x:auto;scrollbar-width:none;">
-  <div style="display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;">
-    <div onclick="scrollAndLoad('BTCUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 10px;cursor:pointer;transition:all .15s;flex:1 1 0;min-width:60px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-btc" data-bc="#1e2a40">
+<div style="background:#0b0f1a;padding:8px 12px;border-bottom:1px solid #1e2a40;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;">
+  <div style="display:flex;gap:6px;min-width:max-content;" id="crypto-boxes-row">
+    <div class="cov-box" onclick="scrollAndLoad('BTCUSDT')" id="covbox-btc">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">Bitcoin</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">BTC</div>
-        </div>
-        <canvas id="covs-btc" width="50" height="28" style="margin-top:2px;"></canvas>
+        <div><div class="cov-label">Bitcoin BTC</div><div id="covp-btc" class="cov-price">—</div></div>
+        <canvas id="covs-btc" width="52" height="30"></canvas>
       </div>
-      <div id="covp-btc" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;margin-top:2px;">—</div>
-      <div id="covc-btc" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+      <div id="covc-btc" class="cov-chg">—</div>
     </div>
-    <div onclick="scrollAndLoad('ETHUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 10px;cursor:pointer;transition:all .15s;flex:1 1 0;min-width:60px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-eth" data-bc="#1e2a40">
+    <div class="cov-box" onclick="scrollAndLoad('ETHUSDT')" id="covbox-eth">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">Ethereum</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">ETH</div>
-        </div>
-        <canvas id="covs-eth" width="50" height="28" style="margin-top:2px;"></canvas>
+        <div><div class="cov-label">Ethereum ETH</div><div id="covp-eth" class="cov-price">—</div></div>
+        <canvas id="covs-eth" width="52" height="30"></canvas>
       </div>
-      <div id="covp-eth" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;margin-top:2px;">—</div>
-      <div id="covc-eth" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+      <div id="covc-eth" class="cov-chg">—</div>
     </div>
-    <div onclick="scrollAndLoad('SOLUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 10px;cursor:pointer;transition:all .15s;flex:1 1 0;min-width:60px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-sol" data-bc="#1e2a40">
+    <div class="cov-box" onclick="scrollAndLoad('SOLUSDT')" id="covbox-sol">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">Solana</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">SOL</div>
-        </div>
-        <canvas id="covs-sol" width="50" height="28" style="margin-top:2px;"></canvas>
+        <div><div class="cov-label">Solana SOL</div><div id="covp-sol" class="cov-price">—</div></div>
+        <canvas id="covs-sol" width="52" height="30"></canvas>
       </div>
-      <div id="covp-sol" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;margin-top:2px;">—</div>
-      <div id="covc-sol" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+      <div id="covc-sol" class="cov-chg">—</div>
     </div>
-    <div onclick="scrollAndLoad('BNBUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 10px;cursor:pointer;transition:all .15s;flex:1 1 0;min-width:60px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-bnb" data-bc="#1e2a40">
+    <div class="cov-box" onclick="scrollAndLoad('BNBUSDT')" id="covbox-bnb">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">BNB</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">BNB</div>
-        </div>
-        <canvas id="covs-bnb" width="50" height="28" style="margin-top:2px;"></canvas>
+        <div><div class="cov-label">BNB BNB</div><div id="covp-bnb" class="cov-price">—</div></div>
+        <canvas id="covs-bnb" width="52" height="30"></canvas>
       </div>
-      <div id="covp-bnb" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;margin-top:2px;">—</div>
-      <div id="covc-bnb" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+      <div id="covc-bnb" class="cov-chg">—</div>
     </div>
-    <div onclick="scrollAndLoad('XRPUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 10px;cursor:pointer;transition:all .15s;flex:1 1 0;min-width:60px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-xrp" data-bc="#1e2a40">
+    <div class="cov-box" onclick="scrollAndLoad('XRPUSDT')" id="covbox-xrp">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">XRP</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">XRP</div>
-        </div>
-        <canvas id="covs-xrp" width="50" height="28" style="margin-top:2px;"></canvas>
+        <div><div class="cov-label">XRP XRP</div><div id="covp-xrp" class="cov-price">—</div></div>
+        <canvas id="covs-xrp" width="52" height="30"></canvas>
       </div>
-      <div id="covp-xrp" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;margin-top:2px;">—</div>
-      <div id="covc-xrp" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+      <div id="covc-xrp" class="cov-chg">—</div>
     </div>
-    <div onclick="scrollAndLoad('DOGEUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 10px;cursor:pointer;transition:all .15s;flex:1 1 0;min-width:60px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-doge" data-bc="#1e2a40">
+    <div class="cov-box" onclick="scrollAndLoad('DOGEUSDT')" id="covbox-doge">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">Dogecoin</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">DOGE</div>
-        </div>
-        <canvas id="covs-doge" width="50" height="28" style="margin-top:2px;"></canvas>
+        <div><div class="cov-label">Dogecoin DOGE</div><div id="covp-doge" class="cov-price">—</div></div>
+        <canvas id="covs-doge" width="52" height="30"></canvas>
       </div>
-      <div id="covp-doge" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;margin-top:2px;">—</div>
-      <div id="covc-doge" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+      <div id="covc-doge" class="cov-chg">—</div>
     </div>
-    <div onclick="scrollAndLoad('ADAUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 10px;cursor:pointer;transition:all .15s;flex:1 1 0;min-width:60px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-ada" data-bc="#1e2a40">
+    <div class="cov-box" onclick="scrollAndLoad('ADAUSDT')" id="covbox-ada">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">Cardano</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">ADA</div>
-        </div>
-        <canvas id="covs-ada" width="50" height="28" style="margin-top:2px;"></canvas>
+        <div><div class="cov-label">Cardano ADA</div><div id="covp-ada" class="cov-price">—</div></div>
+        <canvas id="covs-ada" width="52" height="30"></canvas>
       </div>
-      <div id="covp-ada" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;margin-top:2px;">—</div>
-      <div id="covc-ada" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+      <div id="covc-ada" class="cov-chg">—</div>
     </div>
-    <div onclick="scrollAndLoad('AVAXUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 10px;cursor:pointer;transition:all .15s;flex:1 1 0;min-width:60px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-avax" data-bc="#1e2a40">
+    <div class="cov-box" onclick="scrollAndLoad('AVAXUSDT')" id="covbox-avax">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">Avalanche</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">AVAX</div>
-        </div>
-        <canvas id="covs-avax" width="50" height="28" style="margin-top:2px;"></canvas>
+        <div><div class="cov-label">Avalanche AVAX</div><div id="covp-avax" class="cov-price">—</div></div>
+        <canvas id="covs-avax" width="52" height="30"></canvas>
       </div>
-      <div id="covp-avax" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;margin-top:2px;">—</div>
-      <div id="covc-avax" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+      <div id="covc-avax" class="cov-chg">—</div>
     </div>
-    <div onclick="scrollAndLoad('LINKUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 10px;cursor:pointer;transition:all .15s;flex:1 1 0;min-width:60px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-link" data-bc="#1e2a40">
+    <div class="cov-box" onclick="scrollAndLoad('LINKUSDT')" id="covbox-link">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">Chainlink</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">LINK</div>
-        </div>
-        <canvas id="covs-link" width="50" height="28" style="margin-top:2px;"></canvas>
+        <div><div class="cov-label">Chainlink LINK</div><div id="covp-link" class="cov-price">—</div></div>
+        <canvas id="covs-link" width="52" height="30"></canvas>
       </div>
-      <div id="covp-link" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;margin-top:2px;">—</div>
-      <div id="covc-link" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+      <div id="covc-link" class="cov-chg">—</div>
     </div>
-    <div onclick="scrollAndLoad('DOTUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 10px;cursor:pointer;transition:all .15s;flex:1 1 0;min-width:60px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-dot" data-bc="#1e2a40">
+    <div class="cov-box" onclick="scrollAndLoad('DOTUSDT')" id="covbox-dot">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">Polkadot</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">DOT</div>
-        </div>
-        <canvas id="covs-dot" width="50" height="28" style="margin-top:2px;"></canvas>
+        <div><div class="cov-label">Polkadot DOT</div><div id="covp-dot" class="cov-price">—</div></div>
+        <canvas id="covs-dot" width="52" height="30"></canvas>
       </div>
-      <div id="covp-dot" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;margin-top:2px;">—</div>
-      <div id="covc-dot" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+      <div id="covc-dot" class="cov-chg">—</div>
     </div>
   </div>
 </div>
+
 <div class="pair-header">
   <div class="pair-info">
     <div>
@@ -1318,38 +1279,50 @@ function updatePairsList() {
   listEl.querySelectorAll('.pair-row').forEach(function(row){row.addEventListener('click',function(){document.getElementById('pair-input').value=this.getAttribute('data-sym');listEl.querySelectorAll('.pair-row').forEach(function(r){r.classList.remove('active-pair');});this.classList.add('active-pair');runForecast();});});
 }
 function drawSparkline(canvas, changePercent){
+  if(!canvas) return;
   var ctx = canvas.getContext('2d');
   var w = canvas.width, h = canvas.height;
   ctx.clearRect(0, 0, w, h);
   var up = changePercent >= 0;
   var color = up ? '#0ecb81' : '#f6465d';
-  // Generate fake sparkline points based on change direction
-  var points = [];
-  var seed = Math.abs(changePercent * 1000) % 100;
-  for(var i = 0; i < 10; i++){
-    var noise = (Math.sin(i * 2.1 + seed) * 0.3 + Math.cos(i * 1.7 + seed) * 0.2);
-    var trend = (i / 9) * changePercent * 0.8;
-    points.push(0.5 + trend/20 + noise * 0.15);
+  var seed = Math.abs(changePercent * 997) % 100;
+  var pts = [];
+  for(var i = 0; i < 12; i++){
+    var t = i / 11;
+    var trend = t * (changePercent / 100) * 8;
+    var wave = Math.sin(i * 1.8 + seed * 0.1) * 0.12 + Math.cos(i * 2.7 + seed * 0.05) * 0.08;
+    pts.push(0.5 + trend + wave);
   }
-  var mn = Math.min.apply(null, points);
-  var mx = Math.max.apply(null, points);
-  var range = mx - mn || 0.01;
+  var mn = Math.min.apply(null, pts), mx = Math.max.apply(null, pts);
+  var range = mx - mn || 0.001;
+  var pad = 2;
+  // Draw gradient fill
+  var grad = ctx.createLinearGradient(0, 0, 0, h);
+  grad.addColorStop(0, up ? 'rgba(14,203,129,0.3)' : 'rgba(246,70,93,0.3)');
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
   ctx.beginPath();
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 1.5;
-  ctx.shadowColor = color;
-  ctx.shadowBlur = 3;
-  points.forEach(function(v, i){
-    var x = (i / (points.length-1)) * w;
-    var y = h - ((v - mn) / range) * (h - 2) - 1;
+  pts.forEach(function(v, i){
+    var x = (i / (pts.length-1)) * (w - pad*2) + pad;
+    var y = (h - pad*2) - ((v - mn) / range) * (h - pad*4) + pad;
     i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
   });
+  var lastX = (w - pad), lastY = (h - pad*2) - ((pts[pts.length-1] - mn) / range) * (h - pad*4) + pad;
+  ctx.lineTo(lastX, h); ctx.lineTo(pad, h); ctx.closePath();
+  ctx.fillStyle = grad; ctx.fill();
+  // Draw line
+  ctx.beginPath();
+  pts.forEach(function(v, i){
+    var x = (i / (pts.length-1)) * (w - pad*2) + pad;
+    var y = (h - pad*2) - ((v - mn) / range) * (h - pad*4) + pad;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.strokeStyle = color; ctx.lineWidth = 1.5;
+  ctx.lineJoin = 'round'; ctx.lineCap = 'round';
   ctx.stroke();
-  // Fill area under line
-  ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath();
-  ctx.fillStyle = up ? 'rgba(14,203,129,0.1)' : 'rgba(246,70,93,0.1)';
-  ctx.shadowBlur = 0;
-  ctx.fill();
+  // Draw end dot
+  var ex = w - pad, ey = (h - pad*2) - ((pts[pts.length-1] - mn) / range) * (h - pad*4) + pad;
+  ctx.beginPath(); ctx.arc(ex, ey, 2, 0, Math.PI*2);
+  ctx.fillStyle = color; ctx.fill();
 }
 
 function updateCryptoBoxes(data){
@@ -1372,7 +1345,7 @@ function updateCryptoBoxes(data){
     var up=c>=0;
     if(pe) pe.textContent=ps;
     if(ce){ce.textContent=(up?'+':'')+c.toFixed(2)+'%';ce.style.color=up?'#0ecb81':'#f6465d';}
-    if(box){box.dataset.bc=up?'rgba(14,203,129,0.3)':'rgba(246,70,93,0.3)';box.style.borderColor=up?'rgba(14,203,129,0.3)':'rgba(246,70,93,0.3)';}
+    if(box){box.style.borderColor=up?'rgba(14,203,129,0.4)':'rgba(246,70,93,0.4)';}
     if(cv) drawSparkline(cv, c);
   });
 }
