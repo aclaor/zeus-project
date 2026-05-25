@@ -1521,7 +1521,7 @@ async function runForecast(isAutoRun){
   var isAdmin = currentUser && currentUser.email === 'alexclaor@gmail.com';
   if(!currentUser && !isAdmin){
     var gc=parseInt(localStorage.getItem('zeus_guest_count')||'0');
-    if(gc>=20 && !isAutoRun){showGuestLimit();return;}
+    if(gc>=999 && !isAutoRun){showGuestLimit();return;} // disabled - banner handles conversion
     if(!isAutoRun){
       localStorage.setItem('zeus_guest_count',gc+1);
       // Track forecast count for banner
