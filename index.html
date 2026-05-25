@@ -1484,11 +1484,11 @@ function renderAll(data) {
   var signalName = 'neut';
   if(fc200 && fc200.length >= 3){
     var first = fc200[0];
-    var mid = fc200[Math.floor(fc200.length/2)];
+    var last = fc200[fc200.length-1];
     var threshold = (data.last_close||first) * 0.001; // 0.1% threshold for neutral
-    if(mid - first > threshold){ signalName = 'bull'; }
-    else if(first - mid > threshold){ signalName = 'bear'; }
-    else{ signalName = 'neut'; }
+    if(Math.abs(last - first) <= threshold){ signalName = 'neut'; }
+    else if(last > first){ signalName = 'bull'; }
+    else{ signalName = 'bear'; }
   }
   var sigEl = document.querySelector('.sig.'+signalName);
   if(sigEl) sigEl.classList.add('active');
