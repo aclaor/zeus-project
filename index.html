@@ -1128,8 +1128,7 @@ async function fetchAllTickers() {
       };
     });
     updatePairsList();
-    renderBottomTicker();
-    // Also update crypto overview boxes
+    // Update crypto overview boxes from allTickerData
     var boxData = Object.keys(allTickerData).map(function(sym){
       return {symbol:sym, lastPrice:String(allTickerData[sym].p), priceChangePercent:String(allTickerData[sym].c)};
     });
@@ -1280,74 +1279,30 @@ function updatePairsList() {
 }
 function drawSparkline(canvas, changePercent){
   if(!canvas) return;
-  var ctx = canvas.getContext('2d');
-  var w = canvas.width, h = canvas.height;
-  ctx.clearRect(0, 0, w, h);
-  var up = changePercent >= 0;
-  var color = up ? '#0ecb81' : '#f6465d';
-  var seed = Math.abs(changePercent * 997) % 100;
-  var pts = [];
-  for(var i = 0; i < 12; i++){
-    var t = i / 11;
-    var trend = t * (changePercent / 100) * 8;
-    var wave = Math.sin(i * 1.8 + seed * 0.1) * 0.12 + Math.cos(i * 2.7 + seed * 0.05) * 0.08;
-    pts.push(0.5 + trend + wave);
+  var ctx=canvas.getContext('2d');
+  var w=canvas.width, h=canvas.height;
+  ctx.clearRect(0,0,w,h);
+  var up=changePercent>=0;
+  var color=up?'#0ecb81':'#f6465d';
+  var seed=Math.abs(Math.round(changePercent*100))%50;
+  var pts=[];
+  for(var i=0;i<10;i++){
+    var trend=(i/9)*(changePercent>0?1:-1)*0.6;
+    var noise=Math.sin(i*1.5+seed)*0.15;
+    pts.push(0.5+trend+noise);
   }
-  var mn = Math.min.apply(null, pts), mx = Math.max.apply(null, pts);
-  var range = mx - mn || 0.001;
-  var pad = 2;
-  // Draw gradient fill
-  var grad = ctx.createLinearGradient(0, 0, 0, h);
-  grad.addColorStop(0, up ? 'rgba(14,203,129,0.3)' : 'rgba(246,70,93,0.3)');
-  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  var mn=Math.min.apply(null,pts), mx=Math.max.apply(null,pts), rng=mx-mn||0.01;
+  // Simple line only - clean minimal look
   ctx.beginPath();
-  pts.forEach(function(v, i){
-    var x = (i / (pts.length-1)) * (w - pad*2) + pad;
-    var y = (h - pad*2) - ((v - mn) / range) * (h - pad*4) + pad;
-    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  pts.forEach(function(v,i){
+    var x=(i/(pts.length-1))*(w-4)+2;
+    var y=(h-4)-((v-mn)/rng)*(h-8)+2;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
   });
-  var lastX = (w - pad), lastY = (h - pad*2) - ((pts[pts.length-1] - mn) / range) * (h - pad*4) + pad;
-  ctx.lineTo(lastX, h); ctx.lineTo(pad, h); ctx.closePath();
-  ctx.fillStyle = grad; ctx.fill();
-  // Draw line
-  ctx.beginPath();
-  pts.forEach(function(v, i){
-    var x = (i / (pts.length-1)) * (w - pad*2) + pad;
-    var y = (h - pad*2) - ((v - mn) / range) * (h - pad*4) + pad;
-    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-  });
-  ctx.strokeStyle = color; ctx.lineWidth = 1.5;
-  ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  ctx.strokeStyle=color;
+  ctx.lineWidth=1.5;
+  ctx.lineJoin='round';
   ctx.stroke();
-  // Draw end dot
-  var ex = w - pad, ey = (h - pad*2) - ((pts[pts.length-1] - mn) / range) * (h - pad*4) + pad;
-  ctx.beginPath(); ctx.arc(ex, ey, 2, 0, Math.PI*2);
-  ctx.fillStyle = color; ctx.fill();
-}
-
-function updateCryptoBoxes(data){
-  var covMap={
-    'BTCUSDT':'btc','ETHUSDT':'eth','SOLUSDT':'sol','BNBUSDT':'bnb',
-    'XRPUSDT':'xrp','DOGEUSDT':'doge','ADAUSDT':'ada',
-    'AVAXUSDT':'avax','LINKUSDT':'link','DOTUSDT':'dot'
-  };
-  data.forEach(function(t){
-    var key=covMap[t.symbol];
-    if(!key) return;
-    var p=parseFloat(t.lastPrice||0);
-    var c=parseFloat(t.priceChangePercent||0);
-    if(!p) return;
-    var pe=document.getElementById('covp-'+key);
-    var ce=document.getElementById('covc-'+key);
-    var box=document.getElementById('covbox-'+key);
-    var cv=document.getElementById('covs-'+key);
-    var ps=p>=1000?'$'+p.toLocaleString(undefined,{maximumFractionDigits:2}):p>=1?'$'+p.toFixed(3):'$'+p.toFixed(6);
-    var up=c>=0;
-    if(pe) pe.textContent=ps;
-    if(ce){ce.textContent=(up?'+':'')+c.toFixed(2)+'%';ce.style.color=up?'#0ecb81':'#f6465d';}
-    if(box){box.style.borderColor=up?'rgba(14,203,129,0.4)':'rgba(246,70,93,0.4)';}
-    if(cv) drawSparkline(cv, c);
-  });
 }
 
 function scrollAndLoad(sym){window.scrollTo({top:0,behavior:'smooth'});loadPair(sym);}
@@ -1816,7 +1771,6 @@ window.addEventListener('DOMContentLoaded',function(){
     if(!hg||!hg.innerHTML) renderCryptoGrids([]);
   },500);
   setInterval(function(){fetchAllTickers();},30000);
-  setInterval(function(){fetchLiveTicker();},60000);
   setTimeout(function(){runForecast(true);},1000);
   // Retry crypto boxes after 3s if still empty
   setTimeout(function(){
