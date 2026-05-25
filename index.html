@@ -1516,19 +1516,21 @@ function renderAll(data) {
 }
 
 // ── RUN FORECAST ──────────────────────────────
-async function runForecast(){
+async function runForecast(isAutoRun){
   // Admin bypass
   var isAdmin = currentUser && currentUser.email === 'alexclaor@gmail.com';
   if(!currentUser && !isAdmin){
     var gc=parseInt(localStorage.getItem('zeus_guest_count')||'0');
-    if(gc>=20){showGuestLimit();return;}
-    localStorage.setItem('zeus_guest_count',gc+1);
-    // Track forecast count for banner
-    var fc=parseInt(localStorage.getItem('zeus_forecast_count')||'0')+1;
-    localStorage.setItem('zeus_forecast_count', fc);
-    if(fc>=30){
-      var banner=document.getElementById('chart-signup-banner');
-      if(banner) banner.style.display='block';
+    if(gc>=20 && !isAutoRun){showGuestLimit();return;}
+    if(!isAutoRun){
+      localStorage.setItem('zeus_guest_count',gc+1);
+      // Track forecast count for banner
+      var fc=parseInt(localStorage.getItem('zeus_forecast_count')||'0')+1;
+      localStorage.setItem('zeus_forecast_count', fc);
+      if(fc>=30){
+        var banner=document.getElementById('chart-signup-banner');
+        if(banner) banner.style.display='block';
+      }
     }
   }
   var symbol=document.getElementById('pair-input').value.trim().toUpperCase().replace(/[\/\-\s]/g,'')||'BTCUSDT';
@@ -1649,7 +1651,7 @@ window.addEventListener('DOMContentLoaded',function(){
     if(!hg||!hg.innerHTML) renderCryptoGrids([]);
   },500);
   setInterval(function(){fetchAllTickers();},30000);
-  setTimeout(runForecast,1000);
+  setTimeout(function(){runForecast(true);},1000);
   });
 </script>
 </body>
