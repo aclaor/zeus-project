@@ -395,6 +395,71 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 
 
 
+<!-- CRYPTO OVERVIEW BOXES -->
+<div style="background:#0b0f1a;padding:8px 12px;border-bottom:1px solid #1e2a40;overflow-x:auto;scrollbar-width:none;">
+  <div style="display:flex;gap:6px;min-width:max-content;">
+    <div onclick="scrollAndLoad('BTCUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 12px;cursor:pointer;transition:all .15s;min-width:80px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-btc" data-bc="#1e2a40">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">Bitcoin</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">BTC</div>
+      <div id="covp-btc" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;">—</div>
+      <div id="covc-btc" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+    </div>
+    <div onclick="scrollAndLoad('ETHUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 12px;cursor:pointer;transition:all .15s;min-width:80px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-eth" data-bc="#1e2a40">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">Ethereum</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">ETH</div>
+      <div id="covp-eth" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;">—</div>
+      <div id="covc-eth" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+    </div>
+    <div onclick="scrollAndLoad('SOLUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 12px;cursor:pointer;transition:all .15s;min-width:80px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-sol" data-bc="#1e2a40">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">Solana</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">SOL</div>
+      <div id="covp-sol" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;">—</div>
+      <div id="covc-sol" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+    </div>
+    <div onclick="scrollAndLoad('BNBUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 12px;cursor:pointer;transition:all .15s;min-width:80px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-bnb" data-bc="#1e2a40">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">BNB</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">BNB</div>
+      <div id="covp-bnb" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;">—</div>
+      <div id="covc-bnb" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+    </div>
+    <div onclick="scrollAndLoad('XRPUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 12px;cursor:pointer;transition:all .15s;min-width:80px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-xrp" data-bc="#1e2a40">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">XRP</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">XRP</div>
+      <div id="covp-xrp" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;">—</div>
+      <div id="covc-xrp" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+    </div>
+    <div onclick="scrollAndLoad('DOGEUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 12px;cursor:pointer;transition:all .15s;min-width:80px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-doge" data-bc="#1e2a40">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">Dogecoin</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">DOGE</div>
+      <div id="covp-doge" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;">—</div>
+      <div id="covc-doge" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+    </div>
+    <div onclick="scrollAndLoad('ADAUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 12px;cursor:pointer;transition:all .15s;min-width:80px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-ada" data-bc="#1e2a40">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">Cardano</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">ADA</div>
+      <div id="covp-ada" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;">—</div>
+      <div id="covc-ada" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+    </div>
+    <div onclick="scrollAndLoad('AVAXUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 12px;cursor:pointer;transition:all .15s;min-width:80px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-avax" data-bc="#1e2a40">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">Avalanche</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">AVAX</div>
+      <div id="covp-avax" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;">—</div>
+      <div id="covc-avax" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+    </div>
+    <div onclick="scrollAndLoad('LINKUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 12px;cursor:pointer;transition:all .15s;min-width:80px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-link" data-bc="#1e2a40">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">Chainlink</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">LINK</div>
+      <div id="covp-link" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;">—</div>
+      <div id="covc-link" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+    </div>
+    <div onclick="scrollAndLoad('DOTUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:7px 12px;cursor:pointer;transition:all .15s;min-width:80px;" onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor=this.dataset.bc||'#1e2a40'" id="covbox-dot" data-bc="#1e2a40">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#344a66;">Polkadot</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;font-weight:700;">DOT</div>
+      <div id="covp-dot" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;">—</div>
+      <div id="covc-dot" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;">—</div>
+    </div>
+  </div>
+</div>
 <div class="pair-header">
   <div class="pair-info">
     <div>
@@ -529,61 +594,6 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
   </div>
 </div>
 
-<!-- CRYPTO OVERVIEW BOXES -->
-<div id="crypto-overview-boxes" style="background:#0b0f1a;padding:8px 12px;border-bottom:1px solid #1e2a40;overflow-x:auto;scrollbar-width:none;">
-  <div style="display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;">
-    <div class="cov-box" onclick="scrollAndLoad('BTCUSDT')" id="cov-btc" data-sym="BTCUSDT">
-      <div class="cov-name">Bitcoin</div><div class="cov-sym">BTC</div>
-      <div class="cov-price" id="covp-btc">—</div>
-      <div class="cov-chg" id="covc-btc">—</div>
-    </div>
-    <div class="cov-box" onclick="scrollAndLoad('ETHUSDT')" id="cov-eth" data-sym="ETHUSDT">
-      <div class="cov-name">Ethereum</div><div class="cov-sym">ETH</div>
-      <div class="cov-price" id="covp-eth">—</div>
-      <div class="cov-chg" id="covc-eth">—</div>
-    </div>
-    <div class="cov-box" onclick="scrollAndLoad('SOLUSDT')" id="cov-sol" data-sym="SOLUSDT">
-      <div class="cov-name">Solana</div><div class="cov-sym">SOL</div>
-      <div class="cov-price" id="covp-sol">—</div>
-      <div class="cov-chg" id="covc-sol">—</div>
-    </div>
-    <div class="cov-box" onclick="scrollAndLoad('BNBUSDT')" id="cov-bnb" data-sym="BNBUSDT">
-      <div class="cov-name">BNB</div><div class="cov-sym">BNB</div>
-      <div class="cov-price" id="covp-bnb">—</div>
-      <div class="cov-chg" id="covc-bnb">—</div>
-    </div>
-    <div class="cov-box" onclick="scrollAndLoad('XRPUSDT')" id="cov-xrp" data-sym="XRPUSDT">
-      <div class="cov-name">XRP</div><div class="cov-sym">XRP</div>
-      <div class="cov-price" id="covp-xrp">—</div>
-      <div class="cov-chg" id="covc-xrp">—</div>
-    </div>
-    <div class="cov-box" onclick="scrollAndLoad('DOGEUSDT')" id="cov-doge" data-sym="DOGEUSDT">
-      <div class="cov-name">Dogecoin</div><div class="cov-sym">DOGE</div>
-      <div class="cov-price" id="covp-doge">—</div>
-      <div class="cov-chg" id="covc-doge">—</div>
-    </div>
-    <div class="cov-box" onclick="scrollAndLoad('ADAUSDT')" id="cov-ada" data-sym="ADAUSDT">
-      <div class="cov-name">Cardano</div><div class="cov-sym">ADA</div>
-      <div class="cov-price" id="covp-ada">—</div>
-      <div class="cov-chg" id="covc-ada">—</div>
-    </div>
-    <div class="cov-box" onclick="scrollAndLoad('AVAXUSDT')" id="cov-avax" data-sym="AVAXUSDT">
-      <div class="cov-name">Avalanche</div><div class="cov-sym">AVAX</div>
-      <div class="cov-price" id="covp-avax">—</div>
-      <div class="cov-chg" id="covc-avax">—</div>
-    </div>
-    <div class="cov-box" onclick="scrollAndLoad('LINKUSDT')" id="cov-link" data-sym="LINKUSDT">
-      <div class="cov-name">Chainlink</div><div class="cov-sym">LINK</div>
-      <div class="cov-price" id="covp-link">—</div>
-      <div class="cov-chg" id="covc-link">—</div>
-    </div>
-    <div class="cov-box" onclick="scrollAndLoad('DOTUSDT')" id="cov-dot" data-sym="DOTUSDT">
-      <div class="cov-name">Polkadot</div><div class="cov-sym">DOT</div>
-      <div class="cov-price" id="covp-dot">—</div>
-      <div class="cov-chg" id="covc-dot">—</div>
-    </div>
-  </div>
-</div>
 
 <div id="crypto-market-overview" style="background:var(--bg);padding:24px 20px 120px 20px;">
   <div style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;color:#0ecb81;margin-bottom:4px;letter-spacing:2px;">🔥 CRYPTO MARKETS</div>
