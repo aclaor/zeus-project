@@ -1846,6 +1846,16 @@ window.addEventListener('DOMContentLoaded',function(){
   },500);
   setInterval(function(){fetchAllTickers();},30000);
   setTimeout(function(){runForecast(true);},1000);
+  // Retry crypto boxes after 3s if still empty
+  setTimeout(function(){
+    var btcEl = document.getElementById('covp-btc');
+    if(btcEl && btcEl.textContent === '—'){
+      var boxData = Object.keys(allTickerData).map(function(sym){
+        return {symbol:sym, lastPrice:String(allTickerData[sym].p), priceChangePercent:String(allTickerData[sym].c)};
+      });
+      if(boxData.length) updateCryptoBoxes(boxData);
+    }
+  }, 3000);
   });
 </script>
 </body>
