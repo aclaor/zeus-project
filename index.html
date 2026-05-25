@@ -1444,13 +1444,12 @@ async function fetchLiveTicker(){
         }
       }
     });
-    // Update crypto overview boxes
-    updateCryptoBoxes(data);
-    
-    // Update allTickerData for pairs list
+    // Update allTickerData FIRST
     data.forEach(function(t){
       allTickerData[t.symbol]={p:parseFloat(t.lastPrice||0),c:parseFloat(t.priceChangePercent||0)};
     });
+    // Then update crypto overview boxes
+    updateCryptoBoxes(data);
     
     renderBottomTicker();
     if(currentQuote==='USDT') updatePairsList();
