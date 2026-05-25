@@ -329,9 +329,9 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:4px;background:transparent;border:none;}
 .hamburger span{width:20px;height:2px;background:#607a99;border-radius:1px;}
 .bottom-bar{position:fixed;bottom:0;left:0;right:0;height:28px;background:#0b0f1a;border-top:1px solid #1e2a40;z-index:400;overflow:hidden;display:flex;align-items:center;}
-.bottom-bar-inner{display:flex;white-space:nowrap;animation:none;}
+.bottom-bar-inner{display:flex;white-space:nowrap;animation:none;will-change:transform;}
 .bottom-bar-inner:hover{animation-play-state:paused;}
-@keyframes btscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes btscroll{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(-50%,0,0)}}
 .bt{display:inline-flex;gap:6px;padding:0 16px;border-right:1px solid #1e2a40;font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;white-space:nowrap;}
 .bt:hover{background:rgba(0,255,255,0.05);}
 .bt-s{color:#d0e0f0;}
@@ -1284,25 +1284,32 @@ function drawSparkline(canvas, changePercent){
   ctx.clearRect(0,0,w,h);
   var up=changePercent>=0;
   var color=up?'#0ecb81':'#f6465d';
-  var seed=Math.abs(Math.round(changePercent*100))%50;
-  var pts=[];
-  for(var i=0;i<10;i++){
-    var trend=(i/9)*(changePercent>0?1:-1)*0.6;
-    var noise=Math.sin(i*1.5+seed)*0.15;
-    pts.push(0.5+trend+noise);
+  // Simple 6-point trend line based on % change
+  var pts=[0.5, 0.5];
+  var abs=Math.min(Math.abs(changePercent)/5, 0.35);
+  if(up){
+    pts=[0.65,0.55,0.5,0.45,0.38,0.28];
+  } else {
+    pts=[0.35,0.45,0.5,0.55,0.62,0.72];
   }
-  var mn=Math.min.apply(null,pts), mx=Math.max.apply(null,pts), rng=mx-mn||0.01;
-  // Simple line only - clean minimal look
+  // Scale to canvas
+  var pad=3;
   ctx.beginPath();
   pts.forEach(function(v,i){
-    var x=(i/(pts.length-1))*(w-4)+2;
-    var y=(h-4)-((v-mn)/rng)*(h-8)+2;
+    var x=(i/(pts.length-1))*(w-pad*2)+pad;
+    var y=v*(h-pad*2)+pad;
     i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
   });
   ctx.strokeStyle=color;
   ctx.lineWidth=1.5;
   ctx.lineJoin='round';
   ctx.stroke();
+  // Small fill area
+  ctx.lineTo((w-pad), h-pad);
+  ctx.lineTo(pad, h-pad);
+  ctx.closePath();
+  ctx.fillStyle=up?'rgba(14,203,129,0.08)':'rgba(246,70,93,0.08)';
+  ctx.fill();
 }
 
 function updateCryptoBoxes(data){
@@ -1353,7 +1360,9 @@ function renderBottomTicker(){
         +'</div>';
     }).join('');
     // Start animation only once
-    inner.style.animation = 'btscroll 90s linear infinite';
+    inner.style.animation = 'none';
+    inner.offsetHeight; // Force reflow
+    inner.style.animation = 'btscroll 120s linear infinite';
   } else {
     // Just update prices without rebuilding HTML
     items.forEach(function(d){
