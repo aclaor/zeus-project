@@ -1459,8 +1459,7 @@ async function fetchLiveTicker(){
     renderCryptoGrids(data);
     
   }catch(e){
-    console.log('Ticker unavailable:', e);
-    // Still render grids with static fallback
+    console.log('Ticker error:', e.message||e);
     renderCryptoGrids([]);
   }
 }
@@ -1845,6 +1844,7 @@ window.addEventListener('DOMContentLoaded',function(){
     if(!hg||!hg.innerHTML) renderCryptoGrids([]);
   },500);
   setInterval(function(){fetchAllTickers();},30000);
+  setInterval(function(){fetchLiveTicker();},60000);
   setTimeout(function(){runForecast(true);},1000);
   // Retry crypto boxes after 3s if still empty
   setTimeout(function(){
