@@ -374,7 +374,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
       <button class="nav-btn" onclick="showModal('login')">Log In</button>
       <button class="nav-btn cta" onclick="showModal('signup')">Sign Up</button>
     </div>
-    <button class="nav-btn" onclick="openChat()" style="padding:4px 10px;font-size:14px;border-color:#0ff;color:#0ff;">💬</button>
+    <button class="nav-btn" onclick="openChat()" style="padding:4px 10px;font-size:14px;border-color:#0ff;color:#0ff;" title="Live Chat">💬</button>
   </div>
 </div>
 
@@ -386,14 +386,22 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
   <button class="nav-btn" style="width:100%;text-align:left;padding:10px 12px;border-color:#0af;color:#0af;" onclick="showNews();toggleMobileNav()">📰 News</button>
 </div>
 
-<div class="ticker-bar" id="ticker-bar">
-  <div class="tick-item" onclick="loadPair('BTCUSDT')"><span class="tick-sym">BTCUSDT</span><span class="tick-p" id="tk-btc">—</span></div>
-  <div class="tick-item" onclick="loadPair('ETHUSDT')"><span class="tick-sym">ETHUSDT</span><span class="tick-p" id="tk-eth">—</span></div>
-  <div class="tick-item" onclick="loadPair('SOLUSDT')"><span class="tick-sym">SOLUSDT</span><span class="tick-p" id="tk-sol">—</span></div>
-  <div class="tick-item" onclick="loadPair('BNBUSDT')"><span class="tick-sym">BNBUSDT</span><span class="tick-p" id="tk-bnb">—</span></div>
-  <div class="tick-item" onclick="loadPair('XRPUSDT')"><span class="tick-sym">XRPUSDT</span><span class="tick-p" id="tk-xrp">—</span></div>
-  <div class="tick-item" onclick="loadPair('DOGEUSDT')"><span class="tick-sym">DOGEUSDT</span><span class="tick-p" id="tk-doge">—</span></div>
-  <div class="tick-item" onclick="loadPair('ADAUSDT')"><span class="tick-sym">ADAUSDT</span><span class="tick-p" id="tk-ada">—</span></div>
+<div class="ticker-bar" id="ticker-bar" style="gap:0;padding:0 4px;">
+  <div class="tick-item" onclick="loadPair('BTCUSDT')"><span class="tick-sym">BTC</span><canvas id="spark-btc" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-btc">—</span></div>
+  <div class="tick-item" onclick="loadPair('ETHUSDT')"><span class="tick-sym">ETH</span><canvas id="spark-eth" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-eth">—</span></div>
+  <div class="tick-item" onclick="loadPair('SOLUSDT')"><span class="tick-sym">SOL</span><canvas id="spark-sol" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-sol">—</span></div>
+  <div class="tick-item" onclick="loadPair('BNBUSDT')"><span class="tick-sym">BNB</span><canvas id="spark-bnb" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-bnb">—</span></div>
+  <div class="tick-item" onclick="loadPair('XRPUSDT')"><span class="tick-sym">XRP</span><canvas id="spark-xrp" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-xrp">—</span></div>
+  <div class="tick-item" onclick="loadPair('DOGEUSDT')"><span class="tick-sym">DOGE</span><canvas id="spark-doge" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-doge">—</span></div>
+  <div class="tick-item" onclick="loadPair('ADAUSDT')"><span class="tick-sym">ADA</span><canvas id="spark-ada" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-ada">—</span></div>
+  <div class="tick-item" onclick="loadPair('AVAXUSDT')"><span class="tick-sym">AVAX</span><canvas id="spark-avax" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-avax">—</span></div>
+  <div class="tick-item" onclick="loadPair('LINKUSDT')"><span class="tick-sym">LINK</span><canvas id="spark-link" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-link">—</span></div>
+  <div class="tick-item" onclick="loadPair('DOTUSDT')"><span class="tick-sym">DOT</span><canvas id="spark-dot" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-dot">—</span></div>
+  <div class="tick-item" onclick="loadPair('MATICUSDT')"><span class="tick-sym">MATIC</span><canvas id="spark-matic" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-matic">—</span></div>
+  <div class="tick-item" onclick="loadPair('UNIUSDT')"><span class="tick-sym">UNI</span><canvas id="spark-uni" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-uni">—</span></div>
+  <div class="tick-item" onclick="loadPair('ATOMUSDT')"><span class="tick-sym">ATOM</span><canvas id="spark-atom" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-atom">—</span></div>
+  <div class="tick-item" onclick="loadPair('LTCUSDT')"><span class="tick-sym">LTC</span><canvas id="spark-ltc" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-ltc">—</span></div>
+  <div class="tick-item" onclick="loadPair('NEARUSDT')"><span class="tick-sym">NEAR</span><canvas id="spark-near" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-near">—</span></div>
 </div>
 
 <div class="pair-header">
@@ -761,8 +769,20 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 </div>
 
 <!-- Tawk.to -->
+<style>
+/* Minimize Tawk.to chat widget */
+#fc_widget, .fc_frame, iframe[title*="chat"], iframe[src*="tawk"] {
+  bottom: 36px !important;
+  right: 12px !important;
+  transform: scale(0.8) !important;
+  transform-origin: bottom right !important;
+}
+</style>
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+Tawk_API.onLoad = function(){
+    Tawk_API.hideWidget();
+};
 (function(){var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
 s1.async=true;s1.src='https://embed.tawk.to/6a0277de0dda3e1c34c849a4/1jocq8fqe';
 s1.charset='UTF-8';s1.setAttribute('crossorigin','*');s0.parentNode.insertBefore(s1,s0);})();
@@ -975,7 +995,7 @@ function closeMarkets(){var el=document.getElementById('markets-modal');if(el)el
 function showTutorial(){var el=document.getElementById('tutorial-modal');if(el)el.classList.remove('hidden');}
 function showAbout(){var el=document.getElementById('about-modal');if(el)el.classList.remove('hidden');}
 function closeInfo(id){var el=document.getElementById(id);if(el)el.classList.add('hidden');}
-function openChat(){if(window.Tawk_API&&window.Tawk_API.maximize)window.Tawk_API.maximize();}
+function openChat(){if(window.Tawk_API){if(window.Tawk_API.isChatHidden&&window.Tawk_API.isChatHidden()){window.Tawk_API.showWidget();window.Tawk_API.maximize();}else{window.Tawk_API.maximize();}}}
 function toggleMobileNav(){var nav=document.getElementById('mobile-nav');if(nav)nav.style.display=nav.style.display==='flex'?'none':'flex';}
 function showHomeDrop(){var d=document.getElementById('home-drop');if(!d)return;if(d.classList.contains('open')){d.classList.remove('open');return;}d.classList.add('open');loadHDCoins();}
 function closeHomeDrop(){var d=document.getElementById('home-drop');if(d)d.classList.remove('open');}
@@ -1185,6 +1205,41 @@ function updatePairsList() {
   }).join('');
   listEl.querySelectorAll('.pair-row').forEach(function(row){row.addEventListener('click',function(){document.getElementById('pair-input').value=this.getAttribute('data-sym');listEl.querySelectorAll('.pair-row').forEach(function(r){r.classList.remove('active-pair');});this.classList.add('active-pair');runForecast();});});
 }
+function drawSparkline(canvas, changePercent){
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+  var up = changePercent >= 0;
+  var color = up ? '#0ecb81' : '#f6465d';
+  // Generate fake sparkline points based on change direction
+  var points = [];
+  var seed = Math.abs(changePercent * 1000) % 100;
+  for(var i = 0; i < 10; i++){
+    var noise = (Math.sin(i * 2.1 + seed) * 0.3 + Math.cos(i * 1.7 + seed) * 0.2);
+    var trend = (i / 9) * changePercent * 0.8;
+    points.push(0.5 + trend/20 + noise * 0.15);
+  }
+  var mn = Math.min.apply(null, points);
+  var mx = Math.max.apply(null, points);
+  var range = mx - mn || 0.01;
+  ctx.beginPath();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.5;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 3;
+  points.forEach(function(v, i){
+    var x = (i / (points.length-1)) * w;
+    var y = h - ((v - mn) / range) * (h - 2) - 1;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+  // Fill area under line
+  ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath();
+  ctx.fillStyle = up ? 'rgba(14,203,129,0.1)' : 'rgba(246,70,93,0.1)';
+  ctx.shadowBlur = 0;
+  ctx.fill();
+}
+
 function scrollAndLoad(sym){window.scrollTo({top:0,behavior:'smooth'});loadPair(sym);}
 function loadPair(sym){var clean=sym.toUpperCase().replace(/[\/\-\s]/g,'');document.getElementById('pair-input').value=clean;document.querySelectorAll('.pair-row').forEach(function(r){r.classList.toggle('active-pair',r.getAttribute('data-sym')===clean);});runForecast();}
 
@@ -1239,17 +1294,36 @@ async function fetchLiveTicker(){
     });
     
     // Update static top ticker IDs
-    var tkMap={'BTCUSDT':'tk-btc','ETHUSDT':'tk-eth','SOLUSDT':'tk-sol','BNBUSDT':'tk-bnb','XRPUSDT':'tk-xrp','DOGEUSDT':'tk-doge','ADAUSDT':'tk-ada'};
+    var tkMap={
+      'BTCUSDT':['tk-btc','spark-btc'],
+      'ETHUSDT':['tk-eth','spark-eth'],
+      'SOLUSDT':['tk-sol','spark-sol'],
+      'BNBUSDT':['tk-bnb','spark-bnb'],
+      'XRPUSDT':['tk-xrp','spark-xrp'],
+      'DOGEUSDT':['tk-doge','spark-doge'],
+      'ADAUSDT':['tk-ada','spark-ada'],
+      'AVAXUSDT':['tk-avax','spark-avax'],
+      'LINKUSDT':['tk-link','spark-link'],
+      'DOTUSDT':['tk-dot','spark-dot'],
+      'MATICUSDT':['tk-matic','spark-matic'],
+      'UNIUSDT':['tk-uni','spark-uni'],
+      'ATOMUSDT':['tk-atom','spark-atom'],
+      'LTCUSDT':['tk-ltc','spark-ltc'],
+      'NEARUSDT':['tk-near','spark-near']
+    };
     data.forEach(function(t){
-      var id=tkMap[t.symbol];
-      if(id){
-        var el=document.getElementById(id);
+      var ids=tkMap[t.symbol];
+      if(ids){
+        var el=document.getElementById(ids[0]);
         var p=parseFloat(t.lastPrice||0);
         var c=parseFloat(t.priceChangePercent||0);
         if(el&&p>0){
-          el.textContent='$'+p.toLocaleString(undefined,{maximumFractionDigits:p>=1000?2:p>=1?3:6});
+          el.textContent='$'+p.toLocaleString(undefined,{maximumFractionDigits:p>=1000?2:p>=1?3:6})+(c>=0?' +':' ')+c.toFixed(2)+'%';
           el.className='tick-p'+(c<0?' dn':'');
         }
+        // Draw sparkline
+        var canvas=document.getElementById(ids[1]);
+        if(canvas&&p>0) drawSparkline(canvas, c);
       }
     });
     
