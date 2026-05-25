@@ -1305,6 +1305,31 @@ function drawSparkline(canvas, changePercent){
   ctx.stroke();
 }
 
+function updateCryptoBoxes(data){
+  var covMap={
+    'BTCUSDT':'btc','ETHUSDT':'eth','SOLUSDT':'sol','BNBUSDT':'bnb',
+    'XRPUSDT':'xrp','DOGEUSDT':'doge','ADAUSDT':'ada',
+    'AVAXUSDT':'avax','LINKUSDT':'link','DOTUSDT':'dot'
+  };
+  data.forEach(function(t){
+    var key=covMap[t.symbol];
+    if(!key) return;
+    var p=parseFloat(t.lastPrice||0);
+    var c=parseFloat(t.priceChangePercent||0);
+    if(!p) return;
+    var up=c>=0;
+    var pe=document.getElementById('covp-'+key);
+    var ce=document.getElementById('covc-'+key);
+    var box=document.getElementById('covbox-'+key);
+    var cv=document.getElementById('covs-'+key);
+    var ps=p>=1000?'$'+p.toLocaleString(undefined,{maximumFractionDigits:2}):p>=1?'$'+p.toFixed(3):'$'+p.toFixed(6);
+    if(pe) pe.textContent=ps;
+    if(ce){ce.textContent=(up?'+':'')+c.toFixed(2)+'%';ce.style.color=up?'#0ecb81':'#f6465d';}
+    if(box) box.style.borderColor=up?'rgba(14,203,129,0.4)':'rgba(246,70,93,0.4)';
+    if(cv) drawSparkline(cv, c);
+  });
+}
+
 function scrollAndLoad(sym){window.scrollTo({top:0,behavior:'smooth'});loadPair(sym);}
 function loadPair(sym){var clean=sym.toUpperCase().replace(/[\/\-\s]/g,'');document.getElementById('pair-input').value=clean;document.querySelectorAll('.pair-row').forEach(function(r){r.classList.toggle('active-pair',r.getAttribute('data-sym')===clean);});runForecast();}
 
