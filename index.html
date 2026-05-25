@@ -386,22 +386,8 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
   <button class="nav-btn" style="width:100%;text-align:left;padding:10px 12px;border-color:#0af;color:#0af;" onclick="showNews();toggleMobileNav()">📰 News</button>
 </div>
 
-<div class="ticker-bar" id="ticker-bar" style="gap:0;padding:0 4px;">
-  <div class="tick-item" onclick="loadPair('BTCUSDT')"><span class="tick-sym">BTC</span><canvas id="spark-btc" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-btc">—</span></div>
-  <div class="tick-item" onclick="loadPair('ETHUSDT')"><span class="tick-sym">ETH</span><canvas id="spark-eth" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-eth">—</span></div>
-  <div class="tick-item" onclick="loadPair('SOLUSDT')"><span class="tick-sym">SOL</span><canvas id="spark-sol" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-sol">—</span></div>
-  <div class="tick-item" onclick="loadPair('BNBUSDT')"><span class="tick-sym">BNB</span><canvas id="spark-bnb" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-bnb">—</span></div>
-  <div class="tick-item" onclick="loadPair('XRPUSDT')"><span class="tick-sym">XRP</span><canvas id="spark-xrp" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-xrp">—</span></div>
-  <div class="tick-item" onclick="loadPair('DOGEUSDT')"><span class="tick-sym">DOGE</span><canvas id="spark-doge" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-doge">—</span></div>
-  <div class="tick-item" onclick="loadPair('ADAUSDT')"><span class="tick-sym">ADA</span><canvas id="spark-ada" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-ada">—</span></div>
-  <div class="tick-item" onclick="loadPair('AVAXUSDT')"><span class="tick-sym">AVAX</span><canvas id="spark-avax" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-avax">—</span></div>
-  <div class="tick-item" onclick="loadPair('LINKUSDT')"><span class="tick-sym">LINK</span><canvas id="spark-link" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-link">—</span></div>
-  <div class="tick-item" onclick="loadPair('DOTUSDT')"><span class="tick-sym">DOT</span><canvas id="spark-dot" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-dot">—</span></div>
-  <div class="tick-item" onclick="loadPair('MATICUSDT')"><span class="tick-sym">MATIC</span><canvas id="spark-matic" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-matic">—</span></div>
-  <div class="tick-item" onclick="loadPair('UNIUSDT')"><span class="tick-sym">UNI</span><canvas id="spark-uni" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-uni">—</span></div>
-  <div class="tick-item" onclick="loadPair('ATOMUSDT')"><span class="tick-sym">ATOM</span><canvas id="spark-atom" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-atom">—</span></div>
-  <div class="tick-item" onclick="loadPair('LTCUSDT')"><span class="tick-sym">LTC</span><canvas id="spark-ltc" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-ltc">—</span></div>
-  <div class="tick-item" onclick="loadPair('NEARUSDT')"><span class="tick-sym">NEAR</span><canvas id="spark-near" width="40" height="20" style="vertical-align:middle;margin:0 3px;"></canvas><span class="tick-p" id="tk-near">—</span></div>
+<div class="ticker-bar" id="ticker-bar" style="overflow:hidden;padding:0;">
+  <div id="top-ticker-scroll" style="display:flex;white-space:nowrap;animation:none;"></div>
 </div>
 
 <div class="pair-header">
@@ -1311,21 +1297,38 @@ async function fetchLiveTicker(){
       'LTCUSDT':['tk-ltc','spark-ltc'],
       'NEARUSDT':['tk-near','spark-near']
     };
-    data.forEach(function(t){
-      var ids=tkMap[t.symbol];
-      if(ids){
-        var el=document.getElementById(ids[0]);
-        var p=parseFloat(t.lastPrice||0);
-        var c=parseFloat(t.priceChangePercent||0);
-        if(el&&p>0){
-          el.textContent='$'+p.toLocaleString(undefined,{maximumFractionDigits:p>=1000?2:p>=1?3:6})+(c>=0?' +':' ')+c.toFixed(2)+'%';
-          el.className='tick-p'+(c<0?' dn':'');
-        }
-        // Draw sparkline
-        var canvas=document.getElementById(ids[1]);
-        if(canvas&&p>0) drawSparkline(canvas, c);
+    // Build top scrolling ticker with sparklines
+    var topScroll = document.getElementById('top-ticker-scroll');
+    if(topScroll && data.length > 0){
+      var topHtml = data.concat(data).map(function(t){
+        var p = parseFloat(t.lastPrice||0);
+        var c = parseFloat(t.priceChangePercent||0);
+        var up = c >= 0;
+        var sym = (t.symbol||'').replace('USDT','');
+        var ps = p>=1000?'$'+p.toLocaleString(undefined,{maximumFractionDigits:2}):p>=1?'$'+p.toFixed(3):'$'+p.toFixed(5);
+        var sparkId = 'tsp-'+sym.toLowerCase()+'-'+Math.random().toString(36).substr(2,4);
+        return '<div class="tick-item" data-sym="'+t.symbol+'" onclick="loadPair(this.dataset.sym)" style="display:inline-flex;align-items:center;gap:4px;padding:0 10px;border-right:1px solid #1e2a40;cursor:pointer;">'
+          +'<span class="tick-sym" style="font-weight:700;color:#d0e0f0;">'+sym+'</span>'
+          +'<canvas id="'+sparkId+'" width="36" height="18" data-chg="'+c+'" style="vertical-align:middle;"></canvas>'
+          +'<span class="tick-p'+(up?'':' dn')+'">'+ps+' <span style="font-size:9px;">'+(up?'+':'')+c.toFixed(2)+'%</span></span>'
+          +'</div>';
+      }).join('');
+      if(topScroll.innerHTML !== topHtml){
+        topScroll.innerHTML = topHtml;
+        topScroll.style.animation = 'btscroll 60s linear infinite';
+        // Draw sparklines after render
+        setTimeout(function(){
+          topScroll.querySelectorAll('canvas[data-chg]').forEach(function(cv){
+            drawSparkline(cv, parseFloat(cv.dataset.chg||0));
+          });
+        }, 100);
+      } else {
+        // Just update sparklines
+        topScroll.querySelectorAll('canvas[data-chg]').forEach(function(cv){
+          drawSparkline(cv, parseFloat(cv.dataset.chg||0));
+        });
       }
-    });
+    }
     
     // Update allTickerData for pairs list
     data.forEach(function(t){
