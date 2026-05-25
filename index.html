@@ -1505,8 +1505,7 @@ function renderAll(data) {
   renderChart(data);renderOrderBook(data.last_close);renderTrades(data.last_close);
   // Show banner after 30 forecasts
   if(!currentUser){
-    var fc=parseInt(localStorage.getItem('zeus_forecast_count')||'0')+1;
-    localStorage.setItem('zeus_forecast_count', fc);
+    var fc=parseInt(localStorage.getItem('zeus_forecast_count')||'0');
     if(fc>=30){
       var banner=document.getElementById('chart-signup-banner');
       if(banner) banner.style.display='block';
@@ -1520,7 +1519,18 @@ function renderAll(data) {
 async function runForecast(){
   // Admin bypass
   var isAdmin = currentUser && currentUser.email === 'alexclaor@gmail.com';
-  if(!currentUser && !isAdmin){var gc=parseInt(localStorage.getItem('zeus_guest_count')||'0');if(gc>=20){showGuestLimit();return;}localStorage.setItem('zeus_guest_count',gc+1);}
+  if(!currentUser && !isAdmin){
+    var gc=parseInt(localStorage.getItem('zeus_guest_count')||'0');
+    if(gc>=20){showGuestLimit();return;}
+    localStorage.setItem('zeus_guest_count',gc+1);
+    // Track forecast count for banner
+    var fc=parseInt(localStorage.getItem('zeus_forecast_count')||'0')+1;
+    localStorage.setItem('zeus_forecast_count', fc);
+    if(fc>=30){
+      var banner=document.getElementById('chart-signup-banner');
+      if(banner) banner.style.display='block';
+    }
+  }
   var symbol=document.getElementById('pair-input').value.trim().toUpperCase().replace(/[\/\-\s]/g,'')||'BTCUSDT';
   document.getElementById('pair-input').value=symbol;
   var quotes=['FDUSD','USDC','USDT','BNB','BTC','ETH'];
@@ -1530,7 +1540,7 @@ async function runForecast(){
   showOverlay(true);
   try{
     var controller=new AbortController();var timeout=setTimeout(function(){controller.abort();},60000);
-    var res=await fetch(API_BASE+'/forecast',{method:'POST',headers:getAuthHeaders(),body:JSON.stringify({symbol:symbol,interval:currentInterval}),signal:controller.signal});
+    var res=await fetch(API_BASE+'/forecast',{method:'POST',headers:{...getAuthHeaders(),'Origin':'https://zeusvisions.com'},body:JSON.stringify({symbol:symbol,interval:currentInterval}),signal:controller.signal});
     clearTimeout(timeout);
     if(!res.ok){var e2=await res.text().catch(function(){return'';});var ej={};try{ej=JSON.parse(e2);}catch(x){}throw new Error(ej.detail||('Error '+res.status));}
     var data=await res.json();renderAll(data);showOverlay(false);showToast('✅ Forecast complete! Scroll down for AI signal.','success');
