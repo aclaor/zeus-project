@@ -329,9 +329,9 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:4px;background:transparent;border:none;}
 .hamburger span{width:20px;height:2px;background:#607a99;border-radius:1px;}
 .bottom-bar{position:fixed;bottom:0;left:0;right:0;height:28px;background:#0b0f1a;border-top:1px solid #1e2a40;z-index:400;overflow:hidden;display:flex;align-items:center;}
-.bottom-bar-inner{display:flex;white-space:nowrap;animation:none;will-change:transform;}
-.bottom-bar-inner:hover{animation-play-state:paused;}
-@keyframes btscroll{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(-50%,0,0)}}
+.bottom-bar-inner{display:flex;white-space:nowrap;}
+
+
 .bt{display:inline-flex;gap:6px;padding:0 16px;border-right:1px solid #1e2a40;font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;white-space:nowrap;}
 .bt:hover{background:rgba(0,255,255,0.05);}
 .bt-s{color:#d0e0f0;}
@@ -399,73 +399,83 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 <div style="background:#0b0f1a;padding:8px 12px;border-bottom:1px solid #1e2a40;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;">
   <div style="display:flex;gap:6px;min-width:max-content;" id="crypto-boxes-row">
     <div class="cov-box" onclick="scrollAndLoad('BTCUSDT')" id="covbox-btc">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div><div class="cov-label">Bitcoin BTC</div><div id="covp-btc" class="cov-price">—</div></div>
-        <canvas id="covs-btc" width="52" height="30"></canvas>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="cov-label">Bitcoin BTC</div>
+        <span id="covicon-btc" style="font-size:16px;" title="—">—</span>
       </div>
+      <div id="covp-btc" class="cov-price">—</div>
       <div id="covc-btc" class="cov-chg">—</div>
     </div>
     <div class="cov-box" onclick="scrollAndLoad('ETHUSDT')" id="covbox-eth">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div><div class="cov-label">Ethereum ETH</div><div id="covp-eth" class="cov-price">—</div></div>
-        <canvas id="covs-eth" width="52" height="30"></canvas>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="cov-label">Ethereum ETH</div>
+        <span id="covicon-eth" style="font-size:16px;" title="—">—</span>
       </div>
+      <div id="covp-eth" class="cov-price">—</div>
       <div id="covc-eth" class="cov-chg">—</div>
     </div>
     <div class="cov-box" onclick="scrollAndLoad('SOLUSDT')" id="covbox-sol">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div><div class="cov-label">Solana SOL</div><div id="covp-sol" class="cov-price">—</div></div>
-        <canvas id="covs-sol" width="52" height="30"></canvas>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="cov-label">Solana SOL</div>
+        <span id="covicon-sol" style="font-size:16px;" title="—">—</span>
       </div>
+      <div id="covp-sol" class="cov-price">—</div>
       <div id="covc-sol" class="cov-chg">—</div>
     </div>
     <div class="cov-box" onclick="scrollAndLoad('BNBUSDT')" id="covbox-bnb">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div><div class="cov-label">BNB BNB</div><div id="covp-bnb" class="cov-price">—</div></div>
-        <canvas id="covs-bnb" width="52" height="30"></canvas>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="cov-label">BNB BNB</div>
+        <span id="covicon-bnb" style="font-size:16px;" title="—">—</span>
       </div>
+      <div id="covp-bnb" class="cov-price">—</div>
       <div id="covc-bnb" class="cov-chg">—</div>
     </div>
     <div class="cov-box" onclick="scrollAndLoad('XRPUSDT')" id="covbox-xrp">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div><div class="cov-label">XRP XRP</div><div id="covp-xrp" class="cov-price">—</div></div>
-        <canvas id="covs-xrp" width="52" height="30"></canvas>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="cov-label">XRP XRP</div>
+        <span id="covicon-xrp" style="font-size:16px;" title="—">—</span>
       </div>
+      <div id="covp-xrp" class="cov-price">—</div>
       <div id="covc-xrp" class="cov-chg">—</div>
     </div>
     <div class="cov-box" onclick="scrollAndLoad('DOGEUSDT')" id="covbox-doge">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div><div class="cov-label">Dogecoin DOGE</div><div id="covp-doge" class="cov-price">—</div></div>
-        <canvas id="covs-doge" width="52" height="30"></canvas>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="cov-label">Dogecoin DOGE</div>
+        <span id="covicon-doge" style="font-size:16px;" title="—">—</span>
       </div>
+      <div id="covp-doge" class="cov-price">—</div>
       <div id="covc-doge" class="cov-chg">—</div>
     </div>
     <div class="cov-box" onclick="scrollAndLoad('ADAUSDT')" id="covbox-ada">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div><div class="cov-label">Cardano ADA</div><div id="covp-ada" class="cov-price">—</div></div>
-        <canvas id="covs-ada" width="52" height="30"></canvas>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="cov-label">Cardano ADA</div>
+        <span id="covicon-ada" style="font-size:16px;" title="—">—</span>
       </div>
+      <div id="covp-ada" class="cov-price">—</div>
       <div id="covc-ada" class="cov-chg">—</div>
     </div>
     <div class="cov-box" onclick="scrollAndLoad('AVAXUSDT')" id="covbox-avax">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div><div class="cov-label">Avalanche AVAX</div><div id="covp-avax" class="cov-price">—</div></div>
-        <canvas id="covs-avax" width="52" height="30"></canvas>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="cov-label">Avalanche AVAX</div>
+        <span id="covicon-avax" style="font-size:16px;" title="—">—</span>
       </div>
+      <div id="covp-avax" class="cov-price">—</div>
       <div id="covc-avax" class="cov-chg">—</div>
     </div>
     <div class="cov-box" onclick="scrollAndLoad('LINKUSDT')" id="covbox-link">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div><div class="cov-label">Chainlink LINK</div><div id="covp-link" class="cov-price">—</div></div>
-        <canvas id="covs-link" width="52" height="30"></canvas>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="cov-label">Chainlink LINK</div>
+        <span id="covicon-link" style="font-size:16px;" title="—">—</span>
       </div>
+      <div id="covp-link" class="cov-price">—</div>
       <div id="covc-link" class="cov-chg">—</div>
     </div>
     <div class="cov-box" onclick="scrollAndLoad('DOTUSDT')" id="covbox-dot">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div><div class="cov-label">Polkadot DOT</div><div id="covp-dot" class="cov-price">—</div></div>
-        <canvas id="covs-dot" width="52" height="30"></canvas>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="cov-label">Polkadot DOT</div>
+        <span id="covicon-dot" style="font-size:16px;" title="—">—</span>
       </div>
+      <div id="covp-dot" class="cov-price">—</div>
       <div id="covc-dot" class="cov-chg">—</div>
     </div>
   </div>
@@ -707,7 +717,11 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
   </div>
 </div>
 
-<div class="bottom-bar"><div class="bottom-bar-inner" id="bottom-bar-inner"></div></div>
+<div class="bottom-bar" style="position:fixed;bottom:0;left:0;right:0;height:28px;background:#0b0f1a;border-top:1px solid #1e2a40;overflow:hidden;z-index:400;display:flex;align-items:center;">
+  <div style="display:flex;overflow:hidden;width:100%;">
+    <div id="bottom-bar-inner" style="display:flex;white-space:nowrap;will-change:transform;"></div>
+  </div>
+</div>
 
 <!-- 30-Second Signup Popup -->
 <div id="signup-popup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);z-index:2000;align-items:center;justify-content:center;">
@@ -1328,12 +1342,12 @@ function updateCryptoBoxes(data){
     var pe=document.getElementById('covp-'+key);
     var ce=document.getElementById('covc-'+key);
     var box=document.getElementById('covbox-'+key);
-    var cv=document.getElementById('covs-'+key);
+    var ic=document.getElementById('covicon-'+key);
     var ps=p>=1000?'$'+p.toLocaleString(undefined,{maximumFractionDigits:2}):p>=1?'$'+p.toFixed(3):'$'+p.toFixed(6);
     if(pe) pe.textContent=ps;
-    if(ce){ce.textContent=(up?'+':'')+c.toFixed(2)+'%';ce.style.color=up?'#0ecb81':'#f6465d';}
-    if(box) box.style.borderColor=up?'rgba(14,203,129,0.4)':'rgba(246,70,93,0.4)';
-    if(cv) drawSparkline(cv, c);
+    if(ce){ce.textContent=(up?'▲ +':'▼ ')+c.toFixed(2)+'%';ce.style.color=up?'#0ecb81':'#f6465d';}
+    if(box){box.style.borderColor=up?'rgba(14,203,129,0.4)':'rgba(246,70,93,0.4)';box.style.background=up?'rgba(14,203,129,0.04)':'rgba(246,70,93,0.04)';}
+    if(ic){ic.textContent=up?'🐂':'🐻';ic.title=up?'BULLISH':'BEARISH';}
   });
 }
 
@@ -1341,6 +1355,12 @@ function scrollAndLoad(sym){window.scrollTo({top:0,behavior:'smooth'});loadPair(
 function loadPair(sym){var clean=sym.toUpperCase().replace(/[\/\-\s]/g,'');document.getElementById('pair-input').value=clean;document.querySelectorAll('.pair-row').forEach(function(r){r.classList.toggle('active-pair',r.getAttribute('data-sym')===clean);});runForecast();}
 
 // ── LIVE DATA ─────────────────────────────────
+// ── BOTTOM TICKER JS ANIMATION ───────────────────────────
+var _tickerX = 0;
+var _tickerSpeed = 0.4; // pixels per frame ~= 120s for full cycle
+var _tickerRAF = null;
+var _tickerWidth = 0;
+
 function renderBottomTicker(){
   var inner = document.getElementById('bottom-bar-inner');
   if(!inner) return;
@@ -1348,8 +1368,8 @@ function renderBottomTicker(){
   if(items.length === 0) return;
 
   if(!_tickerBuilt){
-    // Build HTML once and start animation
     _tickerBuilt = true;
+    // Build HTML - duplicate for seamless loop
     inner.innerHTML = items.concat(items).map(function(d){
       var up = d.c >= 0;
       var sym = d.s.replace('/','');
@@ -1359,25 +1379,34 @@ function renderBottomTicker(){
         +'<span class="bt-c '+(up?'':'dn')+'" id="btc-'+sym.toLowerCase()+'">'+(up?'+':'')+d.c.toFixed(2)+'%</span>'
         +'</div>';
     }).join('');
-    // Start animation only once
-    inner.style.animation = 'none';
-    inner.offsetHeight; // Force reflow
-    inner.style.animation = 'btscroll 120s linear infinite';
+
+    // Start JS animation after render
+    setTimeout(function(){
+      _tickerWidth = inner.scrollWidth / 2;
+      _tickerX = 0;
+      if(_tickerRAF) cancelAnimationFrame(_tickerRAF);
+      function animate(){
+        _tickerX += _tickerSpeed;
+        if(_tickerX >= _tickerWidth) _tickerX = 0;
+        inner.style.transform = 'translateX(-' + _tickerX + 'px)';
+        _tickerRAF = requestAnimationFrame(animate);
+      }
+      animate();
+    }, 100);
+
   } else {
-    // Just update prices without rebuilding HTML
+    // Just update prices in place
     items.forEach(function(d){
       var sym = d.s.replace('/','').toLowerCase();
       var pe = document.getElementById('btp-'+sym);
       var ce = document.getElementById('btc-'+sym);
       if(pe) pe.textContent = '$'+d.p.toLocaleString(undefined,{maximumFractionDigits:d.p>=1?3:6});
-      if(ce){
-        var up = d.c >= 0;
-        ce.textContent = (up?'+':'')+d.c.toFixed(2)+'%';
-        ce.className = 'bt-c'+(up?'':' dn');
-      }
+      if(ce){ var up=d.c>=0; ce.textContent=(up?'+':'')+d.c.toFixed(2)+'%'; ce.className='bt-c'+(up?'':' dn'); }
     });
   }
 }
+
+
 async function fetchLiveTicker(){
   try{
     var r=await fetch(API_BASE+'/ticker/top');
