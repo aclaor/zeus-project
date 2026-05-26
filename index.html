@@ -872,7 +872,7 @@ s1.charset='UTF-8';s1.setAttribute('crossorigin','*');s0.parentNode.insertBefore
 
 <script>
 // ── CONSTANTS ─────────────────────────────────
-const API_BASE  = 'https://cryptovision-production-ca20.up.railway.app';
+const API_BASE  = 'https://cryptovision-sg.onrender.com';
 const DEV_TOKEN = 'mycryptovision2025';
 const SUPA_URL  = 'https://gkxpwqryakgzgvvprbkl.supabase.co';
 const SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHB3cXJ5YWtnemd2dnByYmtsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0MDAxNTUsImV4cCI6MjA5Mzk3NjE1NX0.oMSZx15YsodlOdzPxg4d7a0WesYQRuPCRUZxZcqGA1I';
@@ -1827,7 +1827,10 @@ document.addEventListener('mouseleave',function(e){if(e.clientY<10)showSignupPop
 window.addEventListener('DOMContentLoaded',function(){
   var logobtn=document.getElementById('logo-btn');
   if(logobtn){logobtn.addEventListener('click',function(e){e.stopPropagation();showHomeDrop();});document.addEventListener('click',function(e){var d=document.getElementById('home-drop'),lb=document.getElementById('logo-btn');if(d&&lb&&!d.contains(e.target)&&!lb.contains(e.target))d.classList.remove('open');});}
-  fetchLiveTicker();fetchAllTickers();fetchLivePairs();updatePairsList();
+  fetchLivePairs();
+  updatePairsList();
+  setTimeout(function(){ fetchLiveTicker(); }, 500);
+  setTimeout(function(){ fetchAllTickers(); }, 1500);
   // Track visits - show banner after 3 visits OR 30 forecasts
   var visitCount = parseInt(localStorage.getItem('zeus_forecast_count_visits')||'0') + 1;
   localStorage.setItem('zeus_forecast_count_visits', visitCount);
