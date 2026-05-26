@@ -1828,6 +1828,16 @@ window.addEventListener('DOMContentLoaded',function(){
   var logobtn=document.getElementById('logo-btn');
   if(logobtn){logobtn.addEventListener('click',function(e){e.stopPropagation();showHomeDrop();});document.addEventListener('click',function(e){var d=document.getElementById('home-drop'),lb=document.getElementById('logo-btn');if(d&&lb&&!d.contains(e.target)&&!lb.contains(e.target))d.classList.remove('open');});}
   fetchLiveTicker();fetchAllTickers();fetchLivePairs();updatePairsList();
+  // Track visits - show banner after 3 visits OR 30 forecasts
+  var visitCount = parseInt(localStorage.getItem('zeus_forecast_count_visits')||'0') + 1;
+  localStorage.setItem('zeus_forecast_count_visits', visitCount);
+  if(visitCount >= 3 && !currentUser){
+    setTimeout(function(){
+      var banner = document.getElementById('chart-signup-banner');
+      if(banner) banner.style.display = 'block';
+    }, 5000);
+  }
+
   document.getElementById('pair-input').value='BTCUSDT';
   setTimeout(function(){
     var hg=document.getElementById('hot-coins-grid');
