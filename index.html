@@ -777,22 +777,56 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
     <div class="pricing-sub">Unlock the power of AI crypto forecasting</div>
     <div style="text-align:center;margin-bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#0ecb81;">⭐ Join 500+ traders already using ZEUS-AI</div>
     <div style="text-align:center;margin-bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#f6465d;">🔴 <span id="live-visitors">312</span> traders viewing forecasts right now</div>
-    <div class="plans-grid">
-      <div class="plan-card">
-        <span class="plan-badge2 free">FREE TRIAL</span>
-        <div class="plan-name2">Explorer</div>
-        <div class="plan-price2">$0<small>/7 days</small></div>
-        <ul class="plan-features"><li>15-day free trial</li><li>Unlimited forecasts</li><li>All ZEUS-AI features</li><li class="no">After trial: upgrade required</li></ul>
-        <button class="plan-btn free-btn" onclick="closePricing();showModal('signup')">START FREE TRIAL</button>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+      <!-- FREE -->
+      <div class="plan-card" style="flex:1;min-width:160px;max-width:200px;">
+        <div class="plan-name2">Free</div>
+        <div class="plan-price2">$0<small>/forever</small></div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;margin-bottom:10px;">Try for everyone</div>
+        <ul class="plan-features">
+          <li>2 hrs/day free usage</li>
+          <li>1H, 4H, 1D intervals</li>
+          <li>All major pairs</li>
+          <li>AI signal (Bull/Bear)</li>
+          <li class="no">1m, 5m, 15m intervals</li>
+          <li class="no">Unlimited usage</li>
+        </ul>
+        <button class="plan-btn free-btn" onclick="closePricing();showModal('signup')">START FREE</button>
       </div>
-      <div class="plan-card featured">
+      <!-- PRO -->
+      <div class="plan-card featured" style="flex:1;min-width:160px;max-width:200px;">
         <span class="plan-badge2 hot">⚡ POPULAR</span>
         <div class="plan-name2">Pro</div>
-        <div class="plan-price2">$99<small>/mo</small></div>
-        <ul class="plan-features"><li>Unlimited forecasts</li><li>Any trading pair</li><li>Full ZEUS-AI suite</li><li>Priority support</li></ul>
-        <button class="plan-btn pro-btn" onclick="startPayPal()">UPGRADE TO PRO ⚡</button>
+        <div class="plan-price2">$17<small>/mo</small></div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;margin-bottom:10px;">For everyday traders</div>
+        <ul class="plan-features">
+          <li>Unlimited forecasts</li>
+          <li>All intervals (1m–1D)</li>
+          <li>All trading pairs</li>
+          <li>Full AI suite</li>
+          <li>Priority support</li>
+          <li class="no">Early access features</li>
+        </ul>
+        <button class="plan-btn pro-btn" onclick="startPayPal('pro')">GET PRO ⚡</button>
         <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#344a66;margin-top:6px;text-align:center;">Cancel anytime · Instant access</div>
         <div id="paypal-btn-container"></div>
+      </div>
+      <!-- MAX -->
+      <div class="plan-card" style="flex:1;min-width:160px;max-width:200px;border-color:#f0b90b;">
+        <span class="plan-badge2" style="background:#f0b90b;color:#000;">👑 MAX</span>
+        <div class="plan-name2" style="color:#f0b90b;">Max</div>
+        <div class="plan-price2">$49<small>/mo</small></div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;margin-bottom:10px;">Get the most out of AI</div>
+        <ul class="plan-features">
+          <li>Everything in Pro</li>
+          <li>5x more AI capacity</li>
+          <li>Early access features</li>
+          <li>Dedicated support</li>
+          <li>Priority at high traffic</li>
+          <li>Custom alerts (coming)</li>
+        </ul>
+        <button class="plan-btn" style="background:linear-gradient(90deg,#f0b90b,#ff9900);color:#000;border:none;padding:10px;border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;cursor:pointer;width:100%;" onclick="startPayPal('max')">GET MAX 👑</button>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#344a66;margin-top:6px;text-align:center;">Cancel anytime · Instant access</div>
       </div>
     </div>
   </div>
@@ -1593,6 +1627,43 @@ async function loadHDCoins(){
 }
 
 // ── GUEST LIMIT ───────────────────────────────
+function showTimeLimit(minsLeft){
+  // Hard block - remove any existing
+  var existing=document.getElementById('time-limit-overlay');
+  if(existing) existing.remove();
+  var div=document.createElement('div');
+  div.id='time-limit-overlay';
+  div.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(6,8,16,0.98);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);';
+  // Live countdown
+  var endTime = Date.now() + minsLeft * 60 * 1000;
+  div.innerHTML='<div style="text-align:center;padding:40px;max-width:480px;">'
+    +'<div style="font-size:56px;margin-bottom:16px;">⏰</div>'
+    +'<div style="font-family:IBM Plex Mono,monospace;font-size:24px;font-weight:700;color:#d0e0f0;margin-bottom:8px;letter-spacing:1px;">2-Hour Free Session Complete</div>'
+    +'<div style="font-family:IBM Plex Mono,monospace;font-size:13px;color:#607a99;margin-bottom:8px;line-height:1.8;">You've used your free 2-hour session.<br>Sign up <b style="color:#0ecb81;">free forever</b> to keep going instantly.</div>'
+    +'<div style="font-family:IBM Plex Mono,monospace;font-size:12px;color:#344a66;margin-bottom:24px;">Or wait <span id="tl-countdown" style="color:#f0b90b;font-weight:700;">'+minsLeft+':00</span> for next free session</div>'
+    +'<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">'
+    +'<button onclick="showModal('signup')" style="background:linear-gradient(135deg,#0ecb81,#0af);color:#000;border:none;padding:14px 36px;border-radius:8px;font-family:IBM Plex Mono,monospace;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:0.5px;">🚀 Sign Up Free — No Card</button>'
+    +'<button onclick="showPricing()" style="background:transparent;color:#f0b90b;border:1px solid #f0b90b;padding:14px 24px;border-radius:8px;font-family:IBM Plex Mono,monospace;font-size:13px;cursor:pointer;">⚡ Go Pro $17/mo</button>'
+    +'</div>'
+    +'<div style="font-family:IBM Plex Mono,monospace;font-size:10px;color:#344a66;margin-top:16px;">✅ Free signup · No credit card · Cancel anytime</div>'
+    +'</div>';
+  document.body.appendChild(div);
+  // Live countdown timer
+  var countEl = document.getElementById('tl-countdown');
+  var timer = setInterval(function(){
+    var remaining = Math.max(0, endTime - Date.now());
+    var mins = Math.floor(remaining / 60000);
+    var secs = Math.floor((remaining % 60000) / 1000);
+    if(countEl) countEl.textContent = mins + ':' + String(secs).padStart(2,'0');
+    if(remaining <= 0){
+      clearInterval(timer);
+      // Auto-remove block when timer expires
+      var overlay = document.getElementById('time-limit-overlay');
+      if(overlay) overlay.remove();
+    }
+  }, 1000);
+}
+
 function showGuestLimit(){
   var o=document.getElementById('guest-limit-overlay');
   if(!o){o=document.createElement('div');o.id='guest-limit-overlay';o.style.cssText='position:fixed;inset:0;background:rgba(6,8,16,0.92);z-index:700;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);';
@@ -1716,11 +1787,36 @@ async function runForecast(isAutoRun){
   // Admin bypass
   var isAdmin = currentUser && currentUser.email === 'alexclaor@gmail.com';
   if(!currentUser && !isAdmin){
-    var gc=parseInt(localStorage.getItem('zeus_guest_count')||'0');
-    if(gc>=999 && !isAutoRun){showGuestLimit();return;} // disabled - banner handles conversion
+    // Time-based usage tracking
+    var now = Date.now();
+    var sessionStart = parseInt(localStorage.getItem('zeus_session_start')||'0');
+    var totalUsed = parseInt(localStorage.getItem('zeus_total_used')||'0');
+    var waitUntil = parseInt(localStorage.getItem('zeus_wait_until')||'0');
+
+    // Check if in cooldown period
+    if(waitUntil > now && !isAutoRun){
+      var minsLeft = Math.ceil((waitUntil - now) / 60000);
+      showTimeLimit(minsLeft);
+      return;
+    }
+
+    // Start session timer if not started
+    if(!sessionStart){ sessionStart = now; localStorage.setItem('zeus_session_start', sessionStart); }
+
+    // Track time used (in minutes)
     if(!isAutoRun){
-      localStorage.setItem('zeus_guest_count',gc+1);
-      // Track forecast count for banner
+      var sessionMins = (now - sessionStart) / 60000;
+      localStorage.setItem('zeus_total_used', Math.max(totalUsed, sessionMins));
+
+      // After 120 minutes of usage → prompt signup or 60min wait
+      if(sessionMins >= 120){
+        localStorage.setItem('zeus_wait_until', now + 30*60*1000); // 60min cooldown
+        localStorage.setItem('zeus_session_start', '0');
+        showTimeLimit(60);
+        return;
+      }
+
+      // Show banner after 30 forecasts
       var fc=parseInt(localStorage.getItem('zeus_forecast_count')||'0')+1;
       localStorage.setItem('zeus_forecast_count', fc);
       if(fc>=30){
