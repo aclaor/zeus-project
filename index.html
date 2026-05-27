@@ -394,6 +394,10 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 </div>
 
 
+<!-- TOP TICKER BAR -->
+<div class="ticker-bar" id="ticker-bar" style="overflow:hidden;padding:0;position:sticky;top:48px;z-index:99;">
+  <div id="top-ticker-inner" style="display:flex;white-space:nowrap;"></div>
+</div>
 
 <!-- CRYPTO OVERVIEW BOXES -->
 <div style="background:#0b0f1a;padding:8px 12px;border-bottom:1px solid #1e2a40;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;">
@@ -2205,6 +2209,37 @@ function renderBottomTicker(){
 }
 
 
+
+// ── TOP TICKER JS ANIMATION ───────────────────────────
+var _topTickerBuilt=false,_topTickerX=0,_topTickerRAF=null,_topTickerWidth=0;
+function updateTopTicker(){
+  var inner=document.getElementById('top-ticker-inner');
+  if(!inner)return;
+  var items=btData.filter(function(d){return d.p>0;});
+  if(!items.length)return;
+  if(!_topTickerBuilt){
+    _topTickerBuilt=true;
+    inner.innerHTML=items.concat(items).map(function(d){
+      var up=d.c>=0;var symid=d.s.toLowerCase().replace(/[^a-z]/g,'');
+      return '<div class="tick-item" onclick="loadPair(this.dataset.sym)" data-sym="'+d.s+'">'
+        +'<span class="tick-sym">'+d.s+'</span> '
+        +'<span class="tick-p'+(up?'':' dn')+'" id="ttk-'+symid+'">$'+d.p.toLocaleString(undefined,{maximumFractionDigits:d.p<1?6:2})+' '+(up?'+':'')+d.c.toFixed(2)+'%</span>'
+        +'</div>';
+    }).join('');
+    setTimeout(function(){
+      _topTickerWidth=inner.scrollWidth/2;
+      if(_topTickerRAF)cancelAnimationFrame(_topTickerRAF);
+      function animate(){_topTickerX+=0.4;if(_topTickerX>=_topTickerWidth)_topTickerX=0;inner.style.transform='translateX(-'+_topTickerX+'px)';_topTickerRAF=requestAnimationFrame(animate);}
+      animate();
+    },200);
+  } else {
+    items.forEach(function(d){
+      var symid=d.s.toLowerCase().replace(/[^a-z]/g,'');
+      var el=document.getElementById('ttk-'+symid);
+      if(el){var up=d.c>=0;el.textContent='$'+d.p.toLocaleString(undefined,{maximumFractionDigits:d.p<1?6:2})+' '+(up?'+':'')+d.c.toFixed(2)+'%';el.className='tick-p'+(up?'':' dn');}
+    });
+  }
+}
 async function fetchLiveTicker(){
   try{
     var r=await fetch(API_BASE+'/ticker/top');
