@@ -1046,7 +1046,12 @@ async function handleAuth(e) {
       result = await supabaseClient.auth.signUp({email:email,password:pass,options:{emailRedirectTo:window.location.origin+'/?type=signup',data:{plan:selectedPlan==='pro'?'trial':'free',trial_end:new Date(Date.now()+7*24*60*60*1000).toISOString()}}});
       if (result.error) throw result.error;
       hideModal();
-      showToast('✅ Account created! Check your email to confirm.','success');
+      if(selectedPlan==='pro'||selectedPlan==='max'){
+        showToast('✅ Account created! Redirecting to PayPal...','success');
+        setTimeout(function(){ startPayPal(selectedPlan); }, 1500);
+      } else {
+        showToast('✅ Account created! Check your email to confirm.','success');
+      }
     } else {
       result = await supabaseClient.auth.signInWithPassword({email:email,password:pass});
       if (result.error) throw result.error;
