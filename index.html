@@ -1702,11 +1702,9 @@ if (window.supabase) {
 
 // ── PAIRS DATA ────────────────────────────────
 var btData = [
-  {s:'BTC/USDT',p:81000,c:0.5},{s:'ETH/USDT',p:3500,c:-0.3},
-  {s:'SOL/USDT',p:170,c:1.2},{s:'BNB/USDT',p:600,c:0.8},
-  {s:'XRP/USDT',p:1.4,c:-0.5},{s:'DOGE/USDT',p:0.16,c:2.1},
-  {s:'ADA/USDT',p:0.48,c:-0.8},{s:'AVAX/USDT',p:38,c:1.5},
-  {s:'LINK/USDT',p:14,c:2.3},{s:'DOT/USDT',p:7,c:-0.6},
+  {s:'BTCUSDT',p:108000,c:1.2},{s:'ETHUSDT',p:2580,c:0.8},{s:'SOLUSDT',p:175,c:2.1},
+  {s:'BNBUSDT',p:650,c:0.5},{s:'XRPUSDT',p:2.35,c:1.5},{s:'DOGEUSDT',p:0.22,c:3.2},
+  {s:'ADAUSDT',p:0.75,c:1.1},{s:'AVAXUSDT',p:38,c:0.9},{s:'LINKUSDT',p:18,c:1.8},{s:'DOTUSDT',p:6.5,c:0.7},
 ];
 const PAIRS = [
   {sym:'BTC',p:0,c:0},{sym:'ETH',p:0,c:0},{sym:'SOL',p:0,c:0},{sym:'BNB',p:0,c:0},
@@ -2713,6 +2711,7 @@ window.addEventListener('DOMContentLoaded',function(){
   if(logobtn){logobtn.addEventListener('click',function(e){e.stopPropagation();showHomeDrop();});document.addEventListener('click',function(e){var d=document.getElementById('home-drop'),lb=document.getElementById('logo-btn');if(d&&lb&&!d.contains(e.target)&&!lb.contains(e.target))d.classList.remove('open');});}
   fetchLivePairs();
   updatePairsList();
+  renderBottomTicker(); // show immediately with static data
   setTimeout(function(){ fetchLiveTicker(); }, 500);
   setTimeout(function(){ fetchAllTickers(); }, 1500);
   // Track visits - show banner after 3 visits OR 30 forecasts
