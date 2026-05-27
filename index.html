@@ -2419,10 +2419,9 @@ function showTimeLimit(minsLeft){
   var ex=document.getElementById('time-limit-overlay');if(ex)ex.remove();
   var overlay=document.createElement('div');
   overlay.id='time-limit-overlay';
-  overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(6,8,16,0.98);z-index:99999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);';
-  var endTime=Date.now()+minsLeft*60*1000;
+  overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(6,8,16,0.98);z-index:99998;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);pointer-events:none;';
   var inner=document.createElement('div');
-  inner.style.cssText='text-align:center;padding:40px;max-width:480px;position:relative;z-index:100000;';
+  inner.style.cssText='text-align:center;padding:40px;max-width:480px;pointer-events:all;';
   var icon=document.createElement('div');icon.style.cssText='font-size:56px;margin-bottom:16px;';icon.textContent='⏰';
   var ttl=document.createElement('div');ttl.style.cssText='font-family:IBM Plex Mono,monospace;font-size:22px;font-weight:700;color:#d0e0f0;margin-bottom:8px;';ttl.textContent='2-Hour Free Session Complete';
   var sub=document.createElement('div');sub.style.cssText='font-family:IBM Plex Mono,monospace;font-size:13px;color:#607a99;margin-bottom:8px;line-height:1.8;';sub.textContent='Sign up free to continue instantly.';
@@ -2431,13 +2430,13 @@ function showTimeLimit(minsLeft){
   cd.appendChild(document.createTextNode('Or wait '));cd.appendChild(cdSp);
   var row=document.createElement('div');row.style.cssText='display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;';
   var b1=document.createElement('button');
-  b1.style.cssText='background:linear-gradient(135deg,#0ecb81,#0af);color:#000;border:none;padding:14px 32px;border-radius:8px;font-family:IBM Plex Mono,monospace;font-size:14px;font-weight:700;cursor:pointer;position:relative;z-index:100001;';
+  b1.style.cssText='background:linear-gradient(135deg,#0ecb81,#0af);color:#000;border:none;padding:14px 32px;border-radius:8px;font-family:IBM Plex Mono,monospace;font-size:14px;font-weight:700;cursor:pointer;pointer-events:all;';
   b1.textContent='Sign Up Free';
-  b1.addEventListener('click',function(e){e.stopPropagation();showModal('signup');});
+  b1.onclick=function(){showModal('signup');};
   var b2=document.createElement('button');
-  b2.style.cssText='background:transparent;color:#f0b90b;border:1px solid #f0b90b;padding:14px 24px;border-radius:8px;font-family:IBM Plex Mono,monospace;font-size:13px;cursor:pointer;position:relative;z-index:100001;';
+  b2.style.cssText='background:transparent;color:#f0b90b;border:1px solid #f0b90b;padding:14px 24px;border-radius:8px;font-family:IBM Plex Mono,monospace;font-size:13px;cursor:pointer;pointer-events:all;';
   b2.textContent='Go Pro $17/mo';
-  b2.addEventListener('click',function(e){e.stopPropagation();showPricing();});
+  b2.onclick=function(){showPricing();};
   row.appendChild(b1);row.appendChild(b2);
   var note=document.createElement('div');note.style.cssText='font-family:IBM Plex Mono,monospace;font-size:10px;color:#344a66;';note.textContent='No credit card required';
   inner.appendChild(icon);inner.appendChild(ttl);inner.appendChild(sub);inner.appendChild(cd);inner.appendChild(row);inner.appendChild(note);
@@ -2450,6 +2449,7 @@ function showTimeLimit(minsLeft){
     if(el)el.textContent=m+':'+String(s).padStart(2,'0');
     if(rem<=0){clearInterval(timer);var o=document.getElementById('time-limit-overlay');if(o)o.remove();}
   },1000);
+  var endTime=Date.now()+minsLeft*60*1000;
 }
 function showGuestLimit(){
   var o=document.getElementById('guest-limit-overlay');
