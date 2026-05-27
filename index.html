@@ -872,7 +872,20 @@ s1.charset='UTF-8';s1.setAttribute('crossorigin','*');s0.parentNode.insertBefore
 
 <script>
 // ── CONSTANTS ─────────────────────────────────
-const API_BASE  = 'https://cryptovision-sg.onrender.com';
+const API_BASE  = 'https://cryptovision-production-ca20.up.railway.app';
+const API_SG    = 'https://cryptovision-sg.onrender.com'; // Singapore fallback
+
+// Smart fetch - tries Railway first, falls back to Singapore
+async function smartFetch(endpoint, options){
+  try {
+    const r = await fetch(API_BASE + endpoint, options);
+    if(r.ok) return r;
+    throw new Error('Railway failed: ' + r.status);
+  } catch(e) {
+    console.log('Railway failed, trying Singapore...', e.message);
+    return fetch(API_SG + endpoint, options);
+  }
+}
 const DEV_TOKEN = 'mycryptovision2025';
 const SUPA_URL  = 'https://gkxpwqryakgzgvvprbkl.supabase.co';
 const SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHB3cXJ5YWtnemd2dnByYmtsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0MDAxNTUsImV4cCI6MjA5Mzk3NjE1NX0.oMSZx15YsodlOdzPxg4d7a0WesYQRuPCRUZxZcqGA1I';
@@ -1725,7 +1738,7 @@ async function runForecast(isAutoRun){
   showOverlay(true);
   try{
     var controller=new AbortController();var timeout=setTimeout(function(){controller.abort();},60000);
-    var res=await fetch(API_BASE+'/forecast',{method:'POST',headers:{...getAuthHeaders(),'Origin':'https://zeusvisions.com'},body:JSON.stringify({symbol:symbol,interval:currentInterval}),signal:controller.signal});
+    var res=await smartFetch('/forecast',{method:'POST',headers:{...getAuthHeaders(),'Origin':'https://zeusvisions.com'},body:JSON.stringify({symbol:symbol,interval:currentInterval}),signal:controller.signal});
     clearTimeout(timeout);
     if(!res.ok){var e2=await res.text().catch(function(){return'';});var ej={};try{ej=JSON.parse(e2);}catch(x){}throw new Error(ej.detail||('Error '+res.status));}
     var data=await res.json();renderAll(data);showOverlay(false);showToast('✅ Forecast complete! Scroll down for AI signal.','success');
