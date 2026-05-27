@@ -721,20 +721,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
     <div id="bottom-bar-inner" style="display:flex;white-space:nowrap;will-change:transform;"><div class="bt" onclick="loadPair('BTCUSDT')" style="cursor:pointer;"><span class="bt-s">BTC/USDT</span> <span style="color:#0ecb81">$108,000 +1.2%</span></div><div class="bt" onclick="loadPair('ETHUSDT')" style="cursor:pointer;"><span class="bt-s">ETH/USDT</span> <span style="color:#0ecb81">$2,580 +0.8%</span></div><div class="bt" onclick="loadPair('SOLUSDT')" style="cursor:pointer;"><span class="bt-s">SOL/USDT</span> <span style="color:#0ecb81">$175 +2.1%</span></div><div class="bt" onclick="loadPair('BNBUSDT')" style="cursor:pointer;"><span class="bt-s">BNB/USDT</span> <span style="color:#0ecb81">$650 +0.5%</span></div><div class="bt" onclick="loadPair('XRPUSDT')" style="cursor:pointer;"><span class="bt-s">XRP/USDT</span> <span style="color:#0ecb81">$2.35 +1.5%</span></div><div class="bt" onclick="loadPair('DOGEUSDT')" style="cursor:pointer;"><span class="bt-s">DOGE/USDT</span> <span style="color:#0ecb81">$0.2200 +3.2%</span></div><div class="bt" onclick="loadPair('ADAUSDT')" style="cursor:pointer;"><span class="bt-s">ADA/USDT</span> <span style="color:#0ecb81">$0.7500 +1.1%</span></div><div class="bt" onclick="loadPair('AVAXUSDT')" style="cursor:pointer;"><span class="bt-s">AVAX/USDT</span> <span style="color:#0ecb81">$38.00 +0.9%</span></div><div class="bt" onclick="loadPair('LINKUSDT')" style="cursor:pointer;"><span class="bt-s">LINK/USDT</span> <span style="color:#0ecb81">$18.00 +1.8%</span></div><div class="bt" onclick="loadPair('DOTUSDT')" style="cursor:pointer;"><span class="bt-s">DOT/USDT</span> <span style="color:#0ecb81">$6.50 +0.7%</span></div><div class="bt" onclick="loadPair('MATICUSDT')" style="cursor:pointer;"><span class="bt-s">MATIC/USDT</span> <span style="color:#0ecb81">$0.5500 +0.6%</span></div><div class="bt" onclick="loadPair('UNIUSDT')" style="cursor:pointer;"><span class="bt-s">UNI/USDT</span> <span style="color:#0ecb81">$8.20 +1.3%</span></div><div class="bt" onclick="loadPair('BTCUSDT')" style="cursor:pointer;"><span class="bt-s">BTC/USDT</span> <span style="color:#0ecb81">$108,000 +1.2%</span></div><div class="bt" onclick="loadPair('ETHUSDT')" style="cursor:pointer;"><span class="bt-s">ETH/USDT</span> <span style="color:#0ecb81">$2,580 +0.8%</span></div><div class="bt" onclick="loadPair('SOLUSDT')" style="cursor:pointer;"><span class="bt-s">SOL/USDT</span> <span style="color:#0ecb81">$175 +2.1%</span></div><div class="bt" onclick="loadPair('BNBUSDT')" style="cursor:pointer;"><span class="bt-s">BNB/USDT</span> <span style="color:#0ecb81">$650 +0.5%</span></div><div class="bt" onclick="loadPair('XRPUSDT')" style="cursor:pointer;"><span class="bt-s">XRP/USDT</span> <span style="color:#0ecb81">$2.35 +1.5%</span></div><div class="bt" onclick="loadPair('DOGEUSDT')" style="cursor:pointer;"><span class="bt-s">DOGE/USDT</span> <span style="color:#0ecb81">$0.2200 +3.2%</span></div><div class="bt" onclick="loadPair('ADAUSDT')" style="cursor:pointer;"><span class="bt-s">ADA/USDT</span> <span style="color:#0ecb81">$0.7500 +1.1%</span></div><div class="bt" onclick="loadPair('AVAXUSDT')" style="cursor:pointer;"><span class="bt-s">AVAX/USDT</span> <span style="color:#0ecb81">$38.00 +0.9%</span></div><div class="bt" onclick="loadPair('LINKUSDT')" style="cursor:pointer;"><span class="bt-s">LINK/USDT</span> <span style="color:#0ecb81">$18.00 +1.8%</span></div><div class="bt" onclick="loadPair('DOTUSDT')" style="cursor:pointer;"><span class="bt-s">DOT/USDT</span> <span style="color:#0ecb81">$6.50 +0.7%</span></div><div class="bt" onclick="loadPair('MATICUSDT')" style="cursor:pointer;"><span class="bt-s">MATIC/USDT</span> <span style="color:#0ecb81">$0.5500 +0.6%</span></div><div class="bt" onclick="loadPair('UNIUSDT')" style="cursor:pointer;"><span class="bt-s">UNI/USDT</span> <span style="color:#0ecb81">$8.20 +1.3%</span></div></div>
   </div>
 </div>
-<script>
-(function(){
-  var inner=document.getElementById('bottom-bar-inner');
-  if(!inner)return;
-  var x=0,w=0,raf=null;
-  function start(){
-    w=inner.scrollWidth/2;
-    function animate(){x+=0.5;if(x>=w)x=0;inner.style.transform='translateX(-'+x+'px)';raf=requestAnimationFrame(animate);}
-    animate();
-  }
-  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){setTimeout(start,100);});}
-  else{setTimeout(start,100);}
-})();
-</script>
+
 
 <!-- 30-Second Signup Popup -->
 <div id="signup-popup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);z-index:2000;align-items:center;justify-content:center;">
@@ -1486,20 +1473,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
     <div id="bottom-bar-inner" style="display:flex;white-space:nowrap;will-change:transform;"><div class="bt" onclick="loadPair('BTCUSDT')" style="cursor:pointer;"><span class="bt-s">BTC/USDT</span> <span style="color:#0ecb81">$108,000 +1.2%</span></div><div class="bt" onclick="loadPair('ETHUSDT')" style="cursor:pointer;"><span class="bt-s">ETH/USDT</span> <span style="color:#0ecb81">$2,580 +0.8%</span></div><div class="bt" onclick="loadPair('SOLUSDT')" style="cursor:pointer;"><span class="bt-s">SOL/USDT</span> <span style="color:#0ecb81">$175 +2.1%</span></div><div class="bt" onclick="loadPair('BNBUSDT')" style="cursor:pointer;"><span class="bt-s">BNB/USDT</span> <span style="color:#0ecb81">$650 +0.5%</span></div><div class="bt" onclick="loadPair('XRPUSDT')" style="cursor:pointer;"><span class="bt-s">XRP/USDT</span> <span style="color:#0ecb81">$2.35 +1.5%</span></div><div class="bt" onclick="loadPair('DOGEUSDT')" style="cursor:pointer;"><span class="bt-s">DOGE/USDT</span> <span style="color:#0ecb81">$0.2200 +3.2%</span></div><div class="bt" onclick="loadPair('ADAUSDT')" style="cursor:pointer;"><span class="bt-s">ADA/USDT</span> <span style="color:#0ecb81">$0.7500 +1.1%</span></div><div class="bt" onclick="loadPair('AVAXUSDT')" style="cursor:pointer;"><span class="bt-s">AVAX/USDT</span> <span style="color:#0ecb81">$38.00 +0.9%</span></div><div class="bt" onclick="loadPair('LINKUSDT')" style="cursor:pointer;"><span class="bt-s">LINK/USDT</span> <span style="color:#0ecb81">$18.00 +1.8%</span></div><div class="bt" onclick="loadPair('DOTUSDT')" style="cursor:pointer;"><span class="bt-s">DOT/USDT</span> <span style="color:#0ecb81">$6.50 +0.7%</span></div><div class="bt" onclick="loadPair('MATICUSDT')" style="cursor:pointer;"><span class="bt-s">MATIC/USDT</span> <span style="color:#0ecb81">$0.5500 +0.6%</span></div><div class="bt" onclick="loadPair('UNIUSDT')" style="cursor:pointer;"><span class="bt-s">UNI/USDT</span> <span style="color:#0ecb81">$8.20 +1.3%</span></div><div class="bt" onclick="loadPair('BTCUSDT')" style="cursor:pointer;"><span class="bt-s">BTC/USDT</span> <span style="color:#0ecb81">$108,000 +1.2%</span></div><div class="bt" onclick="loadPair('ETHUSDT')" style="cursor:pointer;"><span class="bt-s">ETH/USDT</span> <span style="color:#0ecb81">$2,580 +0.8%</span></div><div class="bt" onclick="loadPair('SOLUSDT')" style="cursor:pointer;"><span class="bt-s">SOL/USDT</span> <span style="color:#0ecb81">$175 +2.1%</span></div><div class="bt" onclick="loadPair('BNBUSDT')" style="cursor:pointer;"><span class="bt-s">BNB/USDT</span> <span style="color:#0ecb81">$650 +0.5%</span></div><div class="bt" onclick="loadPair('XRPUSDT')" style="cursor:pointer;"><span class="bt-s">XRP/USDT</span> <span style="color:#0ecb81">$2.35 +1.5%</span></div><div class="bt" onclick="loadPair('DOGEUSDT')" style="cursor:pointer;"><span class="bt-s">DOGE/USDT</span> <span style="color:#0ecb81">$0.2200 +3.2%</span></div><div class="bt" onclick="loadPair('ADAUSDT')" style="cursor:pointer;"><span class="bt-s">ADA/USDT</span> <span style="color:#0ecb81">$0.7500 +1.1%</span></div><div class="bt" onclick="loadPair('AVAXUSDT')" style="cursor:pointer;"><span class="bt-s">AVAX/USDT</span> <span style="color:#0ecb81">$38.00 +0.9%</span></div><div class="bt" onclick="loadPair('LINKUSDT')" style="cursor:pointer;"><span class="bt-s">LINK/USDT</span> <span style="color:#0ecb81">$18.00 +1.8%</span></div><div class="bt" onclick="loadPair('DOTUSDT')" style="cursor:pointer;"><span class="bt-s">DOT/USDT</span> <span style="color:#0ecb81">$6.50 +0.7%</span></div><div class="bt" onclick="loadPair('MATICUSDT')" style="cursor:pointer;"><span class="bt-s">MATIC/USDT</span> <span style="color:#0ecb81">$0.5500 +0.6%</span></div><div class="bt" onclick="loadPair('UNIUSDT')" style="cursor:pointer;"><span class="bt-s">UNI/USDT</span> <span style="color:#0ecb81">$8.20 +1.3%</span></div></div>
   </div>
 </div>
-<script>
-(function(){
-  var inner=document.getElementById('bottom-bar-inner');
-  if(!inner)return;
-  var x=0,w=0,raf=null;
-  function start(){
-    w=inner.scrollWidth/2;
-    function animate(){x+=0.5;if(x>=w)x=0;inner.style.transform='translateX(-'+x+'px)';raf=requestAnimationFrame(animate);}
-    animate();
-  }
-  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){setTimeout(start,100);});}
-  else{setTimeout(start,100);}
-})();
-</script>
+
 
 <!-- 30-Second Signup Popup -->
 <div id="signup-popup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);z-index:2000;align-items:center;justify-content:center;">
@@ -2185,48 +2159,46 @@ var _tickerRAF = null;
 var _tickerWidth = 0;
 
 function renderBottomTicker(){
-  var inner = document.getElementById('bottom-bar-inner');
-  if(!inner) return;
-  var items = btData.filter(function(d){ return d.p > 0; });
-  if(items.length === 0) return;
+  var inner=document.getElementById('bottom-bar-inner');
+  if(!inner)return;
 
   if(!_tickerBuilt){
-    _tickerBuilt = true;
-    // Build HTML - duplicate for seamless loop
-    inner.innerHTML = items.concat(items).map(function(d){
-      var up = d.c >= 0;
-      var sym = d.s.replace('/','');
-      return '<div class="bt" data-sym="'+sym+'" onclick="loadPair(this.dataset.sym)">'
-        +'<span class="bt-s">'+d.s+'</span> '
-        +'<span class="bt-p" id="btp-'+sym.toLowerCase()+'">$'+d.p.toLocaleString(undefined,{maximumFractionDigits:d.p>=1?3:6})+'</span> '
-        +'<span class="bt-c '+(up?'':'dn')+'" id="btc-'+sym.toLowerCase()+'">'+(up?'+':'')+d.c.toFixed(2)+'%</span>'
-        +'</div>';
-    }).join('');
-
-    // Start JS animation after render
+    _tickerBuilt=true;
+    // Start animation on the pre-built HTML
     setTimeout(function(){
-      _tickerWidth = inner.scrollWidth / 2;
-      _tickerX = 0;
-      if(_tickerRAF) cancelAnimationFrame(_tickerRAF);
+      _tickerWidth=inner.scrollWidth/2;
+      _tickerX=0;
+      if(_tickerRAF)cancelAnimationFrame(_tickerRAF);
       function animate(){
-        _tickerX += _tickerSpeed;
-        if(_tickerX >= _tickerWidth) _tickerX = 0;
-        inner.style.transform = 'translateX(-' + _tickerX + 'px)';
-        _tickerRAF = requestAnimationFrame(animate);
+        _tickerX+=_tickerSpeed;
+        if(_tickerX>=_tickerWidth)_tickerX=0;
+        inner.style.transform='translateX(-'+_tickerX+'px)';
+        _tickerRAF=requestAnimationFrame(animate);
       }
       animate();
-    }, 100);
-
-  } else {
-    // Just update prices in place
-    items.forEach(function(d){
-      var sym = d.s.replace('/','').toLowerCase();
-      var pe = document.getElementById('btp-'+sym);
-      var ce = document.getElementById('btc-'+sym);
-      if(pe) pe.textContent = '$'+d.p.toLocaleString(undefined,{maximumFractionDigits:d.p>=1?3:6});
-      if(ce){ var up=d.c>=0; ce.textContent=(up?'+':'')+d.c.toFixed(2)+'%'; ce.className='bt-c'+(up?'':' dn'); }
-    });
+    },100);
+    return;
   }
+
+  // Update live prices in place after API returns
+  var items=btData.filter(function(d){return d.p>0;});
+  items.forEach(function(d){
+    var sym=d.s.replace('USDT','').toLowerCase();
+    // Find span by text content matching symbol
+    var spans=inner.querySelectorAll('.bt-s');
+    spans.forEach(function(span){
+      if(span.textContent===d.s.replace('USDT','')+'/USDT'){
+        var priceSpan=span.nextElementSibling;
+        if(priceSpan){
+          var up=d.c>=0;
+          var p=d.p;
+          var pStr='$'+(p>=1000?p.toLocaleString(undefined,{maximumFractionDigits:0}):p>=1?p.toFixed(2):p.toFixed(4));
+          priceSpan.textContent=pStr+' '+(up?'+':'')+d.c.toFixed(2)+'%';
+          priceSpan.style.color=up?'#0ecb81':'#f6465d';
+        }
+      }
+    });
+  });
 }
 
 
