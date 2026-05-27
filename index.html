@@ -1070,7 +1070,7 @@ function updateAuthUI(user) {
     var badge='<span style="background:rgba(240,185,11,0.15);color:#f0b90b;font-size:9px;padding:2px 8px;border-radius:3px;border:1px solid rgba(240,185,11,0.3);'+(isPro?'':'cursor:pointer;')+'" '+(isPro?'':'onclick="showPricing()"')+'>'+plan.toUpperCase()+(!isPro?' ⚡':'')+'</span>';
     btns.innerHTML='<div style="display:flex;align-items:center;gap:8px;"><div style="background:#131926;border:1px solid #243350;border-radius:20px;padding:4px 12px;font-family:Share Tech Mono,monospace;font-size:11px;color:#607a99;display:flex;align-items:center;gap:6px;"><div style="width:6px;height:6px;border-radius:50%;background:#0ecb81;"></div><span>'+name+'</span>'+badge+'</div><button class="nav-btn" onclick="handleSignOut()">Sign Out</button></div>';
   } else {
-    btns.innerHTML='<button class="nav-btn" onclick="showModal(\'login\')">Log In</button><button class="nav-btn cta" onclick="showModal(\'signup\')">Sign Up</button>';
+    btns.innerHTML='';var _b1=document.createElement('button');_b1.className='nav-btn';_b1.textContent='Log In';_b1.onclick=function(){showModal('login');};btns.appendChild(_b1);var _b2=document.createElement('button');_b2.className='nav-btn cta';_b2.textContent='Sign Up';_b2.onclick=function(){showModal('signup');};btns.appendChild(_b2);
   }
 }
 async function handlePasswordReset() {
@@ -1628,46 +1628,41 @@ async function loadHDCoins(){
 
 // ── GUEST LIMIT ───────────────────────────────
 function showTimeLimit(minsLeft){
-  // Hard block - remove any existing
   var existing=document.getElementById('time-limit-overlay');
   if(existing) existing.remove();
   var div=document.createElement('div');
   div.id='time-limit-overlay';
   div.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(6,8,16,0.98);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);';
-  // Live countdown
-  var endTime = Date.now() + minsLeft * 60 * 1000;
-  div.innerHTML='<div style="text-align:center;padding:40px;max-width:480px;">'
-    +'<div style="font-size:56px;margin-bottom:16px;">⏰</div>'
-    +'<div style="font-family:IBM Plex Mono,monospace;font-size:24px;font-weight:700;color:#d0e0f0;margin-bottom:8px;letter-spacing:1px;">2-Hour Free Session Complete</div>'
-    +'<div style="font-family:IBM Plex Mono,monospace;font-size:13px;color:#607a99;margin-bottom:8px;line-height:1.8;">You have used your free 2-hour session.<br>Sign up <b style="color:#0ecb81;">free forever</b> to keep going instantly.</div>'
-    +'<div style="font-family:IBM Plex Mono,monospace;font-size:12px;color:#344a66;margin-bottom:24px;">Or wait <span id="tl-countdown" style="color:#f0b90b;font-weight:700;">'+minsLeft+':00</span> for next free session</div>'
-    +'<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">'
-    +'<button onclick="showModal('signup')" style="background:linear-gradient(135deg,#0ecb81,#0af);color:#000;border:none;padding:14px 36px;border-radius:8px;font-family:IBM Plex Mono,monospace;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:0.5px;">🚀 Sign Up Free — No Card</button>'
-    +'<button onclick="showPricing()" style="background:transparent;color:#f0b90b;border:1px solid #f0b90b;padding:14px 24px;border-radius:8px;font-family:IBM Plex Mono,monospace;font-size:13px;cursor:pointer;">⚡ Go Pro $17/mo</button>'
-    +'</div>'
-    +'<div style="font-family:IBM Plex Mono,monospace;font-size:10px;color:#344a66;margin-top:16px;">✅ Free signup · No credit card · Cancel anytime</div>'
-    +'</div>';
+  var endTime=Date.now()+minsLeft*60*1000;
+  div.innerHTML=[
+    '<div style="text-align:center;padding:40px;max-width:480px;">',
+    '<div style="font-size:56px;margin-bottom:16px;">&#x23F0;</div>',
+    '<div style="font-family:IBM Plex Mono,monospace;font-size:24px;font-weight:700;color:#d0e0f0;margin-bottom:8px;">2-Hour Free Session Complete</div>',
+    '<div style="font-family:IBM Plex Mono,monospace;font-size:13px;color:#607a99;margin-bottom:8px;line-height:1.8;">Sign up free to continue instantly.</div>',
+    '<div style="font-family:IBM Plex Mono,monospace;font-size:12px;color:#344a66;margin-bottom:24px;">Or wait <span id="tl-countdown" style="color:#f0b90b;font-weight:700;">'+minsLeft+':00</span></div>',
+    '<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">',
+    '<button id="tl-signup-btn" style="background:linear-gradient(135deg,#0ecb81,#0af);color:#000;border:none;padding:14px 36px;border-radius:8px;font-family:IBM Plex Mono,monospace;font-size:14px;font-weight:700;cursor:pointer;">Sign Up Free</button>',
+    '<button id="tl-pro-btn" style="background:transparent;color:#f0b90b;border:1px solid #f0b90b;padding:14px 24px;border-radius:8px;font-family:IBM Plex Mono,monospace;font-size:13px;cursor:pointer;">Go Pro $17/mo</button>',
+    '</div>',
+    '<div style="font-family:IBM Plex Mono,monospace;font-size:10px;color:#344a66;margin-top:16px;">No credit card required</div>',
+    '</div>'
+  ].join('');
   document.body.appendChild(div);
-  // Live countdown timer
-  var countEl = document.getElementById('tl-countdown');
-  var timer = setInterval(function(){
-    var remaining = Math.max(0, endTime - Date.now());
-    var mins = Math.floor(remaining / 60000);
-    var secs = Math.floor((remaining % 60000) / 1000);
-    if(countEl) countEl.textContent = mins + ':' + String(secs).padStart(2,'0');
-    if(remaining <= 0){
-      clearInterval(timer);
-      // Auto-remove block when timer expires
-      var overlay = document.getElementById('time-limit-overlay');
-      if(overlay) overlay.remove();
-    }
-  }, 1000);
+  document.getElementById('tl-signup-btn').onclick=function(){showModal('signup');};
+  document.getElementById('tl-pro-btn').onclick=function(){showPricing();};
+  var countEl=document.getElementById('tl-countdown');
+  var timer=setInterval(function(){
+    var remaining=Math.max(0,endTime-Date.now());
+    var mins=Math.floor(remaining/60000);
+    var secs=Math.floor((remaining%60000)/1000);
+    if(countEl)countEl.textContent=mins+':'+String(secs).padStart(2,'0');
+    if(remaining<=0){clearInterval(timer);var o=document.getElementById('time-limit-overlay');if(o)o.remove();}
+  },1000);
 }
-
 function showGuestLimit(){
   var o=document.getElementById('guest-limit-overlay');
   if(!o){o=document.createElement('div');o.id='guest-limit-overlay';o.style.cssText='position:fixed;inset:0;background:rgba(6,8,16,0.92);z-index:700;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);';
-  o.innerHTML='<div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:12px;padding:32px;max-width:400px;width:90%;text-align:center;font-family:Share Tech Mono,monospace;"><div style="font-size:32px;margin-bottom:12px;">⚡</div><div style="font-size:18px;font-weight:700;color:#0ff;margin-bottom:8px;">FREE TRIAL </div><div style="font-size:12px;color:#607a99;margin-bottom:20px;line-height:1.7;">Sign up for <span style="color:#0ecb81;font-weight:700;">15-day free trial</span> or <span style="color:#f0b90b;font-weight:700;">Pro unlimited</span>.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;"><div style="background:#131926;border:1px solid #1e2a40;border-radius:8px;padding:16px;"><div style="color:#0ecb81;font-weight:700;margin-bottom:4px;">FREE TRIAL</div><button onclick="closeGuestLimit();showModal(\'signup\')" style="margin-top:8px;width:100%;padding:8px;background:#0ecb8122;border:1px solid #0ecb81;border-radius:4px;color:#0ecb81;font-size:11px;cursor:pointer;font-weight:700;">Start Free</button></div><div style="background:#131926;border:1px solid #f0b90b44;border-radius:8px;padding:16px;"><div style="color:#f0b90b;font-weight:700;margin-bottom:4px;">PRO $99/mo</div><button onclick="closeGuestLimit();selectedPlan=\'pro\';showModal(\'signup\')" style="margin-top:8px;width:100%;padding:8px;background:linear-gradient(135deg,#f0b90b,#f0d060);border:none;border-radius:4px;color:#000;font-size:11px;cursor:pointer;font-weight:700;">Go Pro ⚡</button></div></div><button onclick="closeGuestLimit()" style="background:transparent;border:none;color:#344a66;font-size:10px;cursor:pointer;">Maybe later</button></div>';
+    var gi=document.createElement('div');gi.style.cssText='background:#0b0f1a;border:1px solid #1e2a40;border-radius:12px;padding:32px;max-width:400px;width:90%;text-align:center;font-family:IBM Plex Mono,monospace;';var gb1=document.createElement('button');gb1.style.cssText='width:100%;padding:10px;background:#0ecb8122;border:1px solid #0ecb81;border-radius:4px;color:#0ecb81;font-weight:700;cursor:pointer;margin-top:8px;';gb1.textContent='Start Free';gb1.onclick=function(){closeGuestLimit();showModal('signup');};var gb2=document.createElement('button');gb2.style.cssText='width:100%;padding:10px;background:linear-gradient(135deg,#f0b90b,#f0d060);border:none;border-radius:4px;color:#000;font-weight:700;cursor:pointer;margin-top:8px;';gb2.textContent='Go Pro $17/mo';gb2.onclick=function(){closeGuestLimit();startPayPal('pro');};gi.appendChild(gb1);gi.appendChild(gb2);o.appendChild(gi);
   document.body.appendChild(o);}else{o.style.display='flex';}
 }
 function closeGuestLimit(){var o=document.getElementById('guest-limit-overlay');if(o)o.style.display='none';}
