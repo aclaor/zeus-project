@@ -334,7 +334,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 
 .ticker-inner{display:flex;animation:btick 60s linear infinite;white-space:nowrap;}
 .ticker-inner:hover{animation-play-state:paused;}
-@keyframes btick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes btick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}100%{transform:translateX(-50%)}}
 .bt{display:inline-flex;gap:6px;padding:0 16px;border-right:1px solid #1e2a40;font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;white-space:nowrap;}
 .bt:hover{background:rgba(0,255,255,0.05);}
 .bt-s{color:#d0e0f0;}
@@ -395,6 +395,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
   <button class="nav-btn" style="width:100%;text-align:left;padding:10px 12px;" onclick="showAbout();toggleMobileNav()">About</button>
   <button class="nav-btn" style="width:100%;text-align:left;padding:10px 12px;border-color:#0af;color:#0af;" onclick="showNews();toggleMobileNav()">📰 News</button>
 </div>
+
 
 
 <!-- CRYPTO OVERVIEW BOXES -->
