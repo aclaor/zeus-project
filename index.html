@@ -1050,7 +1050,7 @@ async function handleAuth(e) {
         showToast('✅ Account created! Redirecting to PayPal...','success');
         setTimeout(function(){ startPayPal(selectedPlan); }, 1500);
       } else {
-        showToast('✅ Account created! Check your email to confirm.','success');
+        showToast('✅ Account created! Check your email — click the confirmation link and you will be redirected to PayPal to complete your Pro upgrade.','success');
       }
     } else {
       result = await supabaseClient.auth.signInWithPassword({email:email,password:pass});
