@@ -1902,6 +1902,12 @@ async function runForecast(isAutoRun){
     // Time-based usage tracking
     var now = Date.now();
     var sessionStart = parseInt(localStorage.getItem('zeus_session_start')||'0');
+    // Reset if session is older than 7 days (clears stale test data)
+    if(sessionStart > 0 && (now - sessionStart) > 7*24*60*60*1000){
+      localStorage.removeItem('zeus_session_start');
+      localStorage.removeItem('zeus_wait_until');
+      sessionStart = 0;
+    }
     var totalUsed = parseInt(localStorage.getItem('zeus_total_used')||'0');
     var waitUntil = parseInt(localStorage.getItem('zeus_wait_until')||'0');
 
