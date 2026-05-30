@@ -382,6 +382,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
       <button class="nav-btn" onclick="showPricing()">Pricing</button>
       <button class="nav-btn" onclick="showTutorial()">Tutorial</button>
       <button class="nav-btn" onclick="showAbout()">About</button>
+      <button class="nav-btn" onclick="document.getElementById('community-modal').classList.remove('hidden')" style="border-color:#a78bfa;color:#a78bfa;">💬 Community</button>
       <button class="nav-btn" onclick="showNews()" style="border-color:#0af;color:#0af;">📰 News</button>
     </nav>
     <button class="hamburger" onclick="toggleMobileNav()"><span></span><span></span><span></span></button>
@@ -406,70 +407,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 
 
 
-<!-- SOCIAL PROOF SECTION -->
-<div id="social-proof-section" style="background:#0b0f1a;border-top:1px solid #1e2a40;border-bottom:1px solid #1e2a40;padding:32px 20px;text-align:center;">
-  <!-- Live Counter -->
-  <div style="margin-bottom:28px;">
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#607a99;margin-bottom:8px;letter-spacing:1px;">LIVE ACTIVITY</div>
-    <div style="display:flex;justify-content:center;gap:32px;flex-wrap:wrap;">
-      <div style="text-align:center;">
-        <div id="forecasts-today" style="font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:700;color:#0ecb81;">1,247</div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:4px;">FORECASTS TODAY</div>
-      </div>
-      <div style="text-align:center;">
-        <div id="traders-online" style="font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:700;color:#0af;">248</div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:4px;">TRADERS ONLINE</div>
-      </div>
-      <div style="text-align:center;">
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:700;color:#f0b90b;">99%+</div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:4px;">AI ACCURACY</div>
-      </div>
-    </div>
-  </div>
-  <!-- Testimonials -->
-  <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#607a99;margin-bottom:20px;letter-spacing:1px;">WHAT TRADERS SAY</div>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:0 auto;">
-    <div style="background:#131926;border:1px solid #1e2a40;border-radius:10px;padding:20px;text-align:left;">
-      <div style="color:#f0b90b;font-size:14px;margin-bottom:8px;">★★★★★</div>
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#d0e0f0;line-height:1.8;margin-bottom:12px;">"The BULL/BEAR signals are incredibly accurate. I use it every morning before trading."</div>
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;">— James T., Day Trader · New York</div>
-    </div>
-    <div style="background:#131926;border:1px solid #0ecb81;border-radius:10px;padding:20px;text-align:left;">
-      <div style="color:#f0b90b;font-size:14px;margin-bottom:8px;">★★★★★</div>
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#d0e0f0;line-height:1.8;margin-bottom:12px;">"Finally an AI tool that actually shows you the confidence score. No more guessing."</div>
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;">— Sarah K., Swing Trader · London</div>
-    </div>
-    <div style="background:#131926;border:1px solid #1e2a40;border-radius:10px;padding:20px;text-align:left;">
-      <div style="color:#f0b90b;font-size:14px;margin-bottom:8px;">★★★★★</div>
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#d0e0f0;line-height:1.8;margin-bottom:12px;">"Upgraded to Pro after the first day. The 1-minute forecasts for crypto are a game changer."</div>
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;">— Marcus L., Crypto Trader · Singapore</div>
-    </div>
-  </div>
-  <div style="margin-top:20px;">
-    <button onclick="showModal('signup')" style="background:linear-gradient(135deg,#0ecb81,#0af);border:none;border-radius:8px;padding:14px 40px;font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;color:#000;cursor:pointer;letter-spacing:1px;">START FREE — No Card Required ⚡</button>
-  </div>
-</div>
-<script>
-// Live counter animation
-(function(){
-  var base = Math.floor(Date.now()/86400000) * 86400000;
-  var elapsed = (Date.now() - base) / 1000;
-  var forecasts = 800 + Math.floor(elapsed * 0.15);
-  var el = document.getElementById('forecasts-today');
-  if(el) el.textContent = forecasts.toLocaleString();
-  // Increment every 8 seconds
-  setInterval(function(){
-    forecasts += Math.floor(Math.random()*3)+1;
-    if(el) el.textContent = forecasts.toLocaleString();
-  }, 8000);
-  // Traders online fluctuates
-  var t = document.getElementById('traders-online');
-  setInterval(function(){
-    var v = 180 + Math.floor(Math.random()*120);
-    if(t) t.textContent = v;
-  }, 15000);
-})();
-</script>
+
 <!-- CRYPTO OVERVIEW BOXES -->
 <div style="background:#0b0f1a;padding:8px 12px;border-bottom:1px solid #1e2a40;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;">
   <div style="display:flex;gap:6px;min-width:max-content;" id="crypto-boxes-row">
@@ -705,42 +643,8 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
   <div id="losers-coins-grid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:24px;"></div>
 </div>
 
-<!-- FAQ SECTION -->
-<div id="faq-section" style="background:var(--bg);padding:24px 20px 40px;" class="faq-outer">
-  <div style="max-width:800px;margin:0 auto;">
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:#0ff;margin-bottom:24px;text-align:center;letter-spacing:2px;">❓ FREQUENTLY ASKED QUESTIONS</div>
-
-    <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;margin-bottom:12px;">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f0b90b;margin-bottom:8px;">Is it really free?</div>
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">Yes! You get a full 2hrs/day free with unlimited AI forecasts. No credit card required. After the trial, upgrade to Pro for $17/mo or stop — no pressure.</div>
-    </div>
-
-    <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;margin-bottom:12px;">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f0b90b;margin-bottom:8px;">How accurate are the forecasts?</div>
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">Our AI shows accuracy scores between 90-99%+ based on historical backtesting. Each forecast shows the exact confidence score so you can judge for yourself.</div>
-    </div>
-
-    <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;margin-bottom:12px;">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f0b90b;margin-bottom:8px;">Which crypto pairs are covered?</div>
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">500+ crypto pairs including BTC, ETH, SOL, BNB, XRP, DOGE, ADA and hundreds more. Type any pair and get an instant AI forecast.</div>
-    </div>
-
-    <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;margin-bottom:12px;">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f0b90b;margin-bottom:8px;">Is this financial advice?</div>
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">No. ZEUS Vision provides AI-powered analysis as a decision-support tool. Always do your own research. Past performance does not guarantee future results.</div>
-    </div>
-
-    <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;margin-bottom:12px;">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f0b90b;margin-bottom:8px;">Can I cancel anytime?</div>
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">Yes! Cancel anytime with no questions asked. Monthly subscription, stop whenever you want. No long-term commitment.</div>
-    </div>
-
-    <div style="text-align:center;margin-top:32px;margin-bottom:40px;">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#607a99;margin-bottom:16px;">Ready to try AI crypto forecasting?</div>
-      <button onclick="showModal('signup')" style="background:linear-gradient(135deg,#0ecb81,#00ff88);border:none;border-radius:8px;padding:14px 40px;font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;color:#000;cursor:pointer;letter-spacing:1px;">START FREE TRIAL — 15 Days ⚡</button>
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#344a66;margin-top:8px;">No credit card · Cancel anytime · Instant access</div>
-    </div>
-  </div>
+</div>
+</div>
 </div>
 
 <!-- AUTH MODAL -->
@@ -800,6 +704,84 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 </div>
 
 
+<!-- FAQ SECTION -->
+<div style="max-width:800px;margin:0 auto;padding:40px 20px;">
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:#0ff;margin-bottom:24px;text-align:center;letter-spacing:2px;">❓ FREQUENTLY ASKED QUESTIONS</div>
+  <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;margin-bottom:12px;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f0b90b;margin-bottom:8px;">Is it really free?</div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">Yes! You get 2 hours of free AI forecasts every day. No credit card required. After 2 hours, wait 15 minutes or upgrade to Pro for unlimited access.</div>
+  </div>
+  <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;margin-bottom:12px;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f0b90b;margin-bottom:8px;">How accurate are the forecasts?</div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">Our AI shows accuracy scores between 90-99%+ based on historical backtesting. Each forecast shows the exact confidence score so you can judge for yourself.</div>
+  </div>
+  <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;margin-bottom:12px;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f0b90b;margin-bottom:8px;">How do I interpret the forecast?</div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">Join our Trader Community on Slack! We share screenshots and guidance on how to read BULL/BEAR signals and identify buy/sell setups. <span onclick="document.getElementById('community-modal').classList.remove('hidden')" style="color:#a78bfa;cursor:pointer;">Join here →</span></div>
+  </div>
+  <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;margin-bottom:12px;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f0b90b;margin-bottom:8px;">Is this financial advice?</div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">No. This is AI-powered analysis as a decision-support tool. Always do your own research before making any investment decisions.</div>
+  </div>
+  <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;margin-bottom:12px;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f0b90b;margin-bottom:8px;">Can I cancel anytime?</div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">Yes! Cancel anytime with no questions asked. Monthly subscription, stop at any time. No long-term commitment required.</div>
+  </div>
+</div>
+<!-- SOCIAL PROOF SECTION -->
+<div id="social-proof-section" style="background:#0b0f1a;border-top:1px solid #1e2a40;border-bottom:1px solid #1e2a40;padding:32px 20px;text-align:center;">
+  <div style="margin-bottom:28px;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#607a99;margin-bottom:8px;letter-spacing:1px;">LIVE ACTIVITY</div>
+    <div style="display:flex;justify-content:center;gap:32px;flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div id="forecasts-today" style="font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:700;color:#0ecb81;">1,247</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:4px;">FORECASTS TODAY</div>
+      </div>
+      <div style="text-align:center;">
+        <div id="traders-online" style="font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:700;color:#0af;">248</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:4px;">TRADERS ONLINE</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:700;color:#f0b90b;">99%+</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:4px;">AI ACCURACY</div>
+      </div>
+    </div>
+  </div>
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#607a99;margin-bottom:20px;letter-spacing:1px;">WHAT TRADERS SAY</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:0 auto;">
+    <div style="background:#131926;border:1px solid #1e2a40;border-radius:10px;padding:20px;text-align:left;">
+      <div style="color:#f0b90b;font-size:14px;margin-bottom:8px;">★★★★★</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#d0e0f0;line-height:1.8;margin-bottom:12px;">"The BULL/BEAR signals are incredibly accurate. I use it every morning before trading."</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;">— James T., Day Trader · New York</div>
+    </div>
+    <div style="background:#131926;border:1px solid #0ecb81;border-radius:10px;padding:20px;text-align:left;">
+      <div style="color:#f0b90b;font-size:14px;margin-bottom:8px;">★★★★★</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#d0e0f0;line-height:1.8;margin-bottom:12px;">"Finally an AI tool that actually shows you the confidence score. No more guessing."</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;">— Sarah K., Swing Trader · London</div>
+    </div>
+    <div style="background:#131926;border:1px solid #1e2a40;border-radius:10px;padding:20px;text-align:left;">
+      <div style="color:#f0b90b;font-size:14px;margin-bottom:8px;">★★★★★</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#d0e0f0;line-height:1.8;margin-bottom:12px;">"Upgraded to Pro after the first day. The 1-minute forecasts for crypto are a game changer."</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;">— Marcus L., Crypto Trader · Singapore</div>
+    </div>
+  </div>
+  <div style="margin-top:20px;">
+    <button onclick="showModal('signup')" style="background:linear-gradient(135deg,#0ecb81,#0af);border:none;border-radius:8px;padding:14px 40px;font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;color:#000;cursor:pointer;letter-spacing:1px;">START FREE — No Card Required ⚡</button>
+  </div>
+</div>
+<script>
+(function(){
+  var base=Math.floor(Date.now()/86400000)*86400000;
+  var elapsed=(Date.now()-base)/1000;
+  var forecasts=800+Math.floor(elapsed*0.15);
+  var el=document.getElementById('forecasts-today');
+  if(el)el.textContent=forecasts.toLocaleString();
+  setInterval(function(){forecasts+=Math.floor(Math.random()*3)+1;if(el)el.textContent=forecasts.toLocaleString();},8000);
+  var t=document.getElementById('traders-online');
+  setInterval(function(){var v=180+Math.floor(Math.random()*120);if(t)t.textContent=v;},15000);
+})();
+</script>
+
 <!-- 30-Second Signup Popup -->
 <div id="signup-popup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);z-index:2000;align-items:center;justify-content:center;">
   <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:16px;padding:36px;max-width:460px;width:92%;text-align:center;position:relative;box-shadow:0 0 60px rgba(0,255,255,0.1);">
@@ -808,12 +790,12 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
     <div style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:700;color:#0ff;margin-bottom:8px;letter-spacing:1px;">FREE AI CRYPTO FORECASTS</div>
     <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#607a99;margin-bottom:20px;line-height:1.8;">
       Get <span style="color:#0ecb81;font-weight:700;">BULLISH/BEARISH signals</span> for BTC, ETH, SOL<br>
-      and 500+ crypto pairs — <span style="color:#f0b90b;font-weight:700;">FREE for 15 days</span>
+      and 500+ crypto pairs — <span style="color:#f0b90b;font-weight:700;">FREE forever (2hrs/day)</span>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
       <div style="background:#131926;border:1px solid #1e2a40;border-radius:8px;padding:12px;">
         <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#0ecb81;font-weight:700;">✅ FREE TRIAL</div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:4px;">15 days · No credit card</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:4px;">2hrs/day · No credit card</div>
         <button onclick="closeSignupPopup();showModal('signup')" style="margin-top:10px;width:100%;padding:10px;background:rgba(14,203,129,0.15);border:1px solid #0ecb81;border-radius:6px;color:#0ecb81;font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;font-weight:700;">Start Free ⚡</button>
       </div>
       <div style="background:#131926;border:1px solid rgba(240,185,11,0.3);border-radius:8px;padding:12px;">
@@ -1940,9 +1922,9 @@ async function runForecast(isAutoRun){
 
       // After 120 minutes of usage → prompt signup or 60min wait
       if(sessionMins >= 120){
-        localStorage.setItem('zeus_wait_until', now + 30*60*1000); // 60min cooldown
+        localStorage.setItem('zeus_wait_until', now + 15*60*1000); // 60min cooldown
         localStorage.setItem('zeus_session_start', '0');
-        showTimeLimit(60);
+        showTimeLimit(15);
         return;
       }
 
@@ -2095,5 +2077,27 @@ window.addEventListener('DOMContentLoaded',function(){
   }, 3000);
   });
 </script>
+
+<div class="info-modal hidden" id="community-modal">
+  <div class="info-box" style="max-width:480px;text-align:center;">
+    <button class="close-btn2" onclick="closeInfo('community-modal')">×</button>
+    <div style="font-size:48px;margin-bottom:16px;">💬</div>
+    <div class="info-title">TRADER COMMUNITY</div>
+    <div class="info-sub">Join our Slack workspace for trading guidance and forecast interpretation</div>
+    <div style="background:#131926;border:1px solid #1e2a40;border-radius:10px;padding:24px;margin-bottom:20px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#d0e0f0;line-height:2;margin-bottom:16px;">
+        ✅ Learn how to read BULL/BEAR signals<br>
+        ✅ Screenshot analysis — buy/sell setups<br>
+        ✅ Daily forecast breakdowns<br>
+        ✅ Direct guidance from the team<br>
+        ✅ Connect with fellow traders
+      </div>
+      <a href="https://join.slack.com/t/childrens-k326799/shared_invite/zt-3ziuf7u84-HuW9xWt3dy07Y8ipk3kc_A" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#4A154B,#611f69);color:#fff;border:none;padding:14px 36px;border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;letter-spacing:0.5px;">
+        Join on Slack ⚡
+      </a>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#344a66;margin-top:12px;">Free for all members · No credit card needed</div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
