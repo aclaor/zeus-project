@@ -1858,16 +1858,39 @@ function renderAll(data) {
   if(el('conf-fill'))el('conf-fill').style.width=Math.min(100,Math.max(0,data.accuracy_ma7)).toFixed(1)+'%';
   if(el('fc-conf'))el('fc-conf').textContent=data.accuracy_ma7.toFixed(1)+'%';
   document.querySelectorAll('.sig').forEach(function(s){s.classList.remove('active');});
-  // Signal logic: compare first vs middle of forecast_vwap200
-  var fc200 = data.forecast_vwap200;
+  // Signal logic:
+  // For 1h and above: use MA7 + MA3 (first vs 5th value)
+  // For 15m and below: use VWAP200/Pink (first vs 5th value)
   var signalName = 'neut';
-  if(fc200 && fc200.length >= 3){
-    var first = fc200[0];
-    var last = fc200[fc200.length-1];
-    var threshold = (data.last_close||first) * 0.001; // 0.1% threshold for neutral
-    if(Math.abs(last - first) <= threshold){ signalName = 'neut'; }
-    else if(last > first){ signalName = 'bull'; }
-    else{ signalName = 'bear'; }
+  var shortIntervals = ['1m','5m','15m'];
+  var isShort = shortIntervals.indexOf(currentInterval) >= 0;
+  if(isShort){
+    // 15m and below: use forecast_vwap200 (Pink VWAP-200)
+    var fv200 = data.forecast_vwap200;
+    if(fv200 && fv200.length >= 5){
+      var v200_first = fv200[0];
+      var v200_fifth = fv200[4];
+      var threshold = (data.last_close || v200_first) * 0.0005;
+      if(Math.abs(v200_fifth - v200_first) <= threshold){ signalName = 'neut'; }
+      else if(v200_first < v200_fifth){ signalName = 'bull'; }
+      else{ signalName = 'bear'; }
+    }
+  } else {
+    // 1h and above: use MA7 AND MA3 (both must agree)
+    var fma7 = data.forecast_ma7;
+    var fma3 = data.forecast_ma3;
+    if(fma7 && fma7.length >= 5 && fma3 && fma3.length >= 5){
+      var ma7_first = fma7[0], ma7_fifth = fma7[4];
+      var ma3_first = fma3[0], ma3_fifth = fma3[4];
+      var threshold = (data.last_close || ma7_first) * 0.0005;
+      var ma7_bull = ma7_first < ma7_fifth;
+      var ma7_bear = ma7_first > ma7_fifth;
+      var ma3_bull = ma3_first < ma3_fifth;
+      var ma3_bear = ma3_first > ma3_fifth;
+      if(ma7_bull && ma3_bull){ signalName = 'bull'; }
+      else if(ma7_bear && ma3_bear){ signalName = 'bear'; }
+      else{ signalName = 'neut'; }
+    }
   }
   var sigEl = document.querySelector('.sig.'+signalName);
   if(sigEl) sigEl.classList.add('active');
