@@ -582,27 +582,31 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
       </div>
       <div class="trades-cols"><span>Price(USDT)</span><span>Amount</span><span>Time</span></div>
       <div class="trades-list" id="trades-list"></div>
-      <div id="signal-panel" style="display:none;padding:16px;font-family:IBM Plex Mono,monospace;">
-        <div style="text-align:center;margin-bottom:12px;">
-          <div id="sig-direction" style="font-size:22px;font-weight:700;margin-bottom:6px;">—</div>
-          <div id="sig-label" style="font-size:11px;color:#607a99;letter-spacing:1px;">FORECAST DIRECTION</div>
+      <div id="signal-panel" style="display:none;padding:12px 10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;">
+        <!-- Direction Badge -->
+        <div style="text-align:center;margin-bottom:10px;">
+          <div id="sig-direction" style="font-size:18px;font-weight:700;padding:10px 16px;border-radius:8px;display:inline-block;border:2px solid #1e2a40;background:#0b0f1a;min-width:160px;">—</div>
+          <div style="font-size:9px;color:#607a99;letter-spacing:2px;margin-top:6px;">FORECAST DIRECTION</div>
         </div>
-        <div style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:10px;margin-bottom:8px;">
-          <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-            <span style="font-size:10px;color:#607a99;">Confidence</span>
-            <span id="sig-conf" style="font-size:11px;font-weight:700;color:#0ecb81;">—</span>
+        <!-- Stats Grid -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+          <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:6px;padding:8px;text-align:center;">
+            <div style="font-size:9px;color:#607a99;margin-bottom:4px;">CONFIDENCE</div>
+            <div id="sig-conf" style="font-size:14px;font-weight:700;color:#0ecb81;">—</div>
           </div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-            <span style="font-size:10px;color:#607a99;">Target Price</span>
-            <span id="sig-target" style="font-size:11px;font-weight:700;color:#f0b90b;">—</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;">
-            <span style="font-size:10px;color:#607a99;">Timeframe</span>
-            <span id="sig-interval" style="font-size:11px;color:#d0e0f0;">—</span>
+          <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:6px;padding:8px;text-align:center;">
+            <div style="font-size:9px;color:#607a99;margin-bottom:4px;">TIMEFRAME</div>
+            <div id="sig-interval" style="font-size:14px;font-weight:700;color:#00ffff;">—</div>
           </div>
         </div>
-        <div id="sig-advice" style="font-size:10px;color:#607a99;text-align:center;line-height:1.8;padding:8px;background:#0b0f1a;border-radius:4px;border:1px solid #1e2a40;">
-          Run a forecast to see signal
+        <!-- Target -->
+        <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:6px;padding:8px;text-align:center;margin-bottom:8px;">
+          <div style="font-size:9px;color:#607a99;margin-bottom:4px;">AI TARGET PRICE</div>
+          <div id="sig-target" style="font-size:16px;font-weight:700;color:#f0b90b;">—</div>
+        </div>
+        <!-- Advice -->
+        <div id="sig-advice" style="font-size:9px;color:#607a99;text-align:center;line-height:1.8;padding:8px;background:#0b0f1a;border-radius:4px;border:1px solid #1e2a40;">
+          Run a forecast to see your signal
         </div>
       </div>
     </div>
@@ -1917,7 +1921,8 @@ function renderAll(data) {
   }
   var sigEl = document.querySelector('.sig.'+signalName);
   if(sigEl) sigEl.classList.add('active');
-  updateSignalPanel(data, signalName, currentInterval);
+  var _sigFull = signalName==='bull'?'BULLISH':signalName==='bear'?'BEARISH':'NEUTRAL';
+  updateSignalPanel(data, _sigFull, currentInterval);
   if(el('m-acc7'))el('m-acc7').textContent=data.accuracy_ma7.toFixed(2)+'%';
   if(el('m-acc25'))el('m-acc25').textContent=data.accuracy_ma25.toFixed(2)+'%';
   if(el('m-acc3'))el('m-acc3').textContent=(data.accuracy_ma3||0).toFixed(2)+'%';
