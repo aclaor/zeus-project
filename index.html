@@ -1894,10 +1894,12 @@ function renderAll(data) {
   if(isShort){
     // 15m and below: use forecast_vwap200 (Pink VWAP-200)
     var fv200 = data.forecast_vwap200;
-    if(fv200 && fv200.length >= 5){
+    var _idx = currentInterval==='1m' ? 29 : 4;
+    var threshold_pct = currentInterval==='1m' ? 0.0002 : 0.0005;
+    if(fv200 && fv200.length > _idx){
       var v200_first = fv200[0];
-      var v200_fifth = fv200[4];
-      var threshold = (data.last_close || v200_first) * 0.0005;
+      var v200_fifth = fv200[_idx];
+      var threshold = (data.last_close || v200_first) * (typeof threshold_pct!=='undefined'?threshold_pct:0.0005);
       if(Math.abs(v200_fifth - v200_first) <= threshold){ signalName = 'neut'; }
       else if(v200_first < v200_fifth){ signalName = 'bull'; }
       else{ signalName = 'bear'; }
