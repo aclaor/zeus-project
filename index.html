@@ -578,10 +578,33 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
     <div class="trades-panel">
       <div class="trades-header">
         <span class="trades-tab active">Market Trades</span>
-        <span class="trades-tab" style="margin-left:12px;">My Trades</span>
+        <span class="trades-tab" id="signal-tab" style="margin-left:12px;">Signal</span>
       </div>
       <div class="trades-cols"><span>Price(USDT)</span><span>Amount</span><span>Time</span></div>
       <div class="trades-list" id="trades-list"></div>
+      <div id="signal-panel" style="display:none;padding:16px;font-family:IBM Plex Mono,monospace;">
+        <div style="text-align:center;margin-bottom:12px;">
+          <div id="sig-direction" style="font-size:22px;font-weight:700;margin-bottom:6px;">—</div>
+          <div id="sig-label" style="font-size:11px;color:#607a99;letter-spacing:1px;">FORECAST DIRECTION</div>
+        </div>
+        <div style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:10px;margin-bottom:8px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-size:10px;color:#607a99;">Confidence</span>
+            <span id="sig-conf" style="font-size:11px;font-weight:700;color:#0ecb81;">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-size:10px;color:#607a99;">Target Price</span>
+            <span id="sig-target" style="font-size:11px;font-weight:700;color:#f0b90b;">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;">
+            <span style="font-size:10px;color:#607a99;">Timeframe</span>
+            <span id="sig-interval" style="font-size:11px;color:#d0e0f0;">—</span>
+          </div>
+        </div>
+        <div id="sig-advice" style="font-size:10px;color:#607a99;text-align:center;line-height:1.8;padding:8px;background:#0b0f1a;border-radius:4px;border:1px solid #1e2a40;">
+          Run a forecast to see signal
+        </div>
+      </div>
     </div>
   </div>
 
@@ -2105,6 +2128,55 @@ window.addEventListener('DOMContentLoaded',function(){
     }
   }, 3000);
   });
+
+// Signal tab logic
+document.addEventListener('click', function(e){
+  if(e.target && e.target.id === 'signal-tab'){
+    var tl = document.getElementById('trades-list');
+    var sp = document.getElementById('signal-panel');
+    var tc = document.querySelector('.trades-cols');
+    if(tl && sp){
+      var isSignal = sp.style.display !== 'none';
+      if(isSignal){
+        sp.style.display='none';
+        if(tl) tl.style.display='';
+        if(tc) tc.style.display='';
+        e.target.classList.remove('active');
+      } else {
+        sp.style.display='block';
+        if(tl) tl.style.display='none';
+        if(tc) tc.style.display='none';
+        e.target.classList.add('active');
+      }
+    }
+  }
+});
+
+function updateSignalPanel(data, signalName, interval){
+  var dir = document.getElementById('sig-direction');
+  var conf = document.getElementById('sig-conf');
+  var target = document.getElementById('sig-target');
+  var intv = document.getElementById('sig-interval');
+  var advice = document.getElementById('sig-advice');
+  if(!dir) return;
+
+  var colors = {BULLISH:'#0ecb81', BEARISH:'#f6465d', NEUTRAL:'#607a99'};
+  var icons  = {BULLISH:'🟢 BULLISH 📈', BEARISH:'🔴 BEARISH 📉', NEUTRAL:'⚪ NEUTRAL ●'};
+  var advices = {
+    BULLISH:'Forecast direction is BULLISH. The AI model indicates upward momentum. Consider this a potential buy signal — always combine with your own analysis.',
+    BEARISH:'Forecast direction is BEARISH. The AI model indicates downward pressure. Consider this a potential sell/short signal — always combine with your own analysis.',
+    NEUTRAL:'Forecast direction is NEUTRAL (Consolidation). The AI model sees no clear direction. Price may range — wait for a clearer signal before acting.'
+  };
+
+  dir.textContent = icons[signalName] || '⚪ NEUTRAL ●';
+  dir.style.color = colors[signalName] || '#607a99';
+  conf.textContent = (data.accuracy_ma7 || 0).toFixed(1) + '%';
+  var fc = data.forecast_ma7 || [];
+  var tgt = fc.length > 0 ? fc[fc.length-1] : data.last_close;
+  target.textContent = '$' + (tgt || 0).toLocaleString(undefined,{maximumFractionDigits:4});
+  intv.textContent = interval ? interval.toUpperCase() : '—';
+  advice.textContent = advices[signalName] || advices.NEUTRAL;
+}
 </script>
 
 <div class="info-modal hidden" id="community-modal">
