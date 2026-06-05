@@ -579,9 +579,16 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
       <div class="trades-header">
         <span class="trades-tab active">Market Trades</span>
         <span class="trades-tab" id="signal-tab" style="margin-left:12px;">Signal</span>
+        <span class="trades-tab" id="record-tab" style="margin-left:12px;">Track Record</span>
       </div>
       <div class="trades-cols"><span>Price(USDT)</span><span>Amount</span><span>Time</span></div>
       <div class="trades-list" id="trades-list"></div>
+      <div id="record-panel" style="display:none;padding:10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;max-height:300px;">
+        <div style="font-size:9px;color:#607a99;letter-spacing:2px;text-align:center;margin-bottom:8px;">AI FORECAST TRACK RECORD</div>
+        <div id="record-list" style="font-size:10px;">
+          <div style="text-align:center;color:#607a99;padding:20px;">Run a forecast to start tracking</div>
+        </div>
+      </div>
       <div id="signal-panel" style="display:none;padding:12px 10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;">
         <!-- Direction Badge -->
         <div style="text-align:center;margin-bottom:10px;">
@@ -1925,6 +1932,9 @@ function renderAll(data) {
   if(sigEl) sigEl.classList.add('active');
   var _sigFull = signalName==='bull'?'BULLISH':signalName==='bear'?'BEARISH':'NEUTRAL';
   updateSignalPanel(data, _sigFull, currentInterval);
+  var _fc7 = data.forecast_ma7 || [];
+  var _tgt = _fc7.length > 0 ? _fc7[_fc7.length-1] : data.last_close;
+  saveTrackRecord(data.symbol || currentSymbol, currentInterval, _sigFull, data.last_close, _tgt);
   if(el('m-acc7'))el('m-acc7').textContent=data.accuracy_ma7.toFixed(2)+'%';
   if(el('m-acc25'))el('m-acc25').textContent=data.accuracy_ma25.toFixed(2)+'%';
   if(el('m-acc3'))el('m-acc3').textContent=(data.accuracy_ma3||0).toFixed(2)+'%';
@@ -2185,6 +2195,114 @@ function updateSignalPanel(data, signalName, interval){
   intv.textContent = interval ? interval.toUpperCase() : '—';
   advice.textContent = advices[signalName] || advices.NEUTRAL;
 }
+
+// ── TRACK RECORD ─────────────────────────────────────────
+var _trackRecords = JSON.parse(localStorage.getItem('zeus_track_records') || '[]');
+
+function saveTrackRecord(symbol, interval, signalName, lastClose, forecastTarget){
+  var record = {
+    ts: new Date().toISOString(),
+    symbol: symbol,
+    interval: interval,
+    signal: signalName,
+    entryPrice: lastClose,
+    targetPrice: forecastTarget,
+    result: null  // will be filled when user runs forecast again
+  };
+  // Check previous record for same symbol and mark result
+  for(var i=0; i<_trackRecords.length; i++){
+    if(_trackRecords[i].symbol === symbol && _trackRecords[i].result === null){
+      var prev = _trackRecords[i];
+      var priceDiff = lastClose - prev.entryPrice;
+      if(prev.signal === 'BULLISH'){
+        prev.result = priceDiff > 0 ? 'WIN' : priceDiff < 0 ? 'LOSS' : 'NEUTRAL';
+      } else if(prev.signal === 'BEARISH'){
+        prev.result = priceDiff < 0 ? 'WIN' : priceDiff > 0 ? 'LOSS' : 'NEUTRAL';
+      } else {
+        prev.result = 'NEUTRAL';
+      }
+      prev.closePrice = lastClose;
+    }
+  }
+  _trackRecords.unshift(record);
+  if(_trackRecords.length > 30) _trackRecords.pop();
+  localStorage.setItem('zeus_track_records', JSON.stringify(_trackRecords));
+  renderTrackRecord();
+}
+
+function renderTrackRecord(){
+  var list = document.getElementById('record-list');
+  if(!list) return;
+  if(_trackRecords.length === 0){
+    list.innerHTML = '<div style="text-align:center;color:#607a99;padding:20px;">Run a forecast to start tracking</div>';
+    return;
+  }
+  var wins = _trackRecords.filter(function(r){return r.result==='WIN';}).length;
+  var total = _trackRecords.filter(function(r){return r.result!==null;}).length;
+  var winRate = total > 0 ? Math.round((wins/total)*100) : 0;
+
+  var html = '';
+  // Summary bar
+  if(total > 0){
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:8px;">';
+    html += '<div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:4px;padding:6px;text-align:center;">';
+    html += '<div style="font-size:9px;color:#607a99;">WIN RATE</div>';
+    html += '<div style="font-size:14px;font-weight:700;color:#0ecb81;">'+winRate+'%</div></div>';
+    html += '<div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:4px;padding:6px;text-align:center;">';
+    html += '<div style="font-size:9px;color:#607a99;">WINS</div>';
+    html += '<div style="font-size:14px;font-weight:700;color:#0ecb81;">'+wins+'</div></div>';
+    html += '<div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:4px;padding:6px;text-align:center;">';
+    html += '<div style="font-size:9px;color:#607a99;">TOTAL</div>';
+    html += '<div style="font-size:14px;font-weight:700;color:#d0e0f0;">'+total+'</div></div>';
+    html += '</div>';
+  }
+
+  // Records list
+  _trackRecords.slice(0,10).forEach(function(r){
+    var sigColor = r.signal==='BULLISH'?'#0ecb81':r.signal==='BEARISH'?'#f6465d':'#607a99';
+    var resColor = r.result==='WIN'?'#0ecb81':r.result==='LOSS'?'#f6465d':'#607a99';
+    var resText  = r.result || 'PENDING';
+    var date = new Date(r.ts).toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    html += '<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2px;padding:5px 4px;border-bottom:1px solid #1e2a40;align-items:center;">';
+    html += '<div><div style="font-size:10px;font-weight:700;color:#d0e0f0;">'+r.symbol+'</div>';
+    html += '<div style="font-size:8px;color:#607a99;">'+r.interval+' · '+date+'</div></div>';
+    html += '<div style="font-size:9px;font-weight:700;color:'+sigColor+';">'+r.signal+'</div>';
+    html += '<div style="font-size:9px;color:#607a99;">$'+parseFloat(r.entryPrice).toFixed(2)+'</div>';
+    html += '<div style="font-size:9px;font-weight:700;color:'+resColor+';">'+resText+'</div>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+}
+
+// Track Record tab click handler
+document.addEventListener('click', function(e){
+  if(e.target && e.target.id === 'record-tab'){
+    var rp = document.getElementById('record-panel');
+    var sp = document.getElementById('signal-panel');
+    var tl = document.getElementById('trades-list');
+    var tc = document.querySelector('.trades-cols');
+    if(!rp) return;
+    var isOpen = rp.style.display !== 'none';
+    // Hide all panels first
+    if(sp) sp.style.display='none';
+    if(tl) tl.style.display='none';
+    if(tc) tc.style.display='none';
+    document.querySelectorAll('.trades-tab').forEach(function(t){t.classList.remove('active');});
+    if(isOpen){
+      rp.style.display='none';
+      if(tl) tl.style.display='';
+      if(tc) tc.style.display='';
+      document.querySelector('.trades-tab').classList.add('active');
+    } else {
+      rp.style.display='block';
+      e.target.classList.add('active');
+      renderTrackRecord();
+    }
+  }
+});
+
+// Init on load
+renderTrackRecord();
 </script>
 
 <div class="info-modal hidden" id="community-modal">
