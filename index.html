@@ -2475,7 +2475,7 @@ function checkEmailCapture(){
   localStorage.setItem('forecast_count', _forecastCount);
   var dismissed = localStorage.getItem('email_capture_dismissed');
   var captured  = localStorage.getItem('email_captured');
-  if(!dismissed && !captured && _forecastCount >= 2 && !currentUser){
+  if(!dismissed && !captured && _forecastCount >= 3 && !currentUser){
     setTimeout(function(){ showEmailCapture(); }, 2000);
   }
 }
