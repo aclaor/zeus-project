@@ -654,6 +654,12 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
         <div class="acc-card"><div class="acc-label">Avg Price-V</div><div class="acc-val" id="m-accv">—</div></div>
       </div>
     </div>
+<div id="upgrade-prompt" style="display:none;margin:8px 10px;padding:12px;background:linear-gradient(135deg,#0a1f14,#0d1f2d);border:1px solid #0ecb81;border-radius:8px;font-family:'IBM Plex Mono',monospace;text-align:center;">
+        <div style="font-size:10px;color:#0ecb81;font-weight:700;margin-bottom:4px;">⚡ UNLOCK UNLIMITED FORECASTS</div>
+        <div id="upgrade-prompt-msg" style="font-size:9px;color:#607a99;margin-bottom:8px;line-height:1.6;">You've used <span id="up-used">0</span> of your free forecasts today</div>
+        <button onclick="showPricing()" style="width:100%;background:linear-gradient(135deg,#0ecb81,#00b4d8);border:none;border-radius:6px;padding:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:#000;cursor:pointer;">🚀 Upgrade to Pro — $17/mo</button>
+        <div style="font-size:8px;color:#607a99;margin-top:4px;">Cancel anytime · No hidden fees</div>
+      </div>
     <div class="pairs-header">
       <div class="pairs-search">
         <span style="color:var(--text3);font-size:11px;">⚲</span>
@@ -1946,6 +1952,7 @@ function renderAll(data) {
   var _sigFull = signalName==='bull'?'BULLISH':signalName==='bear'?'BEARISH':'NEUTRAL';
   updateSignalPanel(data, _sigFull, currentInterval);
   checkEmailCapture();
+  updateUpgradePrompt();
   var _fc7 = data.forecast_ma7 || [];
   var _tgt = _fc7.length > 0 ? _fc7[_fc7.length-1] : data.last_close;
   saveTrackRecord(data.symbol || currentSymbol, currentInterval, _sigFull, data.last_close, _tgt);
@@ -2322,23 +2329,20 @@ renderTrackRecord();
 (function(){
   // Use stored track records to show proof
   var records = JSON.parse(localStorage.getItem('zeus_track_records') || '[]');
-  var completed = records.filter(function(r){ return r.result !== null; });
+  var completed = records.filter(function(r){ return r.result !== null && r.result !== 'NEUTRAL'; });
   var wins = completed.filter(function(r){ return r.result === 'WIN'; }).length;
   var total = completed.length;
 
   var proofText = document.getElementById('proof-text');
   var proofWin  = document.getElementById('proof-winrate');
 
-  if(total >= 3 && proofText && proofWin){
+  if(total >= 3 && wins > 0 && proofText && proofWin){
     var winRate = Math.round((wins/total)*100);
-    // Show most recent correct prediction
     var lastWin = completed.find(function(r){ return r.result === 'WIN'; });
     if(lastWin){
       var sig = lastWin.signal === 'BULLISH' ? '📈 BULLISH' : '📉 BEARISH';
-      var sym = lastWin.symbol.replace('USDT','');
-      proofText.textContent = 'Yesterday: ' + sym + ' ' + sig + ' ✅ — Our AI was correct!';
-    } else {
-      proofText.textContent = 'AI forecasts tracked across ' + total + ' predictions';
+      var sym = lastWin.symbol.replace('USDT','').replace('USD','');
+      proofText.textContent = 'Last verified: ' + sym + ' ' + sig + ' ✅ — AI was correct!';
     }
     proofWin.textContent = winRate + '% Win Rate';
     proofWin.style.color = winRate >= 60 ? '#0ecb81' : '#f0b90b';
@@ -2479,6 +2483,30 @@ function checkEmailCapture(){
     setTimeout(function(){ showEmailCapture(); }, 2000);
   }
 }
+
+// ── UPGRADE PROMPT ────────────────────────────────────────
+function updateUpgradePrompt(){
+  var prompt = document.getElementById('upgrade-prompt');
+  if(!prompt) return;
+  // Only show to non-pro users
+  if(currentUser && currentUser.plan === 'pro'){ prompt.style.display='none'; return; }
+  // Count forecasts
+  var count = parseInt(localStorage.getItem('forecast_count') || '0');
+  var upUsed = document.getElementById('up-used');
+  var upMsg  = document.getElementById('upgrade-prompt-msg');
+  if(upUsed) upUsed.textContent = count;
+  if(count >= 1){
+    prompt.style.display='block';
+    if(upMsg){
+      if(count === 1)
+        upMsg.innerHTML = 'Great signal! Run <strong style="color:#0ecb81;">unlimited forecasts</strong> with Pro';
+      else if(count === 2)
+        upMsg.innerHTML = 'You\'re on a roll! Upgrade to never hit the daily limit';
+      else
+        upMsg.innerHTML = 'You\'ve run <span id="up-used2">'+count+'</span> forecasts — Pro gives you unlimited access';
+    }
+  }
+}
 </script>
 
 <div class="info-modal hidden" id="community-modal">
@@ -2508,7 +2536,18 @@ function checkEmailCapture(){
   <div style="background:#0b0f1a;border:1px solid #0ecb81;border-radius:12px;padding:32px 24px;max-width:420px;width:90%;margin:auto;font-family:'IBM Plex Mono',monospace;position:relative;box-shadow:0 0 40px rgba(14,203,129,0.15);">
     <button onclick="closeExitPopup()" style="position:absolute;top:12px;right:16px;background:none;border:none;color:#607a99;cursor:pointer;font-size:18px;">×</button>
     <div style="text-align:center;margin-bottom:20px;">
-      <div style="font-size:32px;margin-bottom:8px;">🤖</div>
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:8px;">
+        <circle cx="24" cy="24" r="23" stroke="#0ecb81" stroke-width="1.5" opacity="0.3"/>
+        <circle cx="24" cy="24" r="18" stroke="#0ecb81" stroke-width="1" opacity="0.2"/>
+        <!-- Brain/AI circuit lines -->
+        <path d="M14 30 L18 24 L22 27 L26 20 L30 23 L34 17" stroke="#0ecb81" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="14" cy="30" r="2" fill="#0ecb81"/>
+        <circle cx="22" cy="27" r="2" fill="#0ecb81"/>
+        <circle cx="30" cy="23" r="2" fill="#0ecb81"/>
+        <circle cx="34" cy="17" r="2.5" fill="#0ecb81"/>
+        <!-- Pulse dot -->
+        <circle cx="34" cy="17" r="5" fill="#0ecb81" opacity="0.2"/>
+      </svg>
       <div style="font-size:15px;font-weight:700;color:#0ff;margin-bottom:6px;">Wait — Before You Go!</div>
       <div style="font-size:11px;color:#607a99;line-height:1.7;">Our AI has made <span id="exit-total" style="color:#0ecb81;font-weight:700;">50+</span> forecasts with a <span id="exit-winrate" style="color:#0ecb81;font-weight:700;">94%</span> accuracy rate.</div>
     </div>
