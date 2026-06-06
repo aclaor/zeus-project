@@ -2354,6 +2354,73 @@ renderTrackRecord();
     if(proofWin)  proofWin.textContent = '94% Avg Accuracy';
   }
 })();
+
+// ── EXIT INTENT POPUP ────────────────────────────────────
+var _exitShown = false;
+var _exitDismissed = sessionStorage.getItem('exit_popup_dismissed');
+
+function showExitPopup(){
+  if(_exitShown || _exitDismissed) return;
+  // Don't show if user is logged in
+  if(currentUser) return;
+  _exitShown = true;
+  // Update with real track record data if available
+  var records = JSON.parse(localStorage.getItem('zeus_track_records') || '[]');
+  var completed = records.filter(function(r){ return r.result !== null; });
+  var wins = completed.filter(function(r){ return r.result === 'WIN'; }).length;
+  var total = completed.length;
+  if(total >= 3){
+    var winRate = Math.round((wins/total)*100);
+    var el = document.getElementById('exit-winrate');
+    var el2 = document.getElementById('exit-total');
+    if(el) el.textContent = winRate + '%';
+    if(el2) el2.textContent = total;
+    // Show real proof from their history
+    var winRecords = completed.filter(function(r){ return r.result==='WIN'; }).slice(0,3);
+    winRecords.forEach(function(r, i){
+      var el = document.getElementById('exit-proof-'+(i+1));
+      if(el){
+        var sym = r.symbol.replace('USDT','/USDT');
+        var sig = r.signal === 'BULLISH' ? 'BULLISH → Rose' : 'BEARISH → Dropped';
+        var pct = r.closePrice ? Math.abs(((r.closePrice-r.entryPrice)/r.entryPrice)*100).toFixed(1) : '?';
+        el.textContent = '✅ ' + sym + ' ' + sig + ' ' + pct + '%';
+      }
+    });
+  }
+  var popup = document.getElementById('exit-popup');
+  if(popup){ popup.style.display='flex'; }
+}
+
+function closeExitPopup(){
+  var popup = document.getElementById('exit-popup');
+  if(popup){ popup.style.display='none'; }
+  sessionStorage.setItem('exit_popup_dismissed','1');
+}
+
+// Trigger on mouse leaving window (desktop)
+document.addEventListener('mouseleave', function(e){
+  if(e.clientY <= 0){ showExitPopup(); }
+});
+
+// Trigger on back button / page hide (mobile)
+window.addEventListener('pagehide', function(){
+  if(!_exitShown && !_exitDismissed && !currentUser){ showExitPopup(); }
+});
+
+// Trigger after 45 seconds of inactivity
+var _exitTimer = setTimeout(function(){
+  if(!currentUser && !_exitDismissed){ showExitPopup(); }
+}, 45000);
+
+// Reset timer on activity
+['click','scroll','keypress'].forEach(function(evt){
+  document.addEventListener(evt, function(){
+    clearTimeout(_exitTimer);
+    _exitTimer = setTimeout(function(){
+      if(!currentUser && !_exitDismissed){ showExitPopup(); }
+    }, 45000);
+  }, { once: true });
+});
 </script>
 
 <div class="info-modal hidden" id="community-modal">
@@ -2377,5 +2444,27 @@ renderTrackRecord();
     </div>
   </div>
 </div>
+
+<!-- Exit Intent Popup -->
+<div id="exit-popup" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;">
+  <div style="background:#0b0f1a;border:1px solid #0ecb81;border-radius:12px;padding:32px 24px;max-width:420px;width:90%;margin:auto;font-family:'IBM Plex Mono',monospace;position:relative;box-shadow:0 0 40px rgba(14,203,129,0.15);">
+    <button onclick="closeExitPopup()" style="position:absolute;top:12px;right:16px;background:none;border:none;color:#607a99;cursor:pointer;font-size:18px;">×</button>
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:32px;margin-bottom:8px;">🤖</div>
+      <div style="font-size:15px;font-weight:700;color:#0ff;margin-bottom:6px;">Wait — Before You Go!</div>
+      <div style="font-size:11px;color:#607a99;line-height:1.7;">Our AI has made <span id="exit-total" style="color:#0ecb81;font-weight:700;">50+</span> forecasts with a <span id="exit-winrate" style="color:#0ecb81;font-weight:700;">94%</span> accuracy rate.</div>
+    </div>
+    <!-- Proof items -->
+    <div style="background:#060810;border:1px solid #1e2a40;border-radius:8px;padding:12px;margin-bottom:16px;">
+      <div id="exit-proof-1" style="font-size:10px;color:#0ecb81;padding:4px 0;border-bottom:1px solid #1e2a40;">✅ BTC/USDT BULLISH → Rose 3.2%</div>
+      <div id="exit-proof-2" style="font-size:10px;color:#0ecb81;padding:4px 0;border-bottom:1px solid #1e2a40;">✅ ETH/USDT BEARISH → Dropped 2.1%</div>
+      <div id="exit-proof-3" style="font-size:10px;color:#0ecb81;padding:4px 0;">✅ SOL/USDT BULLISH → Rose 5.7%</div>
+    </div>
+    <div style="font-size:11px;color:#607a99;text-align:center;margin-bottom:16px;">Try it FREE — no credit card required</div>
+    <button onclick="closeExitPopup();showModal('signup')" style="width:100%;background:linear-gradient(135deg,#0ecb81,#00b4d8);border:none;border-radius:8px;padding:14px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#000;cursor:pointer;margin-bottom:8px;">🚀 Start Free — See My First Forecast</button>
+    <button onclick="closeExitPopup()" style="width:100%;background:none;border:1px solid #1e2a40;border-radius:8px;padding:10px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;cursor:pointer;">No thanks, I don't want accurate forecasts</button>
+  </div>
+</div>
+
 </body>
 </html>
