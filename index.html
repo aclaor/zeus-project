@@ -683,61 +683,9 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 
 
 
-<!-- CRYPTO STATS BAR -->
-<div id="crypto-stats-bar" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:12px 20px;">
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;">
 
-    <div onclick="loadPair('BTCUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:10px 14px;cursor:pointer;transition:border-color .15s;" onmouseover="this.style.borderColor='#f0b90b'" onmouseout="this.style.borderColor='#1e2a40'">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;letter-spacing:1px;margin-bottom:4px;">BITCOIN</div>
-      <div id="sb-btc-price" style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;color:#f0b90b;">$—</div>
-      <div id="sb-btc-chg" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:2px;">—</div>
-    </div>
-
-    <div onclick="loadPair('ETHUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:10px 14px;cursor:pointer;transition:border-color .15s;" onmouseover="this.style.borderColor='#a78bfa'" onmouseout="this.style.borderColor='#1e2a40'">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;letter-spacing:1px;margin-bottom:4px;">ETHEREUM</div>
-      <div id="sb-eth-price" style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;color:#a78bfa;">$—</div>
-      <div id="sb-eth-chg" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:2px;">—</div>
-    </div>
-
-    <div onclick="loadPair('SOLUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:10px 14px;cursor:pointer;transition:border-color .15s;" onmouseover="this.style.borderColor='#0ecb81'" onmouseout="this.style.borderColor='#1e2a40'">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;letter-spacing:1px;margin-bottom:4px;">SOLANA</div>
-      <div id="sb-sol-price" style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;color:#0ecb81;">$—</div>
-      <div id="sb-sol-chg" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:2px;">—</div>
-    </div>
-
-    <div onclick="loadPair('BNBUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:10px 14px;cursor:pointer;transition:border-color .15s;" onmouseover="this.style.borderColor='#f0b90b'" onmouseout="this.style.borderColor='#1e2a40'">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;letter-spacing:1px;margin-bottom:4px;">BNB</div>
-      <div id="sb-bnb-price" style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;color:#f0b90b;">$—</div>
-      <div id="sb-bnb-chg" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:2px;">—</div>
-    </div>
-
-    <div onclick="loadPair('XRPUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:10px 14px;cursor:pointer;transition:border-color .15s;" onmouseover="this.style.borderColor='#0af'" onmouseout="this.style.borderColor='#1e2a40'">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;letter-spacing:1px;margin-bottom:4px;">XRP</div>
-      <div id="sb-xrp-price" style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;color:#0af;">$—</div>
-      <div id="sb-xrp-chg" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:2px;">—</div>
-    </div>
-
-    <div onclick="loadPair('DOGEUSDT')" style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:10px 14px;cursor:pointer;transition:border-color .15s;" onmouseover="this.style.borderColor='#f0b90b'" onmouseout="this.style.borderColor='#1e2a40'">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;letter-spacing:1px;margin-bottom:4px;">DOGECOIN</div>
-      <div id="sb-doge-price" style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;color:#f0b90b;">$—</div>
-      <div id="sb-doge-chg" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:2px;">—</div>
-    </div>
-
-    <div style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:10px 14px;">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;letter-spacing:1px;margin-bottom:4px;">FEAR & GREED</div>
-      <div id="sb-fg-val" style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;color:#f0b90b;">—</div>
-      <div id="sb-fg-label" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:2px;">—</div>
-    </div>
-
-    <div style="background:#131926;border:1px solid #1e2a40;border-radius:6px;padding:10px 14px;">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;letter-spacing:1px;margin-bottom:4px;">BTC DOMINANCE</div>
-      <div id="sb-dom-val" style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;color:#f0b90b;">—</div>
-      <div id="sb-dom-chg" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:2px;">BTC vs Altcoins</div>
-    </div>
-
-  </div>
-</div>
-<!-- END CRYPTO STATS BAR -->
+<!-- SECTION DIVIDER -->
+<div style="border-top:1px solid var(--border);margin:0;"></div>
 
 <div id="crypto-market-overview" style="background:var(--bg);padding:24px 20px 24px 20px;">
   <div style="font-family:'IBM Plex Mono',monospace;font-size:clamp(12px,2vw,16px);font-weight:700;color:#0ecb81;margin-bottom:4px;letter-spacing:2px;">🔥 CRYPTO MARKETS</div>
@@ -2664,55 +2612,6 @@ window.loadZMISnapshot=loadZMISnapshot;
 
 
 
-// ── CRYPTO STATS BAR ─────────────────────────────────────────
-async function loadCryptoStatsBar(){
-  var pairs=['BTCUSDT','ETHUSDT','SOLUSDT','BNBUSDT','XRPUSDT','DOGEUSDT'];
-  var ids={BTCUSDT:'sb-btc',ETHUSDT:'sb-eth',SOLUSDT:'sb-sol',BNBUSDT:'sb-bnb',XRPUSDT:'sb-xrp',DOGEUSDT:'sb-doge'};
-  // Binance prices
-  try{
-    var r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbols=['+pairs.map(function(s){return '"'+s+'"';}).join(',')+']');
-    var data=await r.json();
-    if(Array.isArray(data)){
-      data.forEach(function(t){
-        var id=ids[t.symbol];
-        if(!id) return;
-        var price=parseFloat(t.lastPrice);
-        var chg=parseFloat(t.priceChangePercent);
-        var up=chg>=0;
-        var pe=document.getElementById(id+'-price');
-        var ce=document.getElementById(id+'-chg');
-        if(pe) pe.textContent='$'+price.toLocaleString(undefined,{maximumFractionDigits:price<1?6:price<10?4:2});
-        if(ce){ce.textContent=(up?'+':'')+chg.toFixed(2)+'%';ce.style.color=up?'#0ecb81':'#f6465d';}
-      });
-    }
-  }catch(e){console.log('Stats bar Binance failed:',e.message);}
-  // Fear & Greed
-  try{
-    var r2=await fetch('https://api.alternative.me/fng/?limit=1');
-    var d2=await r2.json();
-    if(d2.data&&d2.data[0]){
-      var val=parseInt(d2.data[0].value);
-      var label=d2.data[0].value_classification;
-      var col=val>=60?'#0ecb81':val>=40?'#f0b90b':'#f6465d';
-      var fgv=document.getElementById('sb-fg-val');
-      var fgl=document.getElementById('sb-fg-label');
-      if(fgv){fgv.textContent=val+'/100';fgv.style.color=col;}
-      if(fgl) fgl.textContent=label;
-    }
-  }catch(e){console.log('Fear & Greed failed:',e.message);}
-  // BTC Dominance from CoinGecko
-  try{
-    var r3=await fetch('https://api.coingecko.com/api/v3/global');
-    var d3=await r3.json();
-    if(d3.data&&d3.data.market_cap_percentage){
-      var dom=d3.data.market_cap_percentage.btc||0;
-      var dv=document.getElementById('sb-dom-val');
-      if(dv){dv.textContent=dom.toFixed(1)+'%';dv.style.color=dom>50?'#f0b90b':'#0af';}
-    }
-  }catch(e){console.log('BTC dominance failed:',e.message);}
-}
-window.loadCryptoStatsBar=loadCryptoStatsBar;
-
 window.addEventListener('DOMContentLoaded',function(){
   var logobtn=document.getElementById('logo-btn');
   if(logobtn){logobtn.addEventListener('click',function(e){e.stopPropagation();showHomeDrop();});document.addEventListener('click',function(e){var d=document.getElementById('home-drop'),lb=document.getElementById('logo-btn');if(d&&lb&&!d.contains(e.target)&&!lb.contains(e.target))d.classList.remove('open');});}
@@ -2733,7 +2632,6 @@ window.addEventListener('DOMContentLoaded',function(){
   },500);
   setInterval(function(){fetchAllTickers();},30000);
   setTimeout(function(){runForecast(true);},1000);
-  setTimeout(function(){if(typeof loadCryptoStatsBar==='function')loadCryptoStatsBar();},1500);
   setTimeout(function(){if(typeof loadCryptoProfile==='function')loadCryptoProfile('BTCUSD');},2500);
   setTimeout(function(){if(typeof loadZMIGainers==='function')loadZMIGainers();},3000);
   // Retry crypto boxes after 3s if still empty
