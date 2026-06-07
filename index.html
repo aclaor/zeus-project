@@ -682,18 +682,18 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 </div>
 
 
-<div id="crypto-market-overview" style="background:var(--bg);padding:24px 20px 120px 20px;">
-  <div style="font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;color:#0ecb81;margin-bottom:4px;letter-spacing:2px;">🔥 CRYPTO MARKETS</div>
+<div id="crypto-market-overview" style="background:var(--bg);padding:24px 20px 24px 20px;">
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:clamp(12px,2vw,16px);font-weight:700;color:#0ecb81;margin-bottom:4px;letter-spacing:2px;">🔥 CRYPTO MARKETS</div>
   <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;margin-bottom:20px;">Live data · Click any coin to run ZEUS-AI forecast</div>
 
   <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#f0b90b;margin-bottom:12px;letter-spacing:1px;">⚡ HOT COINS — Most traded right now</div>
-  <div id="hot-coins-grid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:24px;"></div>
+  <div id="hot-coins-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:24px;"></div>
 
   <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#0ecb81;margin-bottom:12px;letter-spacing:1px;">📈 TOP GAINERS — Best performing today</div>
-  <div id="gainers-coins-grid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:24px;"></div>
+  <div id="gainers-coins-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:24px;"></div>
 
   <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#f6465d;margin-bottom:12px;letter-spacing:1px;">📉 TOP LOSERS — Biggest decliners today</div>
-  <div id="losers-coins-grid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:24px;"></div>
+  <div id="losers-coins-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:24px;"></div>
 </div>
 
 </div>
@@ -757,30 +757,135 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 </div>
 
 
-<!-- FAQ SECTION -->
-<div style="max-width:800px;margin:0 auto;padding:40px 20px;">
-  <div style="font-family:'IBM Plex Mono',monospace;font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:#0ff;margin-bottom:24px;text-align:center;letter-spacing:2px;">❓ FREQUENTLY ASKED QUESTIONS</div>
-  <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;margin-bottom:12px;">
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f0b90b;margin-bottom:8px;">Is it really free?</div>
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">Yes! You get 2 hours of free AI forecasts every day. No credit card required. After 2 hours, wait 15 minutes or upgrade to Pro for unlimited access.</div>
+
+<!-- MARKET INTELLIGENCE -->
+<div style="background:var(--bg);padding:24px 20px 40px 20px;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:clamp(11px,2vw,13px);font-weight:700;color:#0ff;letter-spacing:1px;">📅 MARKET INTELLIGENCE</div>
+    <div style="font-size:10px;color:#607a99;font-family:'IBM Plex Mono',monospace;">Click any coin → instant AI forecast</div>
   </div>
-  <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;margin-bottom:12px;">
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f0b90b;margin-bottom:8px;">How accurate are the forecasts?</div>
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">Our AI shows accuracy scores between 90-99%+ based on historical backtesting. Each forecast shows the exact confidence score so you can judge for yourself.</div>
+  <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;">
+    <button onclick="window.zmiTab&&window.zmiTab('gainers')" id="zmi-tab-gainers" class="zmi-tab" style="font-family:'IBM Plex Mono',monospace;font-size:10px;padding:6px 12px;border-radius:4px;border:1px solid #0ecb81;background:#0ecb8118;color:#0ecb81;cursor:pointer;">📈 Gainers/Losers</button>
+    <button onclick="window.zmiTab&&window.zmiTab('snapshot')" id="zmi-tab-snapshot" class="zmi-tab" style="font-family:'IBM Plex Mono',monospace;font-size:10px;padding:6px 12px;border-radius:4px;border:1px solid #1e2a40;background:transparent;color:#607a99;cursor:pointer;">📊 Snapshots</button>
+    <button onclick="window.zmiTab&&window.zmiTab('faq')" id="zmi-tab-faq" class="zmi-tab" style="font-family:'IBM Plex Mono',monospace;font-size:10px;padding:6px 12px;border-radius:4px;border:1px solid #1e2a40;background:transparent;color:#607a99;cursor:pointer;">❓ FAQ</button>
   </div>
-  <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;margin-bottom:12px;">
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f0b90b;margin-bottom:8px;">How do I interpret the forecast?</div>
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">Join our Trader Community on Slack! We share screenshots and guidance on how to read BULL/BEAR signals and identify buy/sell setups. <span onclick="document.getElementById('community-modal').classList.remove('hidden')" style="color:#a78bfa;cursor:pointer;">Join here →</span></div>
+  <div id="zmi-gainers">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#0ecb81;margin-bottom:10px;letter-spacing:1px;">📈 TOP GAINERS TODAY</div>
+    <div id="zmi-gainers-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:20px;"></div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#f6465d;margin-bottom:10px;letter-spacing:1px;">📉 TOP LOSERS TODAY</div>
+    <div id="zmi-losers-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;"></div>
   </div>
-  <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;margin-bottom:12px;">
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f0b90b;margin-bottom:8px;">Is this financial advice?</div>
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">No. This is AI-powered analysis as a decision-support tool. Always do your own research before making any investment decisions.</div>
+  <div id="zmi-snapshot" style="display:none;">
+    <div style="font-size:10px;color:#607a99;font-family:'IBM Plex Mono',monospace;margin-bottom:10px;">Live crypto data · Day high/low, volume, VWAP · Click any coin for AI forecast</div>
+    <div id="zmi-snapshot-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;"></div>
   </div>
-  <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;margin-bottom:12px;">
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f0b90b;margin-bottom:8px;">Can I cancel anytime?</div>
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">Yes! Cancel anytime with no questions asked. Monthly subscription, stop at any time. No long-term commitment required.</div>
+  <div id="zmi-faq" style="display:none;">
+    <div style="max-width:800px;">
+      <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;margin-bottom:10px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#f0b90b;margin-bottom:6px;">Is it really free?</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">Yes! You get 2 hours of free AI forecasts every day. No credit card required.</div>
+      </div>
+      <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;margin-bottom:10px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#f0b90b;margin-bottom:6px;">How accurate are the forecasts?</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">90–99%+ accuracy scores based on historical backtesting. Each forecast shows the exact confidence score.</div>
+      </div>
+      <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;margin-bottom:10px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#f0b90b;margin-bottom:6px;">Is this financial advice?</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">No. AI-powered analysis as a decision-support tool. Always do your own research.</div>
+      </div>
+      <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:20px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#f0b90b;margin-bottom:6px;">Can I cancel anytime?</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;line-height:1.8;">Yes! Cancel anytime. Monthly subscription, no long-term commitment.</div>
+      </div>
+    </div>
   </div>
 </div>
+<!-- END MARKET INTELLIGENCE -->
+
+<!-- CRYPTO PROFILE -->
+<div id="crypto-profile-section" style="background:var(--bg);padding:24px 20px 40px 20px;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:clamp(11px,2vw,13px);font-weight:700;color:#0ff;letter-spacing:1px;">🪙 CRYPTO PROFILE</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:3px;">Powered by Polygon.io · Click any coin or search below</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div style="display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border2);border-radius:4px;padding:0 10px;height:28px;">
+        <span style="color:var(--text3);font-size:11px;">⚲</span>
+        <input type="text" id="ccp-input" placeholder="e.g. BTCUSD, ETHUSD..." value="BTCUSD"
+          style="background:transparent;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:11px;width:140px;"
+          oninput="this.value=this.value.toUpperCase()"
+          onkeydown="if(event.key==='Enter')window.loadCryptoProfile&&window.loadCryptoProfile(this.value)">
+      </div>
+      <button onclick="window.loadCryptoProfile&&window.loadCryptoProfile(document.getElementById('ccp-input').value)"
+        style="background:var(--accent);border:none;border-radius:4px;padding:5px 14px;font-family:var(--mono);font-size:11px;font-weight:700;color:#000;cursor:pointer;">Load</button>
+    </div>
+  </div>
+  <div id="ccp-loading" style="display:none;text-align:center;padding:40px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;">
+    <div style="width:24px;height:24px;border:2px solid #1e2a40;border-top-color:#f0b90b;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px;"></div>Loading...
+  </div>
+  <div id="ccp-error" style="display:none;text-align:center;padding:40px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#f6465d;"></div>
+  <div id="ccp-content" style="display:none;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;">
+      <div id="ccp-logo" style="width:44px;height:44px;border-radius:50%;background:#131926;border:1px solid #1e2a40;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;color:#f0b90b;flex-shrink:0;"></div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span id="ccp-sym" style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:700;color:#d0e0f0;"></span>
+          <span style="font-size:9px;padding:2px 7px;border-radius:3px;background:rgba(240,185,11,0.12);color:#f0b90b;border:1px solid rgba(240,185,11,0.2);font-family:'IBM Plex Mono',monospace;">CRYPTO</span>
+        </div>
+        <div id="ccp-fullname" style="font-size:12px;color:#607a99;font-family:'IBM Plex Mono',monospace;margin-top:2px;"></div>
+      </div>
+      <div style="margin-left:auto;text-align:right;">
+        <div id="ccp-price" style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:700;color:#0ecb81;"></div>
+        <div id="ccp-chg" style="font-size:11px;margin-top:2px;"></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 300px;gap:16px;align-items:stretch;">
+      <div style="display:flex;flex-direction:column;">
+        <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:16px;flex:1;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;letter-spacing:1px;">PRICE HISTORY</span>
+            <div style="display:flex;gap:4px;">
+              <button onclick="window.ccpSetPeriod&&window.ccpSetPeriod(this,'7')"   class="ccp-ptab" style="background:transparent;border:1px solid #1e2a40;border-radius:3px;padding:2px 7px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;cursor:pointer;">1W</button>
+              <button onclick="window.ccpSetPeriod&&window.ccpSetPeriod(this,'30')"  class="ccp-ptab active" style="background:rgba(14,203,129,0.08);border:1px solid #0ecb81;border-radius:3px;padding:2px 7px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:#0ecb81;cursor:pointer;">1M</button>
+              <button onclick="window.ccpSetPeriod&&window.ccpSetPeriod(this,'90')"  class="ccp-ptab" style="background:transparent;border:1px solid #1e2a40;border-radius:3px;padding:2px 7px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;cursor:pointer;">3M</button>
+              <button onclick="window.ccpSetPeriod&&window.ccpSetPeriod(this,'365')" class="ccp-ptab" style="background:transparent;border:1px solid #1e2a40;border-radius:3px;padding:2px 7px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;cursor:pointer;">1Y</button>
+            </div>
+          </div>
+          <div style="position:relative;height:200px;">
+            <canvas id="ccp-chart" role="img" aria-label="Crypto price history chart"></canvas>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-top:10px;">
+          <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:6px;padding:10px 12px;"><div style="font-size:9px;color:#607a99;font-family:'IBM Plex Mono',monospace;margin-bottom:4px;">DAY HIGH</div><div id="ccp-high" style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#0ecb81;">—</div></div>
+          <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:6px;padding:10px 12px;"><div style="font-size:9px;color:#607a99;font-family:'IBM Plex Mono',monospace;margin-bottom:4px;">DAY LOW</div><div id="ccp-low" style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f6465d;">—</div></div>
+          <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:6px;padding:10px 12px;"><div style="font-size:9px;color:#607a99;font-family:'IBM Plex Mono',monospace;margin-bottom:4px;">VOLUME</div><div id="ccp-vol" style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#d0e0f0;">—</div></div>
+          <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:6px;padding:10px 12px;"><div style="font-size:9px;color:#607a99;font-family:'IBM Plex Mono',monospace;margin-bottom:4px;">VWAP</div><div id="ccp-vwap" style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f0b90b;">—</div></div>
+        </div>
+      </div>
+      <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="background:#131926;border-bottom:1px solid #1e2a40;padding:12px 14px;display:flex;align-items:center;gap:10px;">
+          <div id="ccp-logo2" style="width:36px;height:36px;border-radius:50%;background:#0b0f1a;border:1px solid #1e2a40;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#f0b90b;flex-shrink:0;"></div>
+          <div><div id="ccp-fullname2" style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#d0e0f0;"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;">Polygon.io · Real-time</div></div>
+        </div>
+        <div style="padding:12px 14px;flex:1;display:flex;flex-direction:column;">
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #0d1520;"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;">Last Price</span><span id="ccp-price2" style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:#0ecb81;"></span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #0d1520;"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;">Day Change</span><span id="ccp-chg2" style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;"></span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #0d1520;"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;">Day Open</span><span id="ccp-open" style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:#d0e0f0;"></span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #0d1520;"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;">Day High</span><span id="ccp-high2" style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:#0ecb81;"></span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #0d1520;"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;">Day Low</span><span id="ccp-low2" style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:#f6465d;"></span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #0d1520;"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;">Volume</span><span id="ccp-vol2" style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:#d0e0f0;"></span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #0d1520;"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;">VWAP</span><span id="ccp-vwap2" style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:#f0b90b;"></span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;">Prev Close</span><span id="ccp-prev" style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:#d0e0f0;"></span></div>
+          <div style="flex:1;"></div>
+          <button onclick="window.loadCCPForecast&&window.loadCCPForecast()"
+            style="width:100%;margin-top:12px;background:linear-gradient(135deg,#0ecb81,#00b4d8);border:none;border-radius:6px;padding:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;color:#000;cursor:pointer;">▶ Run AI Forecast</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END CRYPTO PROFILE -->
 <!-- SOCIAL PROOF SECTION -->
 <div id="social-proof-section" style="background:#0b0f1a;border-top:1px solid #1e2a40;border-bottom:1px solid #1e2a40;padding:32px 20px;text-align:center;">
   <div style="margin-bottom:28px;">
@@ -1531,7 +1636,7 @@ function updateCryptoBoxes(data){
 }
 
 function scrollAndLoad(sym){window.scrollTo({top:0,behavior:'smooth'});loadPair(sym);}
-function loadPair(sym){var clean=sym.toUpperCase().replace(/[\/\-\s]/g,'');document.getElementById('pair-input').value=clean;document.querySelectorAll('.pair-row').forEach(function(r){r.classList.toggle('active-pair',r.getAttribute('data-sym')===clean);});runForecast();}
+function loadPair(sym){var clean=sym.toUpperCase().replace(/[\/\-\s]/g,'');document.getElementById('pair-input').value=clean;if(typeof loadCryptoProfile==='function')loadCryptoProfile(clean);document.querySelectorAll('.pair-row').forEach(function(r){r.classList.toggle('active-pair',r.getAttribute('data-sym')===clean);});runForecast();}
 
 // ── LIVE DATA ─────────────────────────────────
 // ── BOTTOM TICKER JS ANIMATION ───────────────────────────
@@ -2136,6 +2241,235 @@ function showSignupPopup(){
 setTimeout(showSignupPopup,30000);
 document.addEventListener('mouseleave',function(e){if(e.clientY<10)showSignupPopup();});
 
+
+// ── ZEUS MARKET INTELLIGENCE ─────────────────────────────────
+var _zmiLoaded = {gainers:false, snapshot:false};
+
+function zmiTab(t){
+  ['gainers','snapshot','faq'].forEach(function(id){
+    var el=document.getElementById('zmi-'+id);
+    if(el) el.style.display=id===t?'block':'none';
+  });
+  document.querySelectorAll('.zmi-tab').forEach(function(b){
+    b.style.borderColor='#1e2a40';b.style.background='transparent';b.style.color='#607a99';
+  });
+  var btn=document.getElementById('zmi-tab-'+t);
+  if(btn){btn.style.borderColor='#0ecb81';btn.style.background='#0ecb8118';btn.style.color='#0ecb81';}
+  if(t==='gainers'&&!_zmiLoaded.gainers) loadZMIGainers();
+  else if(t==='snapshot'&&!_zmiLoaded.snapshot) loadZMISnapshot();
+}
+
+function makeZmiCard(sym, price, chg, extra, color){
+  var up=chg>=0;
+  var border=color?'rgba('+color+',0.3)':(up?'rgba(14,203,129,0.3)':'rgba(246,70,93,0.3)');
+  var bg=color?'rgba('+color+',0.06)':(up?'rgba(14,203,129,0.06)':'rgba(246,70,93,0.06)');
+  var pairSym=sym.replace('X:','').replace('USD','');
+  var forecastSym=sym.replace('X:','').replace(/USD$/,'USDT');
+  return '<div onclick="window.scrollTo({top:0,behavior:\'smooth\'});loadPair(\''+forecastSym+'\')" '
+    +'style="border:1px solid '+border+';background:'+bg+';border-radius:6px;padding:10px;cursor:pointer;text-align:center;width:100%;box-sizing:border-box;">'
+    +'<div style="font-family:\'IBM Plex Mono\',monospace;font-size:11px;font-weight:700;color:#d0e0f0;margin-bottom:3px;">'+pairSym+'</div>'
+    +'<div style="font-family:\'IBM Plex Mono\',monospace;font-size:11px;color:#607a99;margin-bottom:3px;">$'+parseFloat(price).toLocaleString(undefined,{maximumFractionDigits:price<1?6:price<10?4:2})+'</div>'
+    +'<div style="font-family:\'IBM Plex Mono\',monospace;font-size:11px;font-weight:700;color:'+(up?'#0ecb81':'#f6465d')+'">'+(up?'+':'')+parseFloat(chg).toFixed(2)+'%</div>'
+    +(extra?'<div style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:#344a66;margin-top:2px;">'+extra+'</div>':'')
+    +'</div>';
+}
+
+async function loadZMIGainers(){
+  _zmiLoaded.gainers=true;
+  var gg=document.getElementById('zmi-gainers-grid');
+  var lg=document.getElementById('zmi-losers-grid');
+  if(gg) gg.innerHTML='<div style="color:#607a99;font-size:10px;padding:12px;">Loading...</div>';
+  if(lg) lg.innerHTML='<div style="color:#607a99;font-size:10px;padding:12px;">Loading...</div>';
+  try{
+    var rg=await fetch('https://api.polygon.io/v2/snapshot/locale/global/markets/crypto/gainers?apiKey=rrU7PLF7tbDwu2cYpu2KvxTlpvl_QmyG');
+    var gdata=await rg.json();
+    if(gdata&&gdata.tickers&&gdata.tickers.length){
+      var gh='';
+      gdata.tickers.slice(0,18).forEach(function(t){
+        var price=t.day&&t.day.c||t.lastTrade&&t.lastTrade.p||0;
+        var chg=t.todaysChangePerc||0;
+        gh+=makeZmiCard(t.ticker,price,chg,'Vol:'+(t.day&&t.day.v?parseFloat(t.day.v).toLocaleString(undefined,{maximumFractionDigits:0}):'—'),'14,203,129');
+      });
+      if(gg) gg.innerHTML=gh;
+    }
+  }catch(e){console.log('ZMI gainers:',e.message);}
+  try{
+    var rl=await fetch('https://api.polygon.io/v2/snapshot/locale/global/markets/crypto/losers?apiKey=rrU7PLF7tbDwu2cYpu2KvxTlpvl_QmyG');
+    var ldata=await rl.json();
+    if(ldata&&ldata.tickers&&ldata.tickers.length){
+      var lh='';
+      ldata.tickers.slice(0,18).forEach(function(t){
+        var price=t.day&&t.day.c||t.lastTrade&&t.lastTrade.p||0;
+        var chg=t.todaysChangePerc||0;
+        lh+=makeZmiCard(t.ticker,price,chg,'Vol:'+(t.day&&t.day.v?parseFloat(t.day.v).toLocaleString(undefined,{maximumFractionDigits:0}):'—'),'246,70,93');
+      });
+      if(lg) lg.innerHTML=lh;
+    }
+  }catch(e){console.log('ZMI losers:',e.message);}
+}
+
+async function loadZMISnapshot(){
+  _zmiLoaded.snapshot=true;
+  var sg=document.getElementById('zmi-snapshot-grid');
+  if(sg) sg.innerHTML='<div style="color:#607a99;font-size:10px;padding:12px;">Loading...</div>';
+  var majorPairs=['X:BTCUSD','X:ETHUSD','X:SOLUSD','X:BNBUSD','X:XRPUSD','X:DOGEUSD','X:ADAUSD','X:AVAXUSD','X:LINKUSD','X:DOTUSD','X:MATICUSD','X:UNIUSD','X:ATOMUSD','X:LTCUSD','X:NEARUSD','X:APTUSD'];
+  try{
+    var tickers=majorPairs.join(',');
+    var r=await fetch('https://api.polygon.io/v2/snapshot/locale/global/markets/crypto/tickers?tickers='+tickers+'&apiKey=rrU7PLF7tbDwu2cYpu2KvxTlpvl_QmyG');
+    var data=await r.json();
+    if(data&&data.tickers&&data.tickers.length){
+      var html='';
+      data.tickers.forEach(function(t){
+        var price=t.day&&t.day.c||0;
+        var chg=t.todaysChangePerc||0;
+        var high=t.day&&t.day.h||0;
+        var low=t.day&&t.day.l||0;
+        var vwap=t.day&&t.day.vw||0;
+        var vol=t.day&&t.day.v||0;
+        var up=chg>=0;
+        var pairSym=t.ticker.replace('X:','').replace('USD','');
+        var forecastSym=t.ticker.replace('X:','').replace(/USD$/,'USDT');
+        html+='<div onclick="window.scrollTo({top:0,behavior:\'smooth\'});loadPair(\''+forecastSym+'\')" '
+          +'style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:8px;padding:10px;cursor:pointer;" '
+          +'onmouseover="this.style.borderColor=\'#0ecb81\'" onmouseout="this.style.borderColor=\'#1e2a40\'">'
+          +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">'
+          +'<span style="font-family:\'IBM Plex Mono\',monospace;font-size:12px;font-weight:700;color:#d0e0f0;">'+pairSym+'</span>'
+          +'<span style="font-family:\'IBM Plex Mono\',monospace;font-size:10px;font-weight:700;color:'+(up?'#0ecb81':'#f6465d')+'">'+(up?'+':'')+parseFloat(chg).toFixed(2)+'%</span>'
+          +'</div>'
+          +'<div style="font-family:\'IBM Plex Mono\',monospace;font-size:13px;font-weight:700;color:'+(up?'#0ecb81':'#f6465d')+';margin-bottom:6px;">$'+parseFloat(price).toLocaleString(undefined,{maximumFractionDigits:price<1?6:price<10?4:2})+'</div>'
+          +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;">'
+          +'<div style="font-size:9px;color:#344a66;">H:$'+parseFloat(high).toLocaleString(undefined,{maximumFractionDigits:2})+'</div>'
+          +'<div style="font-size:9px;color:#344a66;">L:$'+parseFloat(low).toLocaleString(undefined,{maximumFractionDigits:2})+'</div>'
+          +'<div style="font-size:9px;color:#344a66;">Vol:'+parseFloat(vol).toLocaleString(undefined,{maximumFractionDigits:0})+'</div>'
+          +'<div style="font-size:9px;color:#344a66;">VW:$'+parseFloat(vwap).toLocaleString(undefined,{maximumFractionDigits:2})+'</div>'
+          +'</div>'
+          +'</div>';
+      });
+      if(sg) sg.innerHTML=html;
+    }
+  }catch(e){console.log('ZMI snapshot:',e.message);}
+}
+
+// ── CRYPTO PROFILE ────────────────────────────────────────────
+var _ccpChart=null, _ccpCurrentSym='', _ccpCurrentDays=30;
+
+function ccpSetPeriod(btn,days){
+  _ccpCurrentDays=parseInt(days);
+  document.querySelectorAll('.ccp-ptab').forEach(function(b){
+    b.style.background='transparent';b.style.borderColor='#1e2a40';b.style.color='#607a99';
+  });
+  btn.style.background='rgba(14,203,129,0.08)';btn.style.borderColor='#0ecb81';btn.style.color='#0ecb81';
+  if(_ccpCurrentSym) loadCCPChart(_ccpCurrentSym,_ccpCurrentDays);
+}
+
+function setEls(ids,val){ids.forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=val||'—';});}
+
+function loadCCPForecast(){
+  if(!_ccpCurrentSym) return;
+  window.scrollTo({top:0,behavior:'smooth'});
+  var inp=document.getElementById('pair-input');
+  var forecastSym=_ccpCurrentSym.replace('X:','').replace(/USD$/,'USDT');
+  if(inp) inp.value=forecastSym;
+  setTimeout(function(){if(typeof runForecast==='function') runForecast();},300);
+}
+
+async function loadCCPChart(polyTicker,days){
+  var canvas=document.getElementById('ccp-chart');
+  if(!canvas||typeof Chart==='undefined') return;
+  var to=new Date(),from=new Date(to.getTime()-days*24*60*60*1000);
+  var toStr=to.toISOString().split('T')[0],fromStr=from.toISOString().split('T')[0];
+  try{
+    var r=await fetch('https://api.polygon.io/v2/aggs/ticker/'+polyTicker+'/range/1/day/'+fromStr+'/'+toStr+'?adjusted=true&sort=asc&limit=365&apiKey=rrU7PLF7tbDwu2cYpu2KvxTlpvl_QmyG');
+    var data=await r.json();
+    if(!data.results||!data.results.length) return;
+    var labels=data.results.map(function(d){var dt=new Date(d.t);return (dt.getMonth()+1)+'/'+(dt.getDate());});
+    var prices=data.results.map(function(d){return parseFloat(d.c.toFixed(4));});
+    var isUp=prices[prices.length-1]>=prices[0];
+    var lineColor=isUp?'#0ecb81':'#f6465d';
+    if(_ccpChart){try{_ccpChart.destroy();}catch(e){} _ccpChart=null;}
+    _ccpChart=new Chart(canvas,{
+      type:'line',
+      data:{labels:labels,datasets:[{label:polyTicker,data:prices,borderColor:lineColor,backgroundColor:isUp?'rgba(14,203,129,0.06)':'rgba(246,70,93,0.06)',borderWidth:2,pointRadius:0,pointHoverRadius:4,fill:true,tension:0.3}]},
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{backgroundColor:'#0b0f1a',borderColor:'#1e2a40',borderWidth:1,titleColor:'#607a99',bodyColor:lineColor,callbacks:{label:function(ctx){return ' $'+ctx.parsed.y.toLocaleString(undefined,{maximumFractionDigits:4});}}}},
+        scales:{
+          x:{grid:{color:'rgba(30,42,64,0.5)'},ticks:{color:'#344a66',font:{family:'IBM Plex Mono',size:9},maxRotation:0,autoSkip:true,maxTicksLimit:7}},
+          y:{grid:{color:'rgba(30,42,64,0.5)'},ticks:{color:'#344a66',font:{family:'IBM Plex Mono',size:9},callback:function(v){return '$'+v.toLocaleString(undefined,{maximumFractionDigits:2});}},position:'right'}
+        }
+      }
+    });
+  }catch(e){console.log('CCP chart:',e.message);}
+}
+
+async function loadCryptoProfile(symInput){
+  if(!symInput) return;
+  var clean=symInput.toUpperCase().trim();
+  var polyTicker;
+  if(clean.startsWith('X:')){
+    polyTicker=clean;
+  } else {
+    var base=clean.replace(/USDT$|USDC$|BUSD$|USD$/,'');
+    polyTicker='X:'+base+'USD';
+  }
+  _ccpCurrentSym=polyTicker;
+  document.getElementById('ccp-input').value=clean;
+  var loading=document.getElementById('ccp-loading');
+  var error=document.getElementById('ccp-error');
+  var cont=document.getElementById('ccp-content');
+  loading.style.display='block';error.style.display='none';cont.style.display='none';
+  try{
+    var r=await fetch('https://api.polygon.io/v2/snapshot/locale/global/markets/crypto/tickers/'+polyTicker+'?apiKey=rrU7PLF7tbDwu2cYpu2KvxTlpvl_QmyG');
+    var data=await r.json();
+    if(!data.ticker) throw new Error('No data for '+polyTicker);
+    var t=data.ticker;
+    var price=t.day&&t.day.c||t.lastTrade&&t.lastTrade.p||0;
+    var chg=t.todaysChangePerc||0;
+    var high=t.day&&t.day.h||0;
+    var low=t.day&&t.day.l||0;
+    var vol=t.day&&t.day.v||0;
+    var vwap=t.day&&t.day.vw||0;
+    var open=t.day&&t.day.o||0;
+    var prev=t.prevDay&&t.prevDay.c||0;
+    var up=chg>=0;
+    var pairSym=polyTicker.replace('X:','').replace('USD','');
+    var initials=pairSym.substring(0,3);
+    var colors=['#f0b90b','#0ecb81','#0af','#a78bfa','#f6465d','#00b4d8'];
+    var col=colors[pairSym.charCodeAt(0)%colors.length];
+    ['ccp-logo','ccp-logo2'].forEach(function(id){
+      var el=document.getElementById(id);
+      if(el){el.textContent=initials;el.style.color=col;el.style.borderColor=col+'44';el.style.background=col+'12';}
+    });
+    setEls(['ccp-sym'],pairSym+'/USD');
+    setEls(['ccp-fullname','ccp-fullname2'],pairSym+' / US Dollar');
+    var priceStr='$'+parseFloat(price).toLocaleString(undefined,{maximumFractionDigits:price<1?6:price<10?4:2});
+    setEls(['ccp-price','ccp-price2'],priceStr);
+    var chgStr=(up?'+':'')+parseFloat(chg).toFixed(2)+'%';
+    ['ccp-chg','ccp-chg2'].forEach(function(id){var el=document.getElementById(id);if(el){el.textContent=chgStr;el.style.color=up?'#0ecb81':'#f6465d';}});
+    setEls(['ccp-high','ccp-high2'],'$'+parseFloat(high).toLocaleString(undefined,{maximumFractionDigits:2}));
+    setEls(['ccp-low','ccp-low2'],'$'+parseFloat(low).toLocaleString(undefined,{maximumFractionDigits:2}));
+    var volStr=parseFloat(vol)>1e9?(vol/1e9).toFixed(2)+'B':parseFloat(vol)>1e6?(vol/1e6).toFixed(2)+'M':parseFloat(vol).toLocaleString(undefined,{maximumFractionDigits:0});
+    setEls(['ccp-vol','ccp-vol2'],volStr);
+    setEls(['ccp-vwap','ccp-vwap2'],'$'+parseFloat(vwap).toLocaleString(undefined,{maximumFractionDigits:2}));
+    setEls(['ccp-open'],'$'+parseFloat(open).toLocaleString(undefined,{maximumFractionDigits:2}));
+    setEls(['ccp-prev'],'$'+parseFloat(prev).toLocaleString(undefined,{maximumFractionDigits:2}));
+    loading.style.display='none';cont.style.display='block';
+    loadCCPChart(polyTicker,_ccpCurrentDays);
+  }catch(e){
+    loading.style.display='none';
+    error.style.display='block';
+    error.textContent='Could not load data for '+polyTicker+'. Try BTCUSD, ETHUSD etc.';
+  }
+}
+
+window.loadCryptoProfile=loadCryptoProfile;
+window.loadCCPForecast=loadCCPForecast;
+window.ccpSetPeriod=ccpSetPeriod;
+window.zmiTab=zmiTab;
+window.loadZMIGainers=loadZMIGainers;
+window.loadZMISnapshot=loadZMISnapshot;
+
+
 window.addEventListener('DOMContentLoaded',function(){
   var logobtn=document.getElementById('logo-btn');
   if(logobtn){logobtn.addEventListener('click',function(e){e.stopPropagation();showHomeDrop();});document.addEventListener('click',function(e){var d=document.getElementById('home-drop'),lb=document.getElementById('logo-btn');if(d&&lb&&!d.contains(e.target)&&!lb.contains(e.target))d.classList.remove('open');});}
@@ -2156,6 +2490,8 @@ window.addEventListener('DOMContentLoaded',function(){
   },500);
   setInterval(function(){fetchAllTickers();},30000);
   setTimeout(function(){runForecast(true);},1000);
+  setTimeout(function(){if(typeof loadCryptoProfile==='function')loadCryptoProfile('BTCUSD');},2500);
+  setTimeout(function(){if(typeof loadZMIGainers==='function')loadZMIGainers();},3000);
   // Retry crypto boxes after 3s if still empty
   setTimeout(function(){
     var btcEl = document.getElementById('covp-btc');
@@ -2592,5 +2928,6 @@ function updateUpgradePrompt(){
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 </body>
 </html>
