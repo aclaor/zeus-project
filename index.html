@@ -761,8 +761,8 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 <!-- MARKET INTELLIGENCE -->
 <div style="background:var(--bg);padding:24px 20px 40px 20px;">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:clamp(11px,2vw,13px);font-weight:700;color:#0ff;letter-spacing:1px;">📅 MARKET INTELLIGENCE</div>
-    <div style="font-size:10px;color:#607a99;font-family:'IBM Plex Mono',monospace;">Click any coin → instant AI forecast</div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:clamp(11px,2vw,13px);font-weight:700;color:#0ff;letter-spacing:1px;">🌍 WORLD MARKET INTELLIGENCE</div>
+    <div style="font-size:10px;color:#607a99;font-family:'IBM Plex Mono',monospace;">Global crypto data across all exchanges · Click any coin → instant AI forecast · <span style="color:#344a66;">Binance → CoinGecko → CryptoCompare</span></div>
   </div>
   <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;">
     <button onclick="window.zmiTab&&window.zmiTab('gainers')" id="zmi-tab-gainers" class="zmi-tab" style="font-family:'IBM Plex Mono',monospace;font-size:10px;padding:6px 12px;border-radius:4px;border:1px solid #0ecb81;background:#0ecb8118;color:#0ecb81;cursor:pointer;">📈 Gainers/Losers</button>
@@ -770,9 +770,9 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
     <button onclick="window.zmiTab&&window.zmiTab('faq')" id="zmi-tab-faq" class="zmi-tab" style="font-family:'IBM Plex Mono',monospace;font-size:10px;padding:6px 12px;border-radius:4px;border:1px solid #1e2a40;background:transparent;color:#607a99;cursor:pointer;">❓ FAQ</button>
   </div>
   <div id="zmi-gainers">
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#0ecb81;margin-bottom:10px;letter-spacing:1px;">📈 TOP GAINERS TODAY</div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#0ecb81;margin-bottom:10px;letter-spacing:1px;">📈 WORLD TOP GAINERS — Biggest % gains across all exchanges today</div>
     <div id="zmi-gainers-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:20px;"></div>
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#f6465d;margin-bottom:10px;letter-spacing:1px;">📉 TOP LOSERS TODAY</div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#f6465d;margin-bottom:10px;letter-spacing:1px;">📉 WORLD TOP LOSERS — Biggest % drops across all exchanges today</div>
     <div id="zmi-losers-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;"></div>
   </div>
   <div id="zmi-snapshot" style="display:none;">
@@ -2145,7 +2145,7 @@ async function runForecast(isAutoRun){
     var res=await smartFetch('/forecast',{method:'POST',headers:{...getAuthHeaders(),'Origin':'https://zeusvisions.com'},body:JSON.stringify({symbol:symbol,interval:currentInterval}),signal:controller.signal});
     clearTimeout(timeout);
     if(!res.ok){var e2=await res.text().catch(function(){return'';});var ej={};try{ej=JSON.parse(e2);}catch(x){}throw new Error(ej.detail||('Error '+res.status));}
-    var data=await res.json();renderAll(data);showOverlay(false);showToast('✅ Forecast complete! Scroll down for AI signal.','success');
+    var data=await res.json();renderAll(data);showOverlay(false);showToast('✅ Forecast complete!','success');
   }catch(e){
     var msg=e.message||'';
     if(msg.includes('404')||msg.includes('not found')||msg.includes('insufficient'))showToast('⚠️ '+symbol+' has limited data. Try 1H or 4H interval, or use a major pair.','error');
