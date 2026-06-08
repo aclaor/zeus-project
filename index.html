@@ -955,9 +955,27 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
       Get <span style="color:#0ecb81;font-weight:700;">BULLISH/BEARISH signals</span> for BTC, ETH, SOL<br>
       and 500+ crypto pairs — <span style="color:#f0b90b;font-weight:700;">FREE forever (2hrs/day)</span>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
-      <div style="background:#131926;border:1px solid #1e2a40;border-radius:8px;padding:12px;">
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#0ecb81;font-weight:700;">✅ FREE TRIAL</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
+      <div style="background:#131926;border:1px solid #1e2a40;border-radius:8px;padding:10px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;font-weight:700;">✅ FREE TRIAL</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;margin-top:3px;">2hrs/day · No credit card</div>
+        <button onclick="closeSignupPopup();showModal('signup')" style="margin-top:8px;width:100%;padding:8px;background:rgba(14,203,129,0.15);border:1px solid #0ecb81;border-radius:6px;color:#0ecb81;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;font-weight:700;">Start Free ⚡</button>
+      </div>
+      <div style="background:#131926;border:1px solid rgba(0,255,255,0.3);border-radius:8px;padding:10px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ff;font-weight:700;">🔥 WEEKLY $7</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;margin-top:3px;">Try unlimited — no commitment</div>
+        <button onclick="closeSignupPopup();startPayPal('weekly')" style="margin-top:8px;width:100%;padding:8px;background:linear-gradient(135deg,#0ff,#0af);border:none;border-radius:6px;color:#000;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;font-weight:700;">Try Weekly ⚡</button>
+      </div>
+      <div style="background:#131926;border:1px solid rgba(240,185,11,0.3);border-radius:8px;padding:10px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#f0b90b;font-weight:700;">⚡ PRO $17/mo</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;margin-top:3px;">Most popular</div>
+        <button onclick="closeSignupPopup();startPayPal('pro')" style="margin-top:8px;width:100%;padding:8px;background:linear-gradient(135deg,#f0b90b,#ffd84d);border:none;border-radius:6px;color:#000;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;font-weight:700;">Go Pro ⚡</button>
+      </div>
+      <div style="background:#131926;border:1px solid rgba(14,203,129,0.3);border-radius:8px;padding:10px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;font-weight:700;">💰 ANNUAL $9/mo</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;margin-top:3px;">Save 47% — best value</div>
+        <button onclick="closeSignupPopup();startPayPal('annual')" style="margin-top:8px;width:100%;padding:8px;background:linear-gradient(135deg,#0ecb81,#00b4d8);border:none;border-radius:6px;color:#000;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;font-weight:700;">Get Annual 💰</button>
+      </div>
         <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:4px;">2hrs/day · No credit card</div>
         <button onclick="closeSignupPopup();showModal('signup')" style="margin-top:10px;width:100%;padding:10px;background:rgba(14,203,129,0.15);border:1px solid #0ecb81;border-radius:6px;color:#0ecb81;font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;font-weight:700;">Start Free ⚡</button>
       </div>
