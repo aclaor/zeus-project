@@ -1018,37 +1018,64 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
     <div style="text-align:center;margin-bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#f6465d;">🔴 <span id="live-visitors">312</span> traders viewing forecasts right now</div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
       <!-- FREE -->
-      <div class="plan-card" style="flex:1;min-width:160px;max-width:200px;">
+      <div class="plan-card" style="flex:1;min-width:150px;max-width:200px;">
         <div class="plan-name2">Free</div>
         <div class="plan-price2">$0<small>/forever</small></div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;margin-bottom:10px;">Try for everyone</div>
         <ul class="plan-features">
           <li>2 hrs/day free usage</li>
-          <li>1H, 4H, 1D intervals</li>
-          <li>All major pairs</li>
+          <li>All intervals (1m–1D)</li>
+          <li>All crypto pairs</li>
           <li>AI signal (Bull/Bear)</li>
-          <li class="no">1m, 5m, 15m intervals</li>
           <li class="no">Unlimited usage</li>
         </ul>
         <button class="plan-btn free-btn" onclick="closePricing();showModal('signup')">START FREE</button>
       </div>
-      <!-- PRO -->
-      <div class="plan-card featured" style="flex:1;min-width:160px;max-width:200px;">
-        <span class="plan-badge2 hot">⚡ POPULAR</span>
-        <div class="plan-name2">Pro</div>
-        <div class="plan-price2">$17<small>/mo</small></div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;margin-bottom:10px;">For everyday traders</div>
+      <!-- WEEKLY -->
+      <div class="plan-card" style="flex:1;min-width:150px;max-width:200px;">
+        <span class="plan-badge2" style="background:rgba(0,255,255,0.12);color:#0ff;">🔥 TRY IT</span>
+        <div class="plan-name2">Weekly</div>
+        <div class="plan-price2">$7<small>/week</small></div>
         <ul class="plan-features">
           <li>Unlimited forecasts</li>
           <li>All intervals (1m–1D)</li>
-          <li>All trading pairs</li>
+          <li>All crypto pairs</li>
+          <li>Full AI suite</li>
+          <li>No commitment</li>
+        </ul>
+        <button class="plan-btn" style="background:linear-gradient(135deg,#0ff,#0af);color:#000;border:none;padding:12px;border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;cursor:pointer;width:100%;" onclick="startPayPal('weekly')">GET WEEKLY ⚡</button>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#344a66;margin-top:6px;text-align:center;">Cancel anytime · Instant access</div>
+      </div>
+      <!-- PRO -->
+      <div class="plan-card featured" style="flex:1;min-width:150px;max-width:200px;">
+        <span class="plan-badge2 hot">⚡ POPULAR</span>
+        <div class="plan-name2">Pro</div>
+        <div class="plan-price2">$17<small>/mo</small></div>
+        <ul class="plan-features">
+          <li>Unlimited forecasts</li>
+          <li>All intervals (1m–1D)</li>
+          <li>All crypto pairs</li>
           <li>Full AI suite</li>
           <li>Priority support</li>
-          <li class="no">Early access features</li>
         </ul>
         <button class="plan-btn pro-btn" onclick="startPayPal('pro')">GET PRO ⚡</button>
         <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#344a66;margin-top:6px;text-align:center;">Cancel anytime · Instant access</div>
         <div id="paypal-btn-container"></div>
+      </div>
+      <!-- ANNUAL -->
+      <div class="plan-card" style="flex:1;min-width:150px;max-width:200px;border-color:#0ecb81;">
+        <span class="plan-badge2" style="background:rgba(14,203,129,0.15);color:#0ecb81;">💰 BEST VALUE</span>
+        <div class="plan-name2" style="color:#0ecb81;">Annual</div>
+        <div class="plan-price2">$9<small>/mo</small></div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#0ecb81;margin-bottom:8px;">Billed $108/year · Save 47%</div>
+        <ul class="plan-features">
+          <li>Unlimited forecasts</li>
+          <li>All intervals (1m–1D)</li>
+          <li>All crypto pairs</li>
+          <li>Full AI suite</li>
+          <li>Priority support</li>
+        </ul>
+        <button class="plan-btn" style="background:linear-gradient(135deg,#0ecb81,#00b4d8);color:#000;border:none;padding:12px;border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;cursor:pointer;width:100%;" onclick="startPayPal('annual')">GET ANNUAL 💰</button>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#344a66;margin-top:6px;text-align:center;">Best value · Cancel anytime</div>
       </div>
       <!-- MAX -->
       <div class="plan-card" style="flex:1;min-width:160px;max-width:200px;border-color:#f0b90b;">
@@ -1372,9 +1399,14 @@ function showHomeDrop(){var d=document.getElementById('home-drop');if(!d)return;
 function closeHomeDrop(){var d=document.getElementById('home-drop');if(d)d.classList.remove('open');}
 
 // ── PAYPAL ────────────────────────────────────
-async function startPayPal() {
-  if (!currentUser){localStorage.setItem('zeus_pending_plan','pro');closePricing();showModal('signup');selectedPlan='pro';showToast('Create account first!','success');return;}
-  try{var r=await fetch(API_BASE+'/paypal/create-order',{method:'POST',headers:{'Content-Type':'application/json',...getAuthHeaders()},body:JSON.stringify({user_id:currentUser?currentUser.id:'',email:currentUser?currentUser.email:''})});var d=await r.json();if(d.approve_url)window.location.href=d.approve_url;else if(d.approval_url)window.location.href=d.approval_url;else showToast('PayPal error: '+(d.detail||'unknown'),'error');}
+async function startPayPal(plan) {
+  plan = plan || 'pro';
+  window._selectedPlan = plan;
+  if (!currentUser){localStorage.setItem('zeus_pending_plan',plan);closePricing();showModal('signup');selectedPlan=plan;showToast('Create account first!','success');return;}
+  try{
+    var amount = plan==='weekly'?'7.00':plan==='annual'?'9.00':plan==='max'?'49.00':'17.00';
+    var desc = plan==='weekly'?'ZeusVisions Weekly':plan==='annual'?'ZeusVisions Annual':plan==='max'?'ZeusVisions Max':'ZeusVisions Pro';
+    var r=await fetch(API_BASE+'/paypal/create-order',{method:'POST',headers:{'Content-Type':'application/json',...getAuthHeaders()},body:JSON.stringify({user_id:currentUser?currentUser.id:'',email:currentUser?currentUser.email:''})});var d=await r.json();if(d.approve_url)window.location.href=d.approve_url;else if(d.approval_url)window.location.href=d.approval_url;else showToast('PayPal error: '+(d.detail||'unknown'),'error');}
   catch(e){showToast('PayPal error: '+e.message,'error');}
 }
 
@@ -3037,6 +3069,10 @@ function updateUpgradePrompt(){
     </div>
     <div style="font-size:11px;color:#607a99;text-align:center;margin-bottom:16px;">Try it FREE — no credit card required</div>
     <button onclick="closeExitPopup();showModal('signup')" style="width:100%;background:linear-gradient(135deg,#0ecb81,#00b4d8);border:none;border-radius:8px;padding:14px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#000;cursor:pointer;margin-bottom:8px;">🚀 Start Free — See My First Forecast</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+      <button onclick="closeExitPopup();startPayPal('weekly')" style="padding:10px;background:linear-gradient(135deg,#0ff,#0af);border:none;border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:#000;cursor:pointer;">🔥 Try Weekly $7</button>
+      <button onclick="closeExitPopup();startPayPal('annual')" style="padding:10px;background:linear-gradient(135deg,#0ecb81,#00b4d8);border:none;border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:#000;cursor:pointer;">💰 Annual $9/mo</button>
+    </div>
     <button onclick="closeExitPopup()" style="width:100%;background:none;border:1px solid #1e2a40;border-radius:8px;padding:10px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;cursor:pointer;">No thanks, I don't want accurate forecasts</button>
   </div>
 </div>
