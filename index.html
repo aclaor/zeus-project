@@ -958,7 +958,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
       <div style="background:#131926;border:1px solid #1e2a40;border-radius:8px;padding:10px;">
         <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#0ecb81;font-weight:700;">✅ FREE TRIAL</div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;margin-top:3px;">2hrs/day · No credit card</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;margin-top:3px;"><span style="color:#0ecb81;font-weight:700;">3 days unlimited</span> then 2hrs/day</div>
         <button onclick="closeSignupPopup();showModal('signup')" style="margin-top:8px;width:100%;padding:8px;background:rgba(14,203,129,0.15);border:1px solid #0ecb81;border-radius:6px;color:#0ecb81;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;font-weight:700;">Start Free ⚡</button>
       </div>
       <div style="background:#131926;border:1px solid rgba(0,255,255,0.3);border-radius:8px;padding:10px;">
@@ -976,16 +976,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
         <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;margin-top:3px;">Save 47% — best value</div>
         <button onclick="closeSignupPopup();startPayPal('annual')" style="margin-top:8px;width:100%;padding:8px;background:linear-gradient(135deg,#0ecb81,#00b4d8);border:none;border-radius:6px;color:#000;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;font-weight:700;">Get Annual 💰</button>
       </div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:4px;">2hrs/day · No credit card</div>
-        <button onclick="closeSignupPopup();showModal('signup')" style="margin-top:10px;width:100%;padding:10px;background:rgba(14,203,129,0.15);border:1px solid #0ecb81;border-radius:6px;color:#0ecb81;font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;font-weight:700;">Start Free ⚡</button>
-      </div>
-      <div style="background:#131926;border:1px solid rgba(240,185,11,0.3);border-radius:8px;padding:12px;">
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#f0b90b;font-weight:700;">⚡ PRO PLAN</div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;margin-top:4px;">$17/mo · Unlimited</div>
-        <button onclick="closeSignupPopup();selectedPlan='pro';showModal('signup')" style="margin-top:10px;width:100%;padding:10px;background:linear-gradient(135deg,#f0b90b,#ffd84d);border:none;border-radius:6px;color:#000;font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;font-weight:700;">Go Pro ⚡</button>
-      </div>
-    </div>
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#344a66;">⭐ Join 500+ traders · No spam · Cancel anytime</div>
+⭐ Join 500+ traders · No spam · Cancel anytime</div>
   </div>
 </div>
 
@@ -1040,7 +1031,8 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
         <div class="plan-name2">Free</div>
         <div class="plan-price2">$0<small>/forever</small></div>
         <ul class="plan-features">
-          <li>2 hrs/day free usage</li>
+          <li>3-day full access trial</li>
+          <li>Then 2 hrs/day free</li>
           <li>All intervals (1m–1D)</li>
           <li>All crypto pairs</li>
           <li>AI signal (Bull/Bear)</li>
@@ -2661,6 +2653,30 @@ window.loadZMIGainers=loadZMIGainers;
 window.loadZMISnapshot=loadZMISnapshot;
 
 
+
+
+// ── 3-DAY TRIAL BANNER ───────────────────────────────────────
+var _trialBannerShown = false;
+function showTrialBanner(daysLeft){
+  if(_trialBannerShown) return;
+  _trialBannerShown = true;
+  // Update the live proof banner text
+  var pt = document.getElementById('proof-text');
+  if(pt && daysLeft > 0){
+    pt.textContent = '🎉 FREE TRIAL: ' + daysLeft + ' day' + (daysLeft===1?'':'s') + ' of unlimited access remaining!';
+    pt.style.color = '#0ecb81';
+    pt.style.fontWeight = '700';
+  }
+}
+function getTrialStatus(){
+  var firstVisit=parseInt(localStorage.getItem('zeus_first_visit')||'0');
+  if(!firstVisit) return {inTrial:true, daysLeft:3, firstVisit:Date.now()};
+  var trialEnd=firstVisit+(3*24*60*60*1000);
+  var now=Date.now();
+  var inTrial=now<trialEnd;
+  var daysLeft=Math.max(0,Math.ceil((trialEnd-now)/(24*60*60*1000)));
+  return {inTrial:inTrial, daysLeft:daysLeft, firstVisit:firstVisit};
+}
 
 window.addEventListener('DOMContentLoaded',function(){
   var logobtn=document.getElementById('logo-btn');
