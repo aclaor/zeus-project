@@ -1024,6 +1024,108 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 </div>
     </div>
     <div style="text-align:center;margin-bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#0ecb81;">⭐ Join 500+ traders already using ZEUS-AI</div>
+    <div style="text-align:center;margin-bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#f6465d;">🔴 <span id="live-visitors">312</span> traders viewing forecasts right now</div>class="plans-grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-bottom:24px;align-items:stretch;">
+
+      <!-- FREE -->
+      <div class="plan-card" style="display:flex;flex-direction:column;">
+        <div class="plan-name2">Free</div>
+        <div class="plan-price2">$0<small>/forever</small></div>
+        <ul class="plan-features" style="flex:1;">
+          <li>3-day full access trial</li>
+          <li>Then 2 hrs/day free</li>
+          <li>All intervals (1m–1D)</li>
+          <li>All crypto pairs</li>
+          <li>AI signal (Bull/Bear)</li>
+          <li class="no">Unlimited usage</li>
+        </ul>
+        <button class="plan-btn free-btn" onclick="closePricing();showModal('signup')">START FREE</button>
+      </div>
+
+      <!-- WEEKLY -->
+      <div class="plan-card" style="display:flex;flex-direction:column;">
+        <span class="plan-badge2" style="background:rgba(0,255,255,0.12);color:#0ff;">🔥 TRY IT</span>
+        <div class="plan-name2">Weekly</div>
+        <div class="plan-price2">$7<small>/week</small></div>
+        <ul class="plan-features" style="flex:1;">
+          <li>Unlimited forecasts</li>
+          <li>All intervals (1m–1D)</li>
+          <li>All crypto pairs</li>
+          <li>Full AI suite</li>
+          <li>No commitment</li>
+        </ul>
+        <button class="plan-btn" style="background:linear-gradient(135deg,#0ff,#0af);color:#000;border:none;padding:12px;border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;cursor:pointer;width:100%;" onclick="startPayPal('weekly')">GET WEEKLY ⚡</button>
+      </div>
+
+      <!-- PRO -->
+      <div class="plan-card featured" style="display:flex;flex-direction:column;">
+        <span class="plan-badge2 hot">⚡ POPULAR</span>
+        <div class="plan-name2">Pro</div>
+        <div class="plan-price2">$17<small>/mo</small></div>
+        <ul class="plan-features" style="flex:1;">
+          <li>Unlimited forecasts</li>
+          <li>All intervals (1m–1D)</li>
+          <li>All crypto pairs</li>
+          <li>Full AI suite</li>
+          <li>Priority support</li>
+        </ul>
+        <button class="plan-btn pro-btn" onclick="startPayPal('pro')">GET PRO ⚡</button>
+        <div id="paypal-btn-container"></div>
+      </div>
+
+      <!-- ANNUAL -->
+      <div class="plan-card" style="display:flex;flex-direction:column;border-color:#0ecb81;">
+        <span class="plan-badge2" style="background:rgba(14,203,129,0.15);color:#0ecb81;">💰 BEST VALUE</span>
+        <div class="plan-name2" style="color:#0ecb81;">Annual</div>
+        <div class="plan-price2">$9<small>/mo</small></div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#0ecb81;margin-bottom:8px;">Billed $108/year · Save 47%</div>
+        <ul class="plan-features" style="flex:1;">
+          <li>Unlimited forecasts</li>
+          <li>All intervals (1m–1D)</li>
+          <li>All crypto pairs</li>
+          <li>Full AI suite</li>
+          <li>Priority support</li>
+        </ul>
+        <button class="plan-btn" style="background:linear-gradient(135deg,#0ecb81,#00b4d8);color:#000;border:none;padding:12px;border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;cursor:pointer;width:100%;" onclick="startPayPal('annual')">GET ANNUAL 💰</button>
+      </div>
+
+      <!-- MAX -->
+      <div class="plan-card" style="display:flex;flex-direction:column;border-color:#f0b90b;">
+        <span class="plan-badge2" style="background:#f0b90b;color:#000;">👑 MAX</span>
+        <div class="plan-name2" style="color:#f0b90b;">Max</div>
+        <div class="plan-price2">$49<small>/mo</small></div>
+        <ul class="plan-features" style="flex:1;">
+          <li>Everything in Pro</li>
+          <li>5x more AI capacity</li>
+          <li>Early access features</li>
+          <li>Dedicated support</li>
+          <li>Priority at high traffic</li>
+          <li>Custom alerts (coming)</li>
+        </ul>
+        <button class="plan-btn" style="background:linear-gradient(90deg,#f0b90b,#ff9900);color:#000;border:none;padding:12px;border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;cursor:pointer;width:100%;" onclick="startPayPal('max')">GET MAX 👑</button>
+      </div>
+
+    </div>ass="pricing-box">
+    <button class="close-btn2" onclick="closePricing()">×</button>
+    <div class="pricing-title">⚡ ZEUS VISION PLANS</div>
+    <div class="pricing-sub">Unlock the power of AI crypto forecasting<div style="display:flex;justify-content:center;align-items:center;gap:16px;flex-wrap:wrap;margin:16px 0;padding:12px;background:#0b0f1a;border-radius:8px;border:1px solid #1e2a40;">
+  <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;">
+    <span style="color:#0ecb81;font-size:14px;">🔒</span> SSL Secured
+  </div>
+  <div style="width:1px;height:16px;background:#1e2a40;"></div>
+  <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;">
+    <span style="font-size:14px;">🅿️</span> Secured by PayPal
+  </div>
+  <div style="width:1px;height:16px;background:#1e2a40;"></div>
+  <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;">
+    <span style="color:#f0b90b;font-size:14px;">↩️</span> Cancel Anytime
+  </div>
+  <div style="width:1px;height:16px;background:#1e2a40;"></div>
+  <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#607a99;">
+    <span style="color:#0af;font-size:14px;">✉️</span> 24/7 Support
+  </div>
+</div>
+    </div>
+    <div style="text-align:center;margin-bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#0ecb81;">⭐ Join 500+ traders already using ZEUS-AI</div>
     <div style="text-align:center;margin-bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#f6465d;">🔴 <span id="live-visitors">312</span> traders viewing forecasts right now</div>
     <divdisplay:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;">
 
