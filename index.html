@@ -710,19 +710,31 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
   <div class="modal">
     <button class="close-btn" onclick="hideModal()">×</button>
     <div class="modal-title" id="modal-title">CREATE ACCOUNT</div>
-    <div class="modal-sub" id="modal-sub">2hrs/day free — no credit card needed.</div>
-    <div class="plan-grid">
+    <div class="modal-sub" id="modal-sub">3-day full trial · No credit card · Cancel anytime</div>
+    <div class="plan-grid" style="grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;">
       <div class="plan selected" id="plan-free" onclick="selectPlan(this)">
-        <div class="plan-badge free">FREE TRIAL</div>
-        <div class="plan-name">Explorer</div>
-        <div class="plan-price">$0<small style="font-size:11px;color:var(--text2);font-weight:400;">/forever</small></div>
-        <div class="plan-feat">✅ 2hrs/day free<br>Unlimited forecasts<br>All ZEUS-AI features</div>
+        <div class="plan-badge free">FREE</div>
+        <div class="plan-name">Free</div>
+        <div class="plan-price">$0<small>/forever</small></div>
+        <div class="plan-feat">3-day trial<br>Then 2hrs/day</div>
+      </div>
+      <div class="plan" id="plan-weekly" onclick="selectPlan(this)">
+        <div class="plan-badge" style="background:rgba(0,255,255,0.15);color:#0ff;">TRY IT</div>
+        <div class="plan-name">Weekly</div>
+        <div class="plan-price">$7<small>/week</small></div>
+        <div class="plan-feat">Unlimited<br>No commitment</div>
       </div>
       <div class="plan" id="plan-pro" onclick="selectPlan(this)">
         <div class="plan-badge hot">POPULAR</div>
         <div class="plan-name">Pro</div>
-        <div class="plan-price">$17<small style="font-size:11px;color:var(--text2);font-weight:400;">/mo</small></div>
-        <div class="plan-feat">Unlimited forecasts<br>All trading pairs<br>Full ZEUS-AI suite<br>Priority support</div>
+        <div class="plan-price">$17<small>/mo</small></div>
+        <div class="plan-feat">Unlimited<br>Full AI suite</div>
+      </div>
+      <div class="plan" id="plan-annual" onclick="selectPlan(this)">
+        <div class="plan-badge" style="background:rgba(14,203,129,0.15);color:#0ecb81;">SAVE 47%</div>
+        <div class="plan-name">Annual</div>
+        <div class="plan-price">$9<small>/mo</small></div>
+        <div class="plan-feat">Billed $108/yr<br>Best value</div>
       </div>
     </div>
     <div class="modal-form">
@@ -1281,7 +1293,7 @@ function getAuthHeaders() {
 // ── AUTH ──────────────────────────────────────
 function selectPlan(el) {
   document.querySelectorAll('.plan').forEach(function(p){p.classList.remove('selected');p.classList.remove('sel');});
-  if (el) { el.classList.add('selected'); selectedPlan = el.id==='plan-pro'?'pro':'free'; }
+  if (el) { el.classList.add('selected'); selectedPlan = el.id==='plan-pro'?'pro':el.id==='plan-weekly'?'weekly':el.id==='plan-annual'?'annual':'free'; }
 }
 function showModal(mode) {
   authMode = mode;
