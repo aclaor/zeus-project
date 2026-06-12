@@ -511,7 +511,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
   <div class="pair-info">
     <div>
       <div class="pair-name" id="hdr-pair">BTC/USDT</div>
-      <div class="pair-sub">Bitcoin</div>
+      <div class="pair-sub" id="hdr-company">—</div>
     </div>
     <div>
       <div class="pair-price-big" id="hdr-price">—</div>
@@ -2139,6 +2139,20 @@ function renderAll(data) {
     }
   }
   document.getElementById('pair-input').value=sym;
+  // Update coin name in header
+  var hdrCo=document.getElementById('hdr-company');
+  if(hdrCo){
+    var coinName=sym.replace(/USDT$|USDC$|BUSD$|FDUSD$|BTC$|ETH$|BNB$/,'');
+    hdrCo.textContent=coinName||sym;
+    var cgMap={BTC:'bitcoin',ETH:'ethereum',SOL:'solana',BNB:'binancecoin',XRP:'ripple',DOGE:'dogecoin',ADA:'cardano',AVAX:'avalanche-2',LINK:'chainlink',DOT:'polkadot',MATIC:'matic-network',UNI:'uniswap',ATOM:'cosmos',LTC:'litecoin',NEAR:'near',APT:'aptos'};
+    var cgId=cgMap[coinName];
+    if(cgId){
+      fetch('https://api.coingecko.com/api/v3/coins/'+cgId+'?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false')
+      .then(function(r2){return r2.json();})
+      .then(function(d){var el2=document.getElementById('hdr-company');if(d.name&&el2)el2.textContent=d.name;})
+      .catch(function(){});
+    }
+  }
   for(var qi2=0;qi2<quotes.length;qi2++){if(sym.endsWith(quotes[qi2])){if(currentQuote!==quotes[qi2]){currentQuote=quotes[qi2];document.querySelectorAll('.qtab,.qtab2').forEach(function(t){t.classList.toggle('active',t.textContent.trim()===currentQuote);});updatePairsList();}break;}}
 }
 
