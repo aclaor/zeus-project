@@ -167,7 +167,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 @keyframes spin{to{transform:rotate(360deg)}}
 .overlay-text{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--accent);animation:blink 1.2s ease-in-out infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.forecast-badge{position:absolute;top:8px;left:8px;z-index:5;display:flex;gap:6px;flex-wrap:wrap;}
+.forecast-badge{position:absolute;top:8px;left:8px;z-index:5;display:flex;gap:4px;flex-wrap:wrap;max-width:calc(100% - 16px);overflow:hidden;}
 .fc-pill{background:rgba(11,14,17,0.85);border:1px solid var(--border2);border-radius:3px;padding:2px 8px;font-family:var(--mono);font-size:10px;}
 .trades-panel{height:180px;border-top:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
 .trades-header{display:flex;align-items:center;gap:16px;padding:6px 12px;border-bottom:1px solid var(--border);}
@@ -177,12 +177,12 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .trades-list{flex:1;overflow-y:auto;scrollbar-width:none;}
 .trades-list::-webkit-scrollbar{display:none;}
 .trade-row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:2px 12px;font-family:var(--mono);font-size:11px;}
-.right-panel{display:flex;flex-direction:column;background:var(--bg2);border-left:1px solid var(--border);overflow:hidden;}
-.zeus-panel{padding:10px;border-bottom:1px solid var(--border);}
+.right-panel{display:flex;flex-direction:column;background:var(--bg2);border-left:1px solid var(--border);overflow-y:auto;overflow-x:hidden;min-width:0;}
+.zeus-panel{padding:8px;border-bottom:1px solid var(--border);overflow:hidden;}
 .zeus-title{font-size:10px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;font-family:var(--mono);}
 .zeus-price-card{background:var(--surface);border:1px solid var(--border2);border-radius:4px;padding:8px 10px;margin-bottom:6px;}
 .zeus-price-label{font-size:9px;color:var(--text2);margin-bottom:3px;}
-.zeus-price-val{font-family:var(--mono);font-size:17px;font-weight:700;color:var(--accent);}
+.zeus-price-val{font-family:var(--mono);font-size:clamp(14px,1.8vw,17px);font-weight:700;color:var(--accent);}
 .zeus-price-sub{font-size:10px;color:var(--text2);margin-top:2px;}
 .conf-row{display:flex;justify-content:space-between;font-size:10px;color:var(--text2);margin-bottom:3px;}
 .conf-track{height:3px;background:var(--border2);border-radius:2px;margin-bottom:6px;}
