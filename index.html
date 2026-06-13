@@ -367,9 +367,11 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 /* ── FULLSCREEN MODE ─────────────────────────────────── */
 .fullscreen-btn{background:rgba(14,203,129,0.12);border:1px solid #0ecb81;border-radius:4px;padding:4px 10px;cursor:pointer;color:#0ecb81;font-size:14px;font-weight:700;line-height:1;transition:all .15s;}
 .fullscreen-btn:hover{border-color:var(--accent);color:var(--accent);}
-.chart-panel.is-fullscreen{position:fixed!important;top:0!important;left:0!important;width:100vw!important;height:100vh!important;z-index:9999!important;background:var(--bg)!important;display:flex!important;flex-direction:column!important;}
-.chart-panel.is-fullscreen .chart-area{flex:1!important;height:auto!important;min-height:0!important;}
+.chart-panel.is-fullscreen{position:fixed!important;top:0!important;left:0!important;width:100vw!important;height:100vh!important;z-index:9999!important;background:var(--bg)!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;}
+.chart-panel.is-fullscreen .chart-controls{flex-shrink:0;}
+.chart-panel.is-fullscreen .chart-area{flex:1!important;height:auto!important;min-height:0!important;position:relative!important;}
 .chart-panel.is-fullscreen .chart-area #tv-chart{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;}
+.chart-panel.is-fullscreen .pair-header{flex-shrink:0;}
 </style>
 <!-- Google Analytics GA4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NZN2M89TW9"></script>
@@ -2723,13 +2725,14 @@ function toggleChartFullscreen(){
   // Give DOM time to update then resize chart
   setTimeout(function(){
     var el = document.getElementById('tv-chart');
+    var panel = document.querySelector('.chart-panel');
     if(window._lwChart && el){
-      window._lwChart.applyOptions({
-        width:  el.offsetWidth  || window.innerWidth,
-        height: el.offsetHeight || (window.innerHeight - 120),
-      });
+      var w = el.parentElement ? el.parentElement.offsetWidth : window.innerWidth;
+      var h = el.parentElement ? el.parentElement.offsetHeight : window.innerHeight - 120;
+      window._lwChart.applyOptions({width: w || window.innerWidth, height: h || 400});
+      window._lwChart.timeScale().fitContent();
     }
-  }, 50);
+  }, 100);
   // ESC to exit
   if(isFs){
     document.addEventListener('keydown', function onEsc(e){
