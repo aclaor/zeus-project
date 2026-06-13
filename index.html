@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#00ffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="ZEUS Vision">
@@ -61,7 +61,7 @@
   --purple:#a78bfa;--blue:#0af;--glow:#0ff;
   --mono:'IBM Plex Mono',monospace;--body:'IBM Plex Sans',sans-serif;
 }
-html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:13px;overflow-x:hidden;overflow-y:auto;}
+html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:clamp(11px,1.2vw,13px);overflow-x:hidden;overflow-y:auto;}
 /* Dark theme scrollbars */
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
@@ -77,7 +77,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
   .hamburger{display:flex!important;}
   .ob-panel,.right-panel{display:none!important;}
   .main-layout{grid-template-columns:1fr!important;height:auto!important;overflow:visible!important;}
-  .chart-area{height:350px!important;}
+  .chart-area{height:clamp(280px,45vw,500px)!important;}
   .chart-controls{overflow-x:auto!important;scrollbar-width:none!important;}
   .chart-controls::-webkit-scrollbar{display:none!important;}
   .pair-header{height:auto!important;flex-wrap:wrap;padding:6px 8px;}
@@ -123,7 +123,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .stat{display:flex;flex-direction:column;gap:2px;}
 .stat-label{font-size:10px;color:var(--text2);}
 .stat-val{font-size:12px;font-family:var(--mono);}
-.main-layout{display:grid;grid-template-columns:220px 1fr 280px;height:calc(100vh - 110px);overflow:hidden;position:sticky;top:0;z-index:1;}
+.main-layout{display:grid;grid-template-columns:clamp(160px,18vw,240px) 1fr clamp(200px,22vw,300px);height:calc(100vh - 110px);overflow:hidden;position:sticky;top:0;z-index:1;}
 .ob-panel{display:flex;flex-direction:column;background:var(--bg2);border-right:1px solid var(--border);overflow:hidden;}
 .ob-header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--border);}
 .ob-title{font-size:11px;font-weight:700;letter-spacing:0.5px;}
