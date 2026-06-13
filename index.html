@@ -363,6 +363,20 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 }
 @media(min-width:769px){
   .hamburger{display:none!important;}
+
+/* ── FULLSCREEN MODE ─────────────────────────────────── */
+.fullscreen-btn{background:transparent;border:1px solid var(--border2);border-radius:4px;padding:4px 7px;cursor:pointer;color:var(--text2);font-size:11px;display:flex;align-items:center;gap:4px;transition:all .15s;}
+.fullscreen-btn:hover{border-color:var(--accent);color:var(--accent);}
+body.chart-fullscreen .ob-panel,
+body.chart-fullscreen .right-panel,
+body.chart-fullscreen .pairs-list,
+body.chart-fullscreen .topbar,
+body.chart-fullscreen .ticker-bar{display:none!important;}
+body.chart-fullscreen .main-layout{grid-template-columns:0 1fr 0!important;height:100vh!important;position:fixed!important;top:0!important;left:0!important;width:100vw!important;z-index:9999!important;}
+body.chart-fullscreen .chart-area{height:calc(100vh - 140px)!important;}
+body.chart-fullscreen .fullscreen-btn .fs-icon-expand{display:none;}
+body.chart-fullscreen .fullscreen-btn .fs-icon-compress{display:inline;}
+.fullscreen-btn .fs-icon-compress{display:none;}
 </style>
 <!-- Google Analytics GA4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NZN2M89TW9"></script>
@@ -539,6 +553,11 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 
   <div class="chart-panel">
     <div class="chart-controls">
+      <button class="fullscreen-btn" onclick="toggleChartFullscreen()" title="Toggle fullscreen">
+        <span class="fs-icon-expand">⛶</span>
+        <span class="fs-icon-compress">⛶</span>
+        <span class="fs-label">Full</span>
+      </button>
       <div class="interval-tabs">
         <button class="itab" onclick="setTab(this)">1m</button>
         <button class="itab" onclick="setTab(this)">5m</button>
@@ -2701,6 +2720,35 @@ function getTrialStatus(){
   var inTrial=now<trialEnd;
   var daysLeft=Math.max(0,Math.ceil((trialEnd-now)/(24*60*60*1000)));
   return {inTrial:inTrial, daysLeft:daysLeft, firstVisit:firstVisit};
+}
+
+
+// ── FULLSCREEN CHART ──────────────────────────────────
+function toggleChartFullscreen(){
+  var isFs = document.body.classList.toggle('chart-fullscreen');
+  var btn = document.querySelector('.fullscreen-btn');
+  if(btn){
+    var label = btn.querySelector('.fs-label');
+    if(label) label.textContent = isFs ? 'Exit' : 'Full';
+  }
+  // Resize chart after transition
+  setTimeout(function(){
+    if(window._lwChart) window._lwChart.applyOptions({
+      width: document.getElementById('tv-chart').offsetWidth,
+      height: document.getElementById('tv-chart').offsetHeight,
+    });
+  }, 100);
+  // ESC key to exit
+  if(isFs){
+    document.addEventListener('keydown', function escHandler(e){
+      if(e.key==='Escape'){
+        document.body.classList.remove('chart-fullscreen');
+        var btn2 = document.querySelector('.fullscreen-btn');
+        if(btn2){var lbl=btn2.querySelector('.fs-label');if(lbl)lbl.textContent='Full';}
+        document.removeEventListener('keydown', escHandler);
+      }
+    });
+  }
 }
 
 window.addEventListener('DOMContentLoaded',function(){
