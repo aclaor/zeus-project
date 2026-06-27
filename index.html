@@ -1227,7 +1227,10 @@ async function smartFetch(endpoint, options){
     throw new Error('Railway failed: ' + r.status);
   } catch(e) {
     console.log('Railway failed, trying Singapore...', e.message);
-    return fetch(API_SG + endpoint, options);
+    // Create fresh options without the aborted signal for fallback
+    var fallbackOptions = Object.assign({}, options);
+    delete fallbackOptions.signal;
+    return fetch(API_SG + endpoint, fallbackOptions);
   }
 }
 const DEV_TOKEN = 'mycryptovision2025';
