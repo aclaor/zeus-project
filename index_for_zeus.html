@@ -1215,6 +1215,7 @@ s1.charset='UTF-8';s1.setAttribute('crossorigin','*');s0.parentNode.insertBefore
 
 <script>
 // ── CONSTANTS ─────────────────────────────────
+const CF_BASE   = 'https://zeusvisions-api.alexclaor.workers.dev';
 const API_BASE  = 'https://cryptovision-production-ca20.up.railway.app';
 const API_SG    = 'https://cryptovision-sg.onrender.com'; // Singapore fallback
 
@@ -1464,7 +1465,7 @@ async function startPayPal(plan) {
   try{
     var amount = plan==='weekly'?'7.00':plan==='annual'?'9.00':plan==='max'?'49.00':'17.00';
     var desc = plan==='weekly'?'ZeusVisions Weekly':plan==='annual'?'ZeusVisions Annual':plan==='max'?'ZeusVisions Max':'ZeusVisions Pro';
-    var r=await fetch(API_BASE+'/paypal/create-order',{method:'POST',headers:{'Content-Type':'application/json',...getAuthHeaders()},body:JSON.stringify({user_id:currentUser?currentUser.id:'',email:currentUser?currentUser.email:''})});var d=await r.json();if(d.approve_url)window.location.href=d.approve_url;else if(d.approval_url)window.location.href=d.approval_url;else showToast('PayPal error: '+(d.detail||'unknown'),'error');}
+    var r=await fetch(CF_BASE+'/paypal/create-order',{method:'POST',headers:{'Content-Type':'application/json',...getAuthHeaders()},body:JSON.stringify({user_id:currentUser?currentUser.id:'',email:currentUser?currentUser.email:''})});var d=await r.json();if(d.approve_url)window.location.href=d.approve_url;else if(d.approval_url)window.location.href=d.approval_url;else showToast('PayPal error: '+(d.detail||'unknown'),'error');}
   catch(e){showToast('PayPal error: '+e.message,'error');}
 }
 
@@ -1511,7 +1512,7 @@ var allTickerData = {};
 
 async function fetchAllTickers() {
   try {
-    var r = await fetch(API_BASE+'/ticker/top');
+    var r = await fetch(CF_BASE+'/ticker/top');
     if (!r.ok) throw new Error('proxy failed');
     var tickers = await r.json();
     tickers.forEach(function(t){
@@ -1529,7 +1530,7 @@ async function fetchAllTickers() {
   } catch(e){ console.log('Ticker unavailable:', e); }
   // Fetch markets (via Railway CoinGecko proxy)
   try{
-    var mr = await fetch(API_BASE+'/markets');
+    var mr = await fetch(CF_BASE+'/markets');
     if(mr.ok){
       var mdata = await mr.json();
       var hasData = (mdata.hot&&mdata.hot.length>0)||(mdata.gainers&&mdata.gainers.length>0);
@@ -1817,7 +1818,7 @@ function updateTopTicker(){
 }
 async function fetchLiveTicker(){
   try{
-    var r=await fetch(API_BASE+'/ticker/top');
+    var r=await fetch(CF_BASE+'/ticker/top');
     if(!r.ok) throw new Error('failed');
     var data=await r.json();
     if(!Array.isArray(data)||data.length===0) throw new Error('empty');
@@ -1954,7 +1955,7 @@ async function fetchLiveMarkets(){
 
   // If allTickerData empty, fetch fresh from Railway
   try{
-    var res=await fetch(API_BASE+'/ticker/top');
+    var res=await fetch(CF_BASE+'/ticker/top');
     if(!res.ok) throw new Error('failed');
     var data=await res.json();
     // Store in allTickerData
@@ -2073,7 +2074,7 @@ function renderChart(data) {
   addLine(data.ma7,'#1890ff',1.5);addLine(data.ma3,'#f6465d',1);addLine(data.ma25,'#00cc44',1.2);addLine(data.vwap600,'#f0b90b',1.5);addLine(data.vwap200,'#ff69b4',1);
   var freqMins={'1m':1,'5m':5,'15m':15,'1h':60,'4h':240,'1d':1440};
   var stepSec=(freqMins[currentInterval]||60)*60,lastTime=lwCandles[lwCandles.length-1].time;
-  function addForecast(fcData,startVal,color){var s=chart.addLineSeries({color:color,lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});var pts=[{time:lastTime,value:startVal}];fcData.slice(0,60).forEach(function(v,i){pts.push({time:lastTime+(i+1)*stepSec,value:v});});try{s.setData(pts);}catch(e){}}
+  function addForecast(fcData,startVal,color){var s=chart.addLineSeries({color:color,lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});var offset=fcData&&fcData.length>0?startVal-fcData[0]:0;var pts=[{time:lastTime,value:startVal}];fcData.slice(0,60).forEach(function(v,i){pts.push({time:lastTime+(i+1)*stepSec,value:v+offset});});try{s.setData(pts);}catch(e){}}
   addForecast(data.forecast_ma7,data.ma7[data.ma7.length-1],'#1890ff');
   addForecast(data.forecast_ma3,data.ma3[data.ma3.length-1],'#f6465d');
   addForecast(data.forecast_ma25,data.ma25[data.ma25.length-1],'#00cc44');
@@ -2281,7 +2282,7 @@ async function runForecast(isAutoRun){
     setTimeout(showResetModal, 500);
   }
   if(params.get('type')==='signup'){var pending=localStorage.getItem('zeus_pending_plan')||'free';setTimeout(function(){if(supabaseClient)supabaseClient.auth.getSession().then(function(res){if(res.data&&res.data.session){updateAuthUI(res.data.session.user);localStorage.removeItem('zeus_pending_plan');history.replaceState({},'',window.location.pathname);if(pending==='pro'){showToast('Email confirmed! Taking you to PayPal...','success');setTimeout(startPayPal,1500);}else{showToast('Email confirmed! Welcome!','success');}}});},1500);}
-  if(params.get('payment')==='success'){var token=params.get('token');if(token&&currentUser){fetch(API_BASE+'/paypal/capture/'+token,{method:'POST',headers:getAuthHeaders()}).then(function(r){return r.json();}).then(function(d){if(d.status==='success'){showToast('🎉 Upgraded to Pro!','success');if(supabaseClient)supabaseClient.auth.getUser().then(function(u){if(u.data.user)updateAuthUI(u.data.user);});}});}history.replaceState({},'',window.location.pathname);}
+  if(params.get('payment')==='success'){var token=params.get('token');if(token&&currentUser){fetch(CF_BASE+'/paypal/capture/'+token,{method:'POST',headers:getAuthHeaders()}).then(function(r){return r.json();}).then(function(d){if(d.status==='success'){showToast('🎉 Upgraded to Pro!','success');if(supabaseClient)supabaseClient.auth.getUser().then(function(u){if(u.data.user)updateAuthUI(u.data.user);});}});}history.replaceState({},'',window.location.pathname);}
   if(params.get('payment')==='cancel'){showToast('Payment cancelled.','error');history.replaceState({},'',window.location.pathname);}
 })();
 
