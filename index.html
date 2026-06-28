@@ -590,13 +590,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
         <span class="fc-pill" id="fc-pill-1" style="color:var(--green);">—</span>
         <span class="fc-pill" id="fc-pill-2" style="color:var(--accent);">—</span>
       </div>
-      <!-- Persistent signup banner on chart -->
-      <div id="chart-signup-banner" style="display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:6;display:none;background:rgba(6,8,16,0.95);border:1px solid rgba(0,255,255,0.4);border-radius:10px;padding:16px 20px;backdrop-filter:blur(8px);text-align:center;box-shadow:0 0 30px rgba(0,255,255,0.1);width:90%;max-width:420px;box-sizing:border-box;">
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#0ff;margin-bottom:6px;letter-spacing:1px;text-shadow:0 0 10px rgba(0,255,255,0.5);">⚡ UNLOCK UNLIMITED AI FORECASTS</div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#607a99;margin-bottom:12px;">2hrs/day free · No credit card · Cancel anytime</div>
-        <button onclick="showModal('signup')" style="background:linear-gradient(135deg,#0ecb81,#00ff88);border:none;border-radius:6px;padding:10px 28px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#000;cursor:pointer;letter-spacing:0.5px;">START FREE TRIAL ⚡</button>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#607a99;margin-top:8px;">⭐ Join 500+ traders · No credit card · Cancel anytime</div>
-      </div>
+      <!-- chart-signup-banner removed -->
     </div>
     <div class="trades-panel">
       <div class="trades-header">
@@ -1393,8 +1387,6 @@ async function handleAuth(e) {
 function updateAuthUI(user) {
   var btns=document.getElementById('auth-buttons');
   if (!btns) return;
-  var banner=document.getElementById('chart-signup-banner');
-  if(banner) banner.style.display = user ? 'none' : banner.style.display;
   if (user) {
     var plan=(user.user_metadata&&user.user_metadata.plan)||'free',name=user.email.split('@')[0],isPro=plan==='pro';
     var badge='<span style="background:rgba(240,185,11,0.15);color:#f0b90b;font-size:9px;padding:2px 8px;border-radius:3px;border:1px solid rgba(240,185,11,0.3);'+(isPro?'':'cursor:pointer;')+'" '+(isPro?'':'onclick="showPricing()"')+'>'+plan.toUpperCase()+(!isPro?' ⚡':'')+'</span>';
@@ -2180,8 +2172,7 @@ function renderAll(data) {
   if(!currentUser){
     var fc=parseInt(localStorage.getItem('zeus_forecast_count')||'0');
     if(fc>=30){
-      var banner=document.getElementById('chart-signup-banner');
-      if(banner) banner.style.display='block';
+
     }
   }
   document.getElementById('pair-input').value=sym;
@@ -2246,8 +2237,6 @@ async function runForecast(isAutoRun){
       var fc=parseInt(localStorage.getItem('zeus_forecast_count')||'0')+1;
       localStorage.setItem('zeus_forecast_count', fc);
       if(fc>=30){
-        var banner=document.getElementById('chart-signup-banner');
-        if(banner) banner.style.display='block';
       }
     }
   }
