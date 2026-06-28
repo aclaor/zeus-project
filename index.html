@@ -2071,18 +2071,23 @@ function renderChart(data) {
       }
     }
     try{if(pts.length>0)s.setData(pts);}catch(e){}
-    return s;
+    // Return last plotted value so forecast can connect exactly
+    return pts.length>0 ? pts[pts.length-1].value : null;
   }
-  addLine(data.ma7,'#1890ff',1.5);addLine(data.ma3,'#f6465d',1);addLine(data.ma25,'#00cc44',1.2);addLine(data.vwap600,'#f0b90b',1.5);addLine(data.vwap200,'#ff69b4',1);
+  var _lv7=addLine(data.ma7,'#1890ff',1.5);
+  var _lv3=addLine(data.ma3,'#f6465d',1);
+  var _lv25=addLine(data.ma25,'#00cc44',1.2);
+  var _lv600=addLine(data.vwap600,'#f0b90b',1.5);
+  var _lv200=addLine(data.vwap200,'#ff69b4',1);
   var freqMins={'1m':1,'5m':5,'15m':15,'1h':60,'4h':240,'1d':1440};
   var stepSec=(freqMins[currentInterval]||60)*60,lastTime=lwCandles[lwCandles.length-1].time;
-  function addForecast(fcData,startVal,color){var s=chart.addLineSeries({color:color,lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});if(!fcData||!fcData.length)return;var sv=startVal;if(sv===null||sv===undefined||isNaN(sv))sv=fcData[0];var fc0=null;for(var i=0;i<fcData.length;i++){if(fcData[i]!==null&&fcData[i]!==undefined&&!isNaN(fcData[i])){fc0=fcData[i];break;}}if(fc0===null)return;var offset=sv-fc0;var pts=[{time:lastTime,value:sv}];fcData.slice(0,60).forEach(function(v,i){if(v!==null&&v!==undefined&&!isNaN(v))pts.push({time:lastTime+(i+1)*stepSec,value:v+offset});});try{if(pts.length>1)s.setData(pts);}catch(e){}}
-  function lastPlottedVal(maData){if(!maData||!maData.length)return null;for(var _j=lwCandles.length-1;_j>=0;_j--){var v=maData[_j];if(v!==null&&v!==undefined&&!isNaN(v))return v;}return null;}
-  addForecast(data.forecast_ma7,lastPlottedVal(data.ma7),'#1890ff');
-  addForecast(data.forecast_ma3,lastPlottedVal(data.ma3),'#f6465d');
-  addForecast(data.forecast_ma25,lastPlottedVal(data.ma25),'#00cc44');
-  addForecast(data.forecast_vwap600,lastPlottedVal(data.vwap600),'#f0b90b');
-  addForecast(data.forecast_vwap200,lastPlottedVal(data.vwap200),'#ff69b4');
+  function addForecast(fcData,startVal,color){var s=chart.addLineSeries({color:color,lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});if(!fcData||!fcData.length||startVal===null||startVal===undefined)return;var fc0=null;for(var _i=0;_i<fcData.length;_i++){if(fcData[_i]!==null&&fcData[_i]!==undefined&&!isNaN(fcData[_i])){fc0=fcData[_i];break;}}if(fc0===null)return;var offset=startVal-fc0;var pts=[{time:lastTime,value:startVal}];fcData.slice(0,60).forEach(function(v,i){if(v!==null&&v!==undefined&&!isNaN(v))pts.push({time:lastTime+(i+1)*stepSec,value:v+offset});});try{if(pts.length>1)s.setData(pts);}catch(e){}}
+  // Use exact last plotted value from addLine so forecast connects perfectly
+  addForecast(data.forecast_ma7,_lv7,'#1890ff');
+  addForecast(data.forecast_ma3,_lv3,'#f6465d');
+  addForecast(data.forecast_ma25,_lv25,'#00cc44');
+  addForecast(data.forecast_vwap600,_lv600,'#f0b90b');
+  addForecast(data.forecast_vwap200,_lv200,'#ff69b4');
   // Show last 200 candles by default - user can scroll left for more history
   var defaultVis = {'1m':200,'5m':200,'15m':150,'1h':150,'4h':100,'1d':100};
   var vis = Math.min(defaultVis[currentInterval]||200, lwCandles.length);
