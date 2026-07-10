@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#00ffff">
 <title>ZEUS Vision — AI Crypto Price Prediction | Free Trial</title>
 <meta name="description" content="AI-powered crypto price prediction for Bitcoin, Ethereum, Solana and 500+ pairs. Get BULLISH/BEARISH signals with 99%+ accuracy. Free 2hrs/day, no credit card needed.">
@@ -12,6 +12,7 @@
 <meta property="og:url" content="https://zeusvisions.com">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
@@ -20,9 +21,11 @@
   --cyan:#00ffff;--gold:#f0b90b;--gold2:#ffd84d;
   --green:#0ecb81;--red:#f6465d;--blue:#00aaff;--purple:#a78bfa;
   --text:#d0e0f0;--text2:#607a99;--text3:#344a66;
-  --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',sans-serif;
+  --alt:'Share Tech Mono',monospace;
 }
-html,body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden;scroll-behavior:smooth;}
+html,body{background:var(--bg);color:var(--text);font-family:var(--mono);overflow-x:hidden;scroll-behavior:smooth;}
 ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:#243350;border-radius:2px;}
 
@@ -88,7 +91,7 @@ h1{font-family:var(--mono);font-size:clamp(30px,5.5vw,66px);font-weight:700;
 h1 .c{color:var(--cyan);text-shadow:0 0 28px rgba(0,255,255,0.3);}
 h1 .g{color:var(--gold);text-shadow:0 0 28px rgba(240,185,11,0.25);}
 .hero-sub{font-size:clamp(14px,2vw,18px);color:var(--text2);line-height:1.75;
-  max-width:540px;margin:0 auto 40px;}
+  max-width:540px;margin:0 auto 40px;font-family:var(--sans);}
 .hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;}
 .btn-p{display:inline-flex;align-items:center;gap:8px;
   background:linear-gradient(135deg,var(--cyan),var(--blue));
@@ -229,7 +232,7 @@ h1 .g{color:var(--gold);text-shadow:0 0 28px rgba(240,185,11,0.25);}
 .plan-feats li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;}
 .plan-feats li.no::before{content:'✗';color:var(--red);}
 .plan-feats li.no{color:var(--text3);}
-.plan-btn{width:100%;padding:12px;border-radius:6px;font-family:var(--mono);
+.plan-btn{width:100%;padding:12px;border-radius:6px;font-family:var(--mono);letter-spacing:.5px;
   font-size:11px;font-weight:700;cursor:pointer;border:none;letter-spacing:.5px;transition:all .2s;}
 .pb-free{background:transparent;border:1px solid var(--border2)!important;color:var(--text2);}
 .pb-free:hover{border-color:var(--cyan)!important;color:var(--cyan);}
@@ -273,25 +276,86 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:52px 32p
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease;}
 .reveal.in{opacity:1;transform:translateY(0);}
 
-/* RESPONSIVE */
+/* ── RESPONSIVE ────────────────────────────────────────── */
 @media(max-width:960px){
   nav{padding:0 16px;}
-  .nav-link{display:none;}
-  .hamburger{display:flex;}
-  .steps{grid-template-columns:1fr;max-width:440px;margin:0 auto;}
-  .step-arr{display:none;}
-  .features-inner{grid-template-columns:1fr;}
-  .testis{grid-template-columns:1fr;}
-  .plans{grid-template-columns:1fr 1fr;}
+  .nav-link{display:none !important;}
+  .hamburger{display:flex !important;}
+
+  /* hero */
+  .hero{padding:100px 16px 60px;}
+  .hero-btns{flex-direction:column;align-items:center;}
+  .btn-p,.btn-s{width:100%;max-width:320px;justify-content:center;}
+  .hero-trust{gap:12px;}
+  .mockup-wrap{max-width:100%;}
+
+  /* stats */
   .stats{grid-template-columns:repeat(2,1fr);}
-  .st{border-bottom:1px solid var(--border);}
-  .foot-grid{grid-template-columns:1fr 1fr;gap:32px;}
+  .st:nth-child(1),.st:nth-child(2){border-bottom:1px solid var(--border);}
+
+  /* how it works */
+  .section{padding:64px 16px;}
+  .steps{grid-template-columns:1fr;max-width:460px;margin:0 auto;}
+  .step-arr{display:none !important;}
+
+  /* features */
+  .features-inner{grid-template-columns:1fr;padding:64px 16px;gap:40px;}
+
+  /* demos */
+  .demos{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+  /* testimonials */
+  .testis{grid-template-columns:1fr;}
+
+  /* pricing */
+  .pricing-inner{padding:64px 16px;}
+  .plans{grid-template-columns:1fr 1fr;}
+
+  /* footer */
+  .foot-grid{grid-template-columns:1fr 1fr;gap:28px;}
+  footer{padding:40px 16px 24px;}
 }
-@media(max-width:540px){
+
+@media(max-width:640px){
+  /* hero */
+  .hero{padding:90px 14px 50px;}
+  h1{font-size:clamp(26px,8vw,38px);}
+  .hero-sub{font-size:14px;}
+
+  /* ticker */
+  .ticker{height:28px;}
+  .t-item{padding:0 12px;font-size:9px;}
+
+  /* stats */
+  .stats{grid-template-columns:repeat(2,1fr);}
+
+  /* mockup SVG shorter on small screens */
+  .mockup-body svg{height:140px;}
+
+  /* demos stacked on small phone */
+  .demos{grid-template-columns:1fr;}
+
+  /* pricing */
   .plans{grid-template-columns:1fr;}
-  .stats{grid-template-columns:1fr;}
+
+  /* footer */
   .foot-grid{grid-template-columns:1fr;}
-  h1{letter-spacing:-.5px;}
+  .foot-bottom{flex-direction:column;text-align:center;}
+
+  /* cta */
+  .cta-wrap{padding:70px 14px;}
+  .cta-btns{flex-direction:column;align-items:center;}
+  .cta-btns a{width:100%;max-width:320px;justify-content:center;}
+
+  /* section padding */
+  .features-inner,.pricing-inner{padding:52px 14px;}
+  div[style*="padding:96px 24px"]{padding:52px 14px !important;}
+}
+
+@media(max-width:380px){
+  h1{font-size:26px;}
+  .plan-price{font-size:26px;}
+  .st-num{font-size:22px;}
 }
 </style>
 </head>
