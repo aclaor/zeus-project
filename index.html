@@ -124,6 +124,9 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .stat-label{font-size:10px;color:var(--text2);}
 .stat-val{font-size:12px;font-family:var(--mono);}
 .main-layout{display:grid;grid-template-columns:1fr clamp(200px,22vw,300px);height:calc(100vh - 110px);overflow:hidden;position:sticky;top:0;z-index:1;}
+.widgets-col{display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;min-width:0;}
+.widgets-col .chart-panel{flex:0 0 auto;min-height:480px;border-bottom:2px solid var(--border2);}
+.widget-tag{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px;padding:0 8px;flex-shrink:0;}
 .chart-panel{display:flex;flex-direction:column;overflow:hidden;}
 .chart-controls{display:flex;align-items:center;gap:0;height:36px;background:var(--bg2);border-bottom:1px solid var(--border);padding:0 8px;overflow:hidden;}
 .interval-tabs{display:flex;}
@@ -353,7 +356,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .chart-panel.is-fullscreen{position:fixed!important;top:0!important;left:0!important;width:100vw!important;height:100vh!important;z-index:9999!important;background:var(--bg)!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;}
 .chart-panel.is-fullscreen .chart-controls{flex-shrink:0;}
 .chart-panel.is-fullscreen .chart-area{flex:1!important;height:auto!important;min-height:0!important;position:relative!important;}
-.chart-panel.is-fullscreen .chart-area #tv-chart{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;}
+.chart-panel.is-fullscreen .chart-area [id^="tv-chart"]{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;}
 .chart-panel.is-fullscreen .pair-header{flex-shrink:0;}
 </style>
 <!-- Google Analytics GA4 -->
@@ -521,94 +524,244 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 </div>
 
 <div class="main-layout">
-  <div class="chart-panel">
+  <div class="widgets-col">
+  <div class="chart-panel" data-widget="1">
     <div class="chart-controls">
+      <span class="widget-tag">#1</span>
       <div class="interval-tabs">
-        <button class="itab" onclick="setTab(this)">1m</button>
-        <button class="itab" onclick="setTab(this)">5m</button>
-        <button class="itab" onclick="setTab(this)">15m</button>
-        <button class="itab active" onclick="setTab(this)">1H</button>
-        <button class="itab" onclick="setTab(this)">4H</button>
-        <button class="itab" onclick="setTab(this)">1D</button>
+        <button class="itab" data-widget="1" onclick="setTab(this,1)">1m</button>
+        <button class="itab" data-widget="1" onclick="setTab(this,1)">5m</button>
+        <button class="itab" data-widget="1" onclick="setTab(this,1)">15m</button>
+        <button class="itab active" data-widget="1" onclick="setTab(this,1)">1H</button>
+        <button class="itab" data-widget="1" onclick="setTab(this,1)">4H</button>
+        <button class="itab" data-widget="1" onclick="setTab(this,1)">1D</button>
       </div>
       <div class="chart-divider"></div>
-      <div class="quote-tabs">
-        <button class="qtab active" onclick="setQuote(this,'USDT')">USDT</button>
-        <button class="qtab" onclick="setQuote(this,'USDC')">USDC</button>
-        <button class="qtab" onclick="setQuote(this,'BNB')">BNB</button>
-        <button class="qtab" onclick="setQuote(this,'BTC')">BTC</button>
-        <button class="qtab" onclick="setQuote(this,'ETH')">ETH</button>
-        <button class="qtab" onclick="setQuote(this,'FDUSD')">FDUSD</button>
-      </div>
       <div class="search-wrap">
-        <span style="color:var(--text3);">⚲</span>
-        <input type="text" id="pair-input" value="BTCUSDT" placeholder="e.g. BTCUSDT"
+        <span style="color:var(--text3);">&#8890;</span>
+        <input type="text" id="pair-input-1" value="BTCUSDT" placeholder="e.g. BTCUSDT"
           oninput="this.value=this.value.toUpperCase()"
-          onkeydown="if(event.key==='Enter')runForecast()">
+          onfocus="lastActiveWidget=1"
+          onkeydown="if(event.key==='Enter')runForecast(1)">
       </div>
-      <button class="run-btn" id="run-btn" onclick="runForecast()">▶ ZEUS-AI</button>
+      <button class="run-btn" id="run-btn-1" onclick="runForecast(1)">&#9654; ZEUS-AI</button>
       <div class="zoom-btns" style="margin-left:6px;">
-        <button class="zbtn" onclick="zoomChart(-1)" title="Zoom In">+</button>
-        <button class="zbtn" onclick="zoomChart(1)" title="Zoom Out">−</button>
-        <button class="zbtn" onclick="resetZoom()" style="font-size:11px;width:30px;" title="Reset">⟳</button>
-        <button class="zbtn fullscreen-btn" onclick="toggleChartFullscreen()" title="Toggle fullscreen" style="width:30px;font-size:13px;">⛶</button>
+        <button class="zbtn" onclick="zoomChart(-1,1)" title="Zoom In">+</button>
+        <button class="zbtn" onclick="zoomChart(1,1)" title="Zoom Out">&#8722;</button>
+        <button class="zbtn" onclick="resetZoom(1)" style="font-size:11px;width:30px;" title="Reset">&#10227;</button>
+        <button class="zbtn fullscreen-btn" onclick="toggleChartFullscreen(1)" title="Toggle fullscreen" style="width:30px;font-size:13px;">&#9143;</button>
       </div>
-      <div class="zeus-tag"><div class="zeus-dot"></div>ZEUS-AI · PROPRIETARY</div>
+      <div class="zeus-tag"><div class="zeus-dot"></div>ZEUS-AI</div>
     </div>
     <div class="chart-area">
-      <div id="tv-chart" style="position:absolute;inset:0;width:100%;height:100%;"></div>
-      <div class="chart-overlay" id="chart-overlay">
-        <div class="spinner"></div>
-        <div class="overlay-text">ZEUS-AI COMPUTING...</div>
+      <div id="tv-chart-1" style="position:absolute;inset:0;width:100%;height:100%;"></div>
+      <div class="chart-overlay" id="chart-overlay-1">
+        <div id="overlay-spinner-1" class="spinner" style="display:none;"></div>
+        <div id="overlay-icon-1" style="font-size:26px;">&#128200;</div>
+        <div class="overlay-text" id="overlay-text-1">CLICK &#9654; ZEUS-AI TO FORECAST</div>
       </div>
-      <div class="forecast-badge" id="fc-badge" style="display:none;">
-        <span class="fc-pill" id="fc-pill-1" style="color:var(--green);">—</span>
-        <span class="fc-pill" id="fc-pill-2" style="color:var(--accent);">—</span>
+      <div class="forecast-badge" id="fc-badge-1" style="display:none;">
+        <span class="fc-pill" id="fc-pill-1-a" style="color:var(--green);">&#8212;</span>
+        <span class="fc-pill" id="fc-pill-1-b" style="color:var(--accent);">&#8212;</span>
       </div>
-      <!-- chart-signup-banner removed -->
     </div>
     <div class="trades-panel">
       <div class="trades-header">
-        <span class="trades-tab active">Market Trades</span>
-        <span class="trades-tab" id="signal-tab" style="margin-left:12px;">Signal</span>
-        <span class="trades-tab" id="record-tab" style="margin-left:12px;">Track Record</span>
+        <span class="trades-tab active" data-widget="1" data-tab="trades">Market Trades</span>
+        <span class="trades-tab" data-widget="1" data-tab="signal" style="margin-left:12px;">Signal</span>
+        <span class="trades-tab" data-widget="1" data-tab="record" style="margin-left:12px;">Track Record</span>
       </div>
-      <div class="trades-cols"><span>Price(USDT)</span><span>Amount</span><span>Time</span></div>
-      <div class="trades-list" id="trades-list"></div>
-      <div id="record-panel" style="display:none;padding:10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;max-height:300px;">
+      <div class="trades-cols" id="trades-cols-1"><span>Price(USDT)</span><span>Amount</span><span>Time</span></div>
+      <div class="trades-list" id="trades-list-1"></div>
+      <div id="record-panel-1" style="display:none;padding:10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;max-height:300px;">
         <div style="font-size:9px;color:#607a99;letter-spacing:2px;text-align:center;margin-bottom:8px;">AI FORECAST TRACK RECORD</div>
-        <div id="record-list" style="font-size:10px;">
+        <div id="record-list-1" style="font-size:10px;">
           <div style="text-align:center;color:#607a99;padding:20px;">Run a forecast to start tracking</div>
         </div>
       </div>
-      <div id="signal-panel" style="display:none;padding:12px 10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;">
-        <!-- Direction Badge -->
+      <div id="signal-panel-1" style="display:none;padding:12px 10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;">
         <div style="text-align:center;margin-bottom:10px;">
-          <div id="sig-direction" style="font-size:18px;font-weight:700;padding:10px 16px;border-radius:8px;display:inline-block;border:2px solid #1e2a40;background:#0b0f1a;min-width:160px;">—</div>
+          <div id="sig-direction-1" style="font-size:18px;font-weight:700;padding:10px 16px;border-radius:8px;display:inline-block;border:2px solid #1e2a40;background:#0b0f1a;min-width:160px;">&#8212;</div>
           <div style="font-size:9px;color:#607a99;letter-spacing:2px;margin-top:6px;">FORECAST DIRECTION</div>
         </div>
-        <!-- Stats Grid -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
           <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:6px;padding:8px;text-align:center;">
             <div style="font-size:9px;color:#607a99;margin-bottom:4px;">CONFIDENCE</div>
-            <div id="sig-conf" style="font-size:14px;font-weight:700;color:#0ecb81;">—</div>
+            <div id="sig-conf-1" style="font-size:14px;font-weight:700;color:#0ecb81;">&#8212;</div>
           </div>
           <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:6px;padding:8px;text-align:center;">
             <div style="font-size:9px;color:#607a99;margin-bottom:4px;">TIMEFRAME</div>
-            <div id="sig-interval" style="font-size:14px;font-weight:700;color:#00ffff;">—</div>
+            <div id="sig-interval-1" style="font-size:14px;font-weight:700;color:#00ffff;">&#8212;</div>
           </div>
         </div>
-        <!-- Target -->
         <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:6px;padding:8px;text-align:center;margin-bottom:8px;">
           <div style="font-size:9px;color:#607a99;margin-bottom:4px;">AI TARGET PRICE</div>
-          <div id="sig-target" style="font-size:16px;font-weight:700;color:#f0b90b;">—</div>
+          <div id="sig-target-1" style="font-size:16px;font-weight:700;color:#f0b90b;">&#8212;</div>
         </div>
-        <!-- Advice -->
-        <div id="sig-advice" style="font-size:9px;color:#607a99;text-align:center;line-height:1.8;padding:8px;background:#0b0f1a;border-radius:4px;border:1px solid #1e2a40;">
+        <div id="sig-advice-1" style="font-size:9px;color:#607a99;text-align:center;line-height:1.8;padding:8px;background:#0b0f1a;border-radius:4px;border:1px solid #1e2a40;">
           Run a forecast to see your signal
         </div>
       </div>
     </div>
+  </div>
+  <div class="chart-panel" data-widget="2">
+    <div class="chart-controls">
+      <span class="widget-tag">#2</span>
+      <div class="interval-tabs">
+        <button class="itab" data-widget="2" onclick="setTab(this,2)">1m</button>
+        <button class="itab" data-widget="2" onclick="setTab(this,2)">5m</button>
+        <button class="itab" data-widget="2" onclick="setTab(this,2)">15m</button>
+        <button class="itab active" data-widget="2" onclick="setTab(this,2)">1H</button>
+        <button class="itab" data-widget="2" onclick="setTab(this,2)">4H</button>
+        <button class="itab" data-widget="2" onclick="setTab(this,2)">1D</button>
+      </div>
+      <div class="chart-divider"></div>
+      <div class="search-wrap">
+        <span style="color:var(--text3);">&#8890;</span>
+        <input type="text" id="pair-input-2" value="ETHUSDT" placeholder="e.g. ETHUSDT"
+          oninput="this.value=this.value.toUpperCase()"
+          onfocus="lastActiveWidget=2"
+          onkeydown="if(event.key==='Enter')runForecast(2)">
+      </div>
+      <button class="run-btn" id="run-btn-2" onclick="runForecast(2)">&#9654; ZEUS-AI</button>
+      <div class="zoom-btns" style="margin-left:6px;">
+        <button class="zbtn" onclick="zoomChart(-1,2)" title="Zoom In">+</button>
+        <button class="zbtn" onclick="zoomChart(1,2)" title="Zoom Out">&#8722;</button>
+        <button class="zbtn" onclick="resetZoom(2)" style="font-size:11px;width:30px;" title="Reset">&#10227;</button>
+        <button class="zbtn fullscreen-btn" onclick="toggleChartFullscreen(2)" title="Toggle fullscreen" style="width:30px;font-size:13px;">&#9143;</button>
+      </div>
+      <div class="zeus-tag"><div class="zeus-dot"></div>ZEUS-AI</div>
+    </div>
+    <div class="chart-area">
+      <div id="tv-chart-2" style="position:absolute;inset:0;width:100%;height:100%;"></div>
+      <div class="chart-overlay" id="chart-overlay-2">
+        <div id="overlay-spinner-2" class="spinner" style="display:none;"></div>
+        <div id="overlay-icon-2" style="font-size:26px;">&#128200;</div>
+        <div class="overlay-text" id="overlay-text-2">CLICK &#9654; ZEUS-AI TO FORECAST</div>
+      </div>
+      <div class="forecast-badge" id="fc-badge-2" style="display:none;">
+        <span class="fc-pill" id="fc-pill-2-a" style="color:var(--green);">&#8212;</span>
+        <span class="fc-pill" id="fc-pill-2-b" style="color:var(--accent);">&#8212;</span>
+      </div>
+    </div>
+    <div class="trades-panel">
+      <div class="trades-header">
+        <span class="trades-tab active" data-widget="2" data-tab="trades">Market Trades</span>
+        <span class="trades-tab" data-widget="2" data-tab="signal" style="margin-left:12px;">Signal</span>
+        <span class="trades-tab" data-widget="2" data-tab="record" style="margin-left:12px;">Track Record</span>
+      </div>
+      <div class="trades-cols" id="trades-cols-2"><span>Price(USDT)</span><span>Amount</span><span>Time</span></div>
+      <div class="trades-list" id="trades-list-2"></div>
+      <div id="record-panel-2" style="display:none;padding:10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;max-height:300px;">
+        <div style="font-size:9px;color:#607a99;letter-spacing:2px;text-align:center;margin-bottom:8px;">AI FORECAST TRACK RECORD</div>
+        <div id="record-list-2" style="font-size:10px;">
+          <div style="text-align:center;color:#607a99;padding:20px;">Run a forecast to start tracking</div>
+        </div>
+      </div>
+      <div id="signal-panel-2" style="display:none;padding:12px 10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;">
+        <div style="text-align:center;margin-bottom:10px;">
+          <div id="sig-direction-2" style="font-size:18px;font-weight:700;padding:10px 16px;border-radius:8px;display:inline-block;border:2px solid #1e2a40;background:#0b0f1a;min-width:160px;">&#8212;</div>
+          <div style="font-size:9px;color:#607a99;letter-spacing:2px;margin-top:6px;">FORECAST DIRECTION</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+          <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:6px;padding:8px;text-align:center;">
+            <div style="font-size:9px;color:#607a99;margin-bottom:4px;">CONFIDENCE</div>
+            <div id="sig-conf-2" style="font-size:14px;font-weight:700;color:#0ecb81;">&#8212;</div>
+          </div>
+          <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:6px;padding:8px;text-align:center;">
+            <div style="font-size:9px;color:#607a99;margin-bottom:4px;">TIMEFRAME</div>
+            <div id="sig-interval-2" style="font-size:14px;font-weight:700;color:#00ffff;">&#8212;</div>
+          </div>
+        </div>
+        <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:6px;padding:8px;text-align:center;margin-bottom:8px;">
+          <div style="font-size:9px;color:#607a99;margin-bottom:4px;">AI TARGET PRICE</div>
+          <div id="sig-target-2" style="font-size:16px;font-weight:700;color:#f0b90b;">&#8212;</div>
+        </div>
+        <div id="sig-advice-2" style="font-size:9px;color:#607a99;text-align:center;line-height:1.8;padding:8px;background:#0b0f1a;border-radius:4px;border:1px solid #1e2a40;">
+          Run a forecast to see your signal
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chart-panel" data-widget="3">
+    <div class="chart-controls">
+      <span class="widget-tag">#3</span>
+      <div class="interval-tabs">
+        <button class="itab" data-widget="3" onclick="setTab(this,3)">1m</button>
+        <button class="itab" data-widget="3" onclick="setTab(this,3)">5m</button>
+        <button class="itab" data-widget="3" onclick="setTab(this,3)">15m</button>
+        <button class="itab active" data-widget="3" onclick="setTab(this,3)">1H</button>
+        <button class="itab" data-widget="3" onclick="setTab(this,3)">4H</button>
+        <button class="itab" data-widget="3" onclick="setTab(this,3)">1D</button>
+      </div>
+      <div class="chart-divider"></div>
+      <div class="search-wrap">
+        <span style="color:var(--text3);">&#8890;</span>
+        <input type="text" id="pair-input-3" value="SOLUSDT" placeholder="e.g. SOLUSDT"
+          oninput="this.value=this.value.toUpperCase()"
+          onfocus="lastActiveWidget=3"
+          onkeydown="if(event.key==='Enter')runForecast(3)">
+      </div>
+      <button class="run-btn" id="run-btn-3" onclick="runForecast(3)">&#9654; ZEUS-AI</button>
+      <div class="zoom-btns" style="margin-left:6px;">
+        <button class="zbtn" onclick="zoomChart(-1,3)" title="Zoom In">+</button>
+        <button class="zbtn" onclick="zoomChart(1,3)" title="Zoom Out">&#8722;</button>
+        <button class="zbtn" onclick="resetZoom(3)" style="font-size:11px;width:30px;" title="Reset">&#10227;</button>
+        <button class="zbtn fullscreen-btn" onclick="toggleChartFullscreen(3)" title="Toggle fullscreen" style="width:30px;font-size:13px;">&#9143;</button>
+      </div>
+      <div class="zeus-tag"><div class="zeus-dot"></div>ZEUS-AI</div>
+    </div>
+    <div class="chart-area">
+      <div id="tv-chart-3" style="position:absolute;inset:0;width:100%;height:100%;"></div>
+      <div class="chart-overlay" id="chart-overlay-3">
+        <div id="overlay-spinner-3" class="spinner" style="display:none;"></div>
+        <div id="overlay-icon-3" style="font-size:26px;">&#128200;</div>
+        <div class="overlay-text" id="overlay-text-3">CLICK &#9654; ZEUS-AI TO FORECAST</div>
+      </div>
+      <div class="forecast-badge" id="fc-badge-3" style="display:none;">
+        <span class="fc-pill" id="fc-pill-3-a" style="color:var(--green);">&#8212;</span>
+        <span class="fc-pill" id="fc-pill-3-b" style="color:var(--accent);">&#8212;</span>
+      </div>
+    </div>
+    <div class="trades-panel">
+      <div class="trades-header">
+        <span class="trades-tab active" data-widget="3" data-tab="trades">Market Trades</span>
+        <span class="trades-tab" data-widget="3" data-tab="signal" style="margin-left:12px;">Signal</span>
+        <span class="trades-tab" data-widget="3" data-tab="record" style="margin-left:12px;">Track Record</span>
+      </div>
+      <div class="trades-cols" id="trades-cols-3"><span>Price(USDT)</span><span>Amount</span><span>Time</span></div>
+      <div class="trades-list" id="trades-list-3"></div>
+      <div id="record-panel-3" style="display:none;padding:10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;max-height:300px;">
+        <div style="font-size:9px;color:#607a99;letter-spacing:2px;text-align:center;margin-bottom:8px;">AI FORECAST TRACK RECORD</div>
+        <div id="record-list-3" style="font-size:10px;">
+          <div style="text-align:center;color:#607a99;padding:20px;">Run a forecast to start tracking</div>
+        </div>
+      </div>
+      <div id="signal-panel-3" style="display:none;padding:12px 10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;">
+        <div style="text-align:center;margin-bottom:10px;">
+          <div id="sig-direction-3" style="font-size:18px;font-weight:700;padding:10px 16px;border-radius:8px;display:inline-block;border:2px solid #1e2a40;background:#0b0f1a;min-width:160px;">&#8212;</div>
+          <div style="font-size:9px;color:#607a99;letter-spacing:2px;margin-top:6px;">FORECAST DIRECTION</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+          <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:6px;padding:8px;text-align:center;">
+            <div style="font-size:9px;color:#607a99;margin-bottom:4px;">CONFIDENCE</div>
+            <div id="sig-conf-3" style="font-size:14px;font-weight:700;color:#0ecb81;">&#8212;</div>
+          </div>
+          <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:6px;padding:8px;text-align:center;">
+            <div style="font-size:9px;color:#607a99;margin-bottom:4px;">TIMEFRAME</div>
+            <div id="sig-interval-3" style="font-size:14px;font-weight:700;color:#00ffff;">&#8212;</div>
+          </div>
+        </div>
+        <div style="background:#0b0f1a;border:1px solid #1e2a40;border-radius:6px;padding:8px;text-align:center;margin-bottom:8px;">
+          <div style="font-size:9px;color:#607a99;margin-bottom:4px;">AI TARGET PRICE</div>
+          <div id="sig-target-3" style="font-size:16px;font-weight:700;color:#f0b90b;">&#8212;</div>
+        </div>
+        <div id="sig-advice-3" style="font-size:9px;color:#607a99;text-align:center;line-height:1.8;padding:8px;background:#0b0f1a;border-radius:4px;border:1px solid #1e2a40;">
+          Run a forecast to see your signal
+        </div>
+      </div>
+    </div>
+  </div>
   </div>
 
   <div class="right-panel">
@@ -1207,7 +1360,13 @@ const SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIs
 
 // ── STATE ─────────────────────────────────────
 let supabaseClient = null, currentUser = null, currentSession = null;
-let chartData = null, currentRange = 200, currentPrice = 0, currentInterval = '1h';
+let currentPrice = 0;
+let lastActiveWidget = 1;
+const widgets = {
+  1:{chartData:null,currentRange:200,currentInterval:'1h',lwChart:null,lwResizeObs:null,lwCandleData:null,lwStepSec:3600,lwLastTime:0},
+  2:{chartData:null,currentRange:200,currentInterval:'1h',lwChart:null,lwResizeObs:null,lwCandleData:null,lwStepSec:3600,lwLastTime:0},
+  3:{chartData:null,currentRange:200,currentInterval:'1h',lwChart:null,lwResizeObs:null,lwCandleData:null,lwStepSec:3600,lwLastTime:0}
+};
 let currentQuote = 'USDT', authMode = 'signup', selectedPlan = 'free';
 let marketsRefreshTimer = null;
 var _tickerBuilt = false;
@@ -1275,9 +1434,23 @@ function showToast(msg, type) {
   t.textContent=msg; t.className='toast '+(type||'success'); t.classList.add('show');
   setTimeout(function(){t.classList.remove('show');},3500);
 }
-function showOverlay(show) {
-  var el=document.getElementById('chart-overlay');
-  if (el) el.classList.toggle('hidden',!show);
+function showOverlay(idx, show, computing) {
+  var el=document.getElementById('chart-overlay-'+idx);
+  if(!el) return;
+  if(!show){ el.classList.add('hidden'); return; }
+  el.classList.remove('hidden');
+  var sp=document.getElementById('overlay-spinner-'+idx);
+  var ic=document.getElementById('overlay-icon-'+idx);
+  var tx=document.getElementById('overlay-text-'+idx);
+  if(computing){
+    if(sp) sp.style.display='block';
+    if(ic) ic.style.display='none';
+    if(tx) tx.textContent='ZEUS-AI COMPUTING...';
+  } else {
+    if(sp) sp.style.display='none';
+    if(ic) ic.style.display='block';
+    if(tx) tx.textContent='CLICK \u25B6 ZEUS-AI TO FORECAST';
+  }
 }
 function getAuthHeaders() {
   if (currentSession) return {'Authorization':'Bearer '+currentSession.access_token,'Content-Type':'application/json'};
@@ -1439,27 +1612,32 @@ async function startPayPal(plan) {
 }
 
 // ── CHART ─────────────────────────────────────
-function setTab(el) {
+function setTab(el, idx) {
   var map={'1m':'1m','5m':'5m','15m':'15m','1H':'1h','4H':'4h','1D':'1d'};
-  currentInterval=map[el.textContent.trim()]||'1h'; currentRange=200;
-  document.querySelectorAll('.itab').forEach(function(t){t.classList.remove('active');}); el.classList.add('active');
-  if (chartData) runForecast();
+  var w=widgets[idx];
+  w.currentInterval=map[el.textContent.trim()]||'1h'; w.currentRange=200;
+  lastActiveWidget=idx;
+  document.querySelectorAll('.itab[data-widget="'+idx+'"]').forEach(function(t){t.classList.remove('active');});
+  el.classList.add('active');
+  if (w.chartData) runForecast(idx);
 }
-function setRange(el, n) {
-  currentRange=n;
-  document.querySelectorAll('.itab[onclick*="setRange"]').forEach(function(t){t.classList.remove('active');}); 
+function setRange(el, n, idx) {
+  idx = idx || lastActiveWidget;
+  var w=widgets[idx];
+  w.currentRange=n;
   if(el) el.classList.add('active');
-  if (window._lwChart&&window._lwCandleData) {
-    var c2=window._lwCandleData,step2=window._lwStepSec||3600,last2=window._lwLastTime;
+  if (w.lwChart&&w.lwCandleData) {
+    var c2=w.lwCandleData,step2=w.lwStepSec||3600,last2=w.lwLastTime;
     var vis=n===0?c2.length:Math.min(n,c2.length);
-    try{window._lwChart.timeScale().setVisibleRange({from:c2[Math.max(0,c2.length-vis)].time,to:last2+61*step2});}catch(e){}
+    try{w.lwChart.timeScale().setVisibleRange({from:c2[Math.max(0,c2.length-vis)].time,to:last2+61*step2});}catch(e){}
   }
 }
-function zoomChart(dir) {
-  if (!window._lwChart) return;
-  try{var ts=window._lwChart.timeScale(),range=ts.getVisibleRange();if(!range)return;var mid=(range.from+range.to)/2,half=(range.to-range.from)/2,factor=dir<0?0.7:1.4;ts.setVisibleRange({from:Math.round(mid-half*factor),to:Math.round(mid+half*factor)});}catch(e){}
+function zoomChart(dir, idx) {
+  var w=widgets[idx];
+  if (!w||!w.lwChart) return;
+  try{var ts=w.lwChart.timeScale(),range=ts.getVisibleRange();if(!range)return;var mid=(range.from+range.to)/2,half=(range.to-range.from)/2,factor=dir<0?0.7:1.4;ts.setVisibleRange({from:Math.round(mid-half*factor),to:Math.round(mid+half*factor)});}catch(e){}
 }
-function resetZoom(){if(chartData)renderChart(chartData);}
+function resetZoom(idx){if(widgets[idx]&&widgets[idx].chartData)renderChart(idx,widgets[idx].chartData);}
 function setQuote(el,q){
   currentQuote=q;
   // Update ALL quote tabs - both in chart controls and right panel
@@ -1471,7 +1649,7 @@ function setQuote(el,q){
     'USDT':'BTCUSDT','USDC':'BTCUSDC','BNB':'ETHBNB',
     'BTC':'ETHBTC','ETH':'BNBETH','FDUSD':'BTCFDUSD','ALTS':'ADAETH'
   };
-  var input = document.getElementById('pair-input');
+  var input = document.getElementById('pair-input-'+lastActiveWidget);
   if(input && defaultPairs[q]) input.value = defaultPairs[q];
   updatePairsList();
 }
@@ -1638,7 +1816,7 @@ function updatePairsList() {
     var chgStr=item.c!==0?(up?'+':'')+item.c.toFixed(2)+'%':'—';
     return '<div class="pair-row" data-sym="'+sym+'"><span class="pr-sym">'+base+'<span class="pr-quote">/'+currentQuote+'</span></span><span class="pr-price '+(up&&item.p>0?'up':'dn')+'">'+priceStr+'</span><span class="pr-chg '+(up?'up':'dn')+'">'+chgStr+'</span></div>';
   }).join('');
-  listEl.querySelectorAll('.pair-row').forEach(function(row){row.addEventListener('click',function(){document.getElementById('pair-input').value=this.getAttribute('data-sym');listEl.querySelectorAll('.pair-row').forEach(function(r){r.classList.remove('active-pair');});this.classList.add('active-pair');runForecast();});});
+  listEl.querySelectorAll('.pair-row').forEach(function(row){row.addEventListener('click',function(){var _in=document.getElementById('pair-input-'+lastActiveWidget);if(_in)_in.value=this.getAttribute('data-sym');listEl.querySelectorAll('.pair-row').forEach(function(r){r.classList.remove('active-pair');});this.classList.add('active-pair');runForecast(lastActiveWidget);});});
 }
 function drawSparkline(canvas, changePercent){
   if(!canvas) return;
@@ -1701,7 +1879,7 @@ function updateCryptoBoxes(data){
 }
 
 function scrollAndLoad(sym){window.scrollTo({top:0,behavior:'smooth'});loadPair(sym);}
-function loadPair(sym){var clean=sym.toUpperCase().replace(/[\/\-\s]/g,'');document.getElementById('pair-input').value=clean;if(typeof loadCryptoProfile==='function')loadCryptoProfile(clean);document.querySelectorAll('.pair-row').forEach(function(r){r.classList.toggle('active-pair',r.getAttribute('data-sym')===clean);});runForecast();}
+function loadPair(sym){var clean=sym.toUpperCase().replace(/[\/\-\s]/g,'');var _in=document.getElementById('pair-input-'+lastActiveWidget);if(_in)_in.value=clean;if(typeof loadCryptoProfile==='function')loadCryptoProfile(clean);document.querySelectorAll('.pair-row').forEach(function(r){r.classList.toggle('active-pair',r.getAttribute('data-sym')===clean);});runForecast(lastActiveWidget);}
 
 // ── LIVE DATA ─────────────────────────────────
 // ── BOTTOM TICKER JS ANIMATION ───────────────────────────
@@ -1832,8 +2010,8 @@ async function fetchLiveTicker(){
 }
 
 // ── TRADES ───────────────────────
-function renderTrades(lastClose){
-  var list=document.getElementById('trades-list');if(!list)return;
+function renderTrades(idx, lastClose){
+  var list=document.getElementById('trades-list-'+idx);if(!list)return;
   var price=lastClose||currentPrice||50000,rows='';
   for(var i=0;i<15;i++){var tp=(price*(1+(Math.random()-0.5)*0.0008)).toFixed(2),ta=(Math.random()*2).toFixed(4),up=Math.random()>0.5,now=new Date(),time=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(Math.max(0,now.getSeconds()-i)).padStart(2,'0');rows+='<div class="trade-row"><span style="color:'+(up?'#0ecb81':'#f6465d')+'">'+tp+'</span><span style="text-align:right;color:#607a99;">'+ta+'</span><span style="text-align:right;color:#344a66;">'+time+'</span></div>';}
   list.innerHTML=rows;
@@ -1896,8 +2074,8 @@ async function fetchLiveMarkets(){
       row.addEventListener('click',function(){
         closeMarkets();
         var sym=this.getAttribute('data-sym');
-        currentInterval='1h';
-        document.querySelectorAll('.itab').forEach(function(t){t.classList.toggle('active',t.textContent.trim()==='1H');});
+        widgets[lastActiveWidget].currentInterval='1h';
+        document.querySelectorAll('.itab[data-widget="'+lastActiveWidget+'"]').forEach(function(t){t.classList.toggle('active',t.textContent.trim()==='1H');});
         loadPair(sym);
       });
     });
@@ -1999,24 +2177,24 @@ function showGuestLimit(){
 function closeGuestLimit(){var o=document.getElementById('guest-limit-overlay');if(o)o.style.display='none';}
 
 // ── CHART RENDERING ───────────────────────────
-function renderChart(data) {
-  chartData=data;
-  window._chartData=data; window._candles=data.candles;
+function renderChart(idx, data) {
+  var w=widgets[idx];
+  w.chartData=data;
   var candles=data.candles;
-  var container=document.getElementById('tv-chart');
+  var container=document.getElementById('tv-chart-'+idx);
   if(!container) return;
-  if(window._lwResizeObs){try{window._lwResizeObs.disconnect();}catch(e){}window._lwResizeObs=null;}
-  if(window._lwChart){try{window._lwChart.remove();}catch(e){}window._lwChart=null;}
+  if(w.lwResizeObs){try{w.lwResizeObs.disconnect();}catch(e){}w.lwResizeObs=null;}
+  if(w.lwChart){try{w.lwChart.remove();}catch(e){}w.lwChart=null;}
   var cw=container.clientWidth||container.offsetWidth||800,ch=container.clientHeight||container.offsetHeight||400;
   if(cw<10)cw=800; if(ch<10)ch=400;
   var chart;
   try{
     chart=LightweightCharts.createChart(container,{width:cw,height:ch,layout:{background:{type:'solid',color:'#060810'},textColor:'#607a99',fontSize:11,fontFamily:"'Share Tech Mono',monospace"},grid:{vertLines:{color:'#1e2a40',style:1},horzLines:{color:'#1e2a40',style:1}},crosshair:{mode:LightweightCharts.CrosshairMode.Normal},rightPriceScale:{borderColor:'#1e2a40',textColor:'#607a99'},timeScale:{borderColor:'#1e2a40',textColor:'#607a99',timeVisible:true,secondsVisible:false},handleScroll:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true},handleScale:{axisPressedMouseMove:true,mouseWheel:true,pinch:true}});
-    window._lwChart=chart;
-  }catch(err){console.error('Chart error:',err);showOverlay(false);return;}
+    w.lwChart=chart;
+  }catch(err){console.error('Chart error:',err);showOverlay(idx,false);return;}
   var candleSeries=chart.addCandlestickSeries({upColor:'#0ecb81',downColor:'#f6465d',borderUpColor:'#0ecb81',borderDownColor:'#f6465d',wickUpColor:'#0ecb81',wickDownColor:'#f6465d'});
   var lwCandles=candles.map(function(c){return{time:Math.floor(new Date(c.t).getTime()/1000),open:parseFloat(c.o),high:parseFloat(c.h),low:parseFloat(c.l),close:parseFloat(c.c)};}).filter(function(c){return !isNaN(c.open)&&c.time>0;});
-  if(lwCandles.length===0){showOverlay(false);return;}
+  if(lwCandles.length===0){showOverlay(idx,false);return;}
   candleSeries.setData(lwCandles);
   function addLine(maData,color,width){
     var s=chart.addLineSeries({color:color,lineWidth:width||1,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});
@@ -2038,7 +2216,7 @@ function renderChart(data) {
   var _lv600=addLine(data.vwap600,'#f0b90b',1.5);
   var _lv200=addLine(data.vwap200,'#ff69b4',1);
   var freqMins={'1m':1,'5m':5,'15m':15,'1h':60,'4h':240,'1d':1440};
-  var stepSec=(freqMins[currentInterval]||60)*60,lastTime=lwCandles[lwCandles.length-1].time;
+  var stepSec=(freqMins[w.currentInterval]||60)*60,lastTime=lwCandles[lwCandles.length-1].time;
   function addForecast(fcData,startVal,color){var s=chart.addLineSeries({color:color,lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});if(!fcData||!fcData.length||startVal===null||startVal===undefined)return;var fc0=null;for(var _i=0;_i<fcData.length;_i++){if(fcData[_i]!==null&&fcData[_i]!==undefined&&!isNaN(fcData[_i])){fc0=fcData[_i];break;}}if(fc0===null)return;var offset=startVal-fc0;var pts=[{time:lastTime,value:startVal}];fcData.slice(0,60).forEach(function(v,i){if(v!==null&&v!==undefined&&!isNaN(v))pts.push({time:lastTime+(i+1)*stepSec,value:v+offset});});try{if(pts.length>1)s.setData(pts);}catch(e){}}
   // Use exact last plotted value from addLine so forecast connects perfectly
   addForecast(data.forecast_ma7,_lv7,'#1890ff');
@@ -2048,16 +2226,17 @@ function renderChart(data) {
   addForecast(data.forecast_vwap200,_lv200,'#ff69b4');
   // Show last 200 candles by default - user can scroll left for more history
   var defaultVis = {'1m':200,'5m':200,'15m':150,'1h':150,'4h':100,'1d':100};
-  var vis = Math.min(defaultVis[currentInterval]||200, lwCandles.length);
+  var vis = Math.min(defaultVis[w.currentInterval]||200, lwCandles.length);
   var fromTime=lwCandles[Math.max(0,lwCandles.length-vis)].time,toTime=lastTime+61*stepSec;
   try{chart.timeScale().setVisibleRange({from:fromTime,to:toTime});}catch(e){}
-  window._lwResizeObs=new ResizeObserver(function(){if(!window._lwChart)return;try{var rw=container.clientWidth||800,rh=container.clientHeight||400;if(rw>0&&rh>0)window._lwChart.resize(rw,rh);}catch(e){}});
-  window._lwResizeObs.observe(container);
-  window._lwCandleData=lwCandles;window._lwStepSec=stepSec;window._lwLastTime=lastTime;
+  w.lwResizeObs=new ResizeObserver(function(){if(!w.lwChart)return;try{var rw=container.clientWidth||800,rh=container.clientHeight||400;if(rw>0&&rh>0)w.lwChart.resize(rw,rh);}catch(e){}});
+  w.lwResizeObs.observe(container);
+  w.lwCandleData=lwCandles;w.lwStepSec=stepSec;w.lwLastTime=lastTime;
 }
 
 // ── RENDER ALL ────────────────────────────────
-function renderAll(data) {
+function renderAll(idx, data) {
+  var w=widgets[idx];
   currentPrice=data.last_close;
   var sym=data.symbol,el=function(id){return document.getElementById(id);};
   var quotes=['USDT','USDC','FDUSD','BTC','ETH','BNB'],dispSym=sym;
@@ -2083,12 +2262,12 @@ function renderAll(data) {
   // For 15m and below: use VWAP200/Pink (first vs 5th value)
   var signalName = 'neut';
   var shortIntervals = ['1m','5m','15m'];
-  var isShort = shortIntervals.indexOf(currentInterval) >= 0;
+  var isShort = shortIntervals.indexOf(w.currentInterval) >= 0;
   if(isShort){
     // 15m and below: use forecast_vwap200 (Pink VWAP-200)
     var fv200 = data.forecast_vwap200;
-    var _idx = currentInterval==='1m' ? 29 : 4;
-    var threshold_pct = currentInterval==='1m' ? 0.0002 : 0.0005;
+    var _idx = w.currentInterval==='1m' ? 29 : 4;
+    var threshold_pct = w.currentInterval==='1m' ? 0.0002 : 0.0005;
     if(fv200 && fv200.length > _idx){
       var v200_first = fv200[0];
       var v200_fifth = fv200[_idx];
@@ -2117,23 +2296,23 @@ function renderAll(data) {
   var sigEl = document.querySelector('.sig.'+signalName);
   if(sigEl) sigEl.classList.add('active');
   var _sigFull = signalName==='bull'?'BULLISH':signalName==='bear'?'BEARISH':'NEUTRAL';
-  updateSignalPanel(data, _sigFull, currentInterval);
+  updateSignalPanel(idx, data, _sigFull, w.currentInterval);
   checkEmailCapture();
   updateUpgradePrompt();
   var _fc7 = data.forecast_ma7 || [];
   var _tgt = _fc7.length > 0 ? _fc7[_fc7.length-1] : data.last_close;
-  saveTrackRecord(data.symbol || currentSymbol, currentInterval, _sigFull, data.last_close, _tgt);
+  saveTrackRecord(data.symbol, w.currentInterval, _sigFull, data.last_close, _tgt);
   if(el('m-acc7'))el('m-acc7').textContent=data.accuracy_ma7.toFixed(2)+'%';
   if(el('m-acc25'))el('m-acc25').textContent=data.accuracy_ma25.toFixed(2)+'%';
   if(el('m-acc3'))el('m-acc3').textContent=(data.accuracy_ma3||0).toFixed(2)+'%';
   if(el('m-accv'))el('m-accv').textContent=(data.accuracy_vwap600||0).toFixed(2)+'%';
-  if(el('fc-badge'))el('fc-badge').style.display='flex';
-  if(el('fc-pill-1')){el('fc-pill-1').textContent='ZEUS-AI: $'+fmt(fcVal);el('fc-pill-1').style.color=pct>=0?'var(--green)':'var(--red)';}
-  if(el('fc-pill-2'))el('fc-pill-2').textContent='Acc: '+data.accuracy_ma7.toFixed(1)+'%';
+  if(el('fc-badge-'+idx))el('fc-badge-'+idx).style.display='flex';
+  if(el('fc-pill-'+idx+'-a')){el('fc-pill-'+idx+'-a').textContent='ZEUS-AI: $'+fmt(fcVal);el('fc-pill-'+idx+'-a').style.color=pct>=0?'var(--green)':'var(--red)';}
+  if(el('fc-pill-'+idx+'-b'))el('fc-pill-'+idx+'-b').textContent='Acc: '+data.accuracy_ma7.toFixed(1)+'%';
   var isUp=pct>=0;
   if(el('hdr-chg')){el('hdr-chg').textContent=(isUp?'+':'')+pct.toFixed(2)+'%';el('hdr-chg').className='pair-change'+(isUp?'':' dn');}
   if(el('hdr-chg2')){el('hdr-chg2').textContent=(isUp?'+':'')+pct.toFixed(2)+'%';el('hdr-chg2').style.color=isUp?'var(--green)':'var(--red)';}
-  renderChart(data);renderTrades(data.last_close);
+  renderChart(idx, data);renderTrades(idx, data.last_close);
   // Show banner after 30 forecasts
   if(!currentUser){
     var fc=parseInt(localStorage.getItem('zeus_forecast_count')||'0');
@@ -2141,7 +2320,7 @@ function renderAll(data) {
 
     }
   }
-  document.getElementById('pair-input').value=sym;
+  var _pin=document.getElementById('pair-input-'+idx); if(_pin)_pin.value=sym;
   // Update coin name in header
   var hdrCo=document.getElementById('hdr-company');
   if(hdrCo){
@@ -2160,7 +2339,10 @@ function renderAll(data) {
 }
 
 // ── RUN FORECAST ──────────────────────────────
-async function runForecast(isAutoRun){
+async function runForecast(idx, isAutoRun){
+  idx = idx || lastActiveWidget;
+  lastActiveWidget = idx;
+  var w = widgets[idx];
   // Admin bypass
   var isAdmin = currentUser && currentUser.email === 'alexclaor@gmail.com';
   if(!currentUser && !isAdmin){
@@ -2206,25 +2388,26 @@ async function runForecast(isAutoRun){
       }
     }
   }
-  var symbol=document.getElementById('pair-input').value.trim().toUpperCase().replace(/[\/\-\s]/g,'')||'BTCUSDT';
-  document.getElementById('pair-input').value=symbol;
+  var _inp=document.getElementById('pair-input-'+idx);
+  var symbol=_inp.value.trim().toUpperCase().replace(/[\/\-\s]/g,'')||'BTCUSDT';
+  _inp.value=symbol;
   var quotes=['FDUSD','USDC','USDT','BNB','BTC','ETH'];
   for(var qi=0;qi<quotes.length;qi++){if(symbol.endsWith(quotes[qi])){if(currentQuote!==quotes[qi]){currentQuote=quotes[qi];document.querySelectorAll('.qtab,.qtab2').forEach(function(t){t.classList.toggle('active',t.textContent.trim()===currentQuote);});updatePairsList();}break;}}
-  var btn=document.getElementById('run-btn');
+  var btn=document.getElementById('run-btn-'+idx);
   if(btn){btn.disabled=true;btn.textContent='... COMPUTING';}
-  showOverlay(true);
+  showOverlay(idx, true, true);
   try{
     var controller=new AbortController();var timeout=setTimeout(function(){controller.abort();},60000);
-    var res=await smartFetch('/forecast',{method:'POST',headers:{...getAuthHeaders(),'Origin':'https://zeusvisions.com'},body:JSON.stringify({symbol:symbol,interval:currentInterval}),signal:controller.signal});
+    var res=await smartFetch('/forecast',{method:'POST',headers:{...getAuthHeaders(),'Origin':'https://zeusvisions.com'},body:JSON.stringify({symbol:symbol,interval:w.currentInterval}),signal:controller.signal});
     clearTimeout(timeout);
     if(!res.ok){var e2=await res.text().catch(function(){return'';});var ej={};try{ej=JSON.parse(e2);}catch(x){}throw new Error(ej.detail||('Error '+res.status));}
-    var data=await res.json();renderAll(data);showOverlay(false);showToast('✅ Forecast complete!','success');
+    var data=await res.json();renderAll(idx, data);showOverlay(idx, false);showToast('✅ Forecast complete!','success');
   }catch(e){
     var msg=e.message||'';
     if(msg.includes('404')||msg.includes('not found')||msg.includes('insufficient'))showToast('⚠️ '+symbol+' has limited data. Try 1H or 4H interval, or use a major pair.','error');
     else if(msg.includes('500'))showToast('⚠️ Server error. Try 1H interval.','error');
     else showToast('Error: '+msg,'error');
-    showOverlay(false);
+    showOverlay(idx, false);
   }finally{
     if(btn){btn.disabled=false;btn.textContent='▶ ZEUS-AI';}
   }
@@ -2501,10 +2684,10 @@ function setEls(ids,val){ids.forEach(function(id){var e=document.getElementById(
 function loadCCPForecast(){
   if(!_ccpCurrentSym) return;
   window.scrollTo({top:0,behavior:'smooth'});
-  var inp=document.getElementById('pair-input');
+  var inp=document.getElementById('pair-input-'+lastActiveWidget);
   var forecastSym=_ccpCurrentSym+'USDT';
   if(inp) inp.value=forecastSym;
-  setTimeout(function(){if(typeof runForecast==='function') runForecast();},300);
+  setTimeout(function(){if(typeof runForecast==='function') runForecast(lastActiveWidget);},300);
 }
 
 // Price history chart: Binance OHLCV → CoinGecko → CryptoCompare
@@ -2707,21 +2890,23 @@ function getTrialStatus(){
 
 
 // ── FULLSCREEN CHART ──────────────────────────────────
-function toggleChartFullscreen(){
-  var panel = document.querySelector('.chart-panel');
-  var btn   = document.querySelector('.fullscreen-btn');
+function toggleChartFullscreen(idx){
+  idx = idx || lastActiveWidget;
+  var panel = document.querySelector('.chart-panel[data-widget="'+idx+'"]');
+  var btn   = panel ? panel.querySelector('.fullscreen-btn') : null;
   if(!panel) return;
+  lastActiveWidget = idx;
   var isFs  = panel.classList.toggle('is-fullscreen');
   if(btn) btn.textContent = isFs ? '✕' : '⛶';
   // Give DOM time to update then resize chart
   setTimeout(function(){
-    var el = document.getElementById('tv-chart');
-    var panel = document.querySelector('.chart-panel');
-    if(window._lwChart && el){
-      var w = el.parentElement ? el.parentElement.offsetWidth : window.innerWidth;
-      var h = el.parentElement ? el.parentElement.offsetHeight : window.innerHeight - 120;
-      window._lwChart.applyOptions({width: w || window.innerWidth, height: h || 400});
-      window._lwChart.timeScale().fitContent();
+    var el = document.getElementById('tv-chart-'+idx);
+    var wg = widgets[idx];
+    if(wg && wg.lwChart && el){
+      var ww = el.parentElement ? el.parentElement.offsetWidth : window.innerWidth;
+      var hh = el.parentElement ? el.parentElement.offsetHeight : window.innerHeight - 120;
+      wg.lwChart.applyOptions({width: ww || window.innerWidth, height: hh || 400});
+      wg.lwChart.timeScale().fitContent();
     }
   }, 100);
   // ESC to exit
@@ -2731,8 +2916,9 @@ function toggleChartFullscreen(){
         panel.classList.remove('is-fullscreen');
         if(btn) btn.textContent = '⛶';
         setTimeout(function(){
-          var el2 = document.getElementById('tv-chart');
-          if(window._lwChart && el2) window._lwChart.applyOptions({width:el2.offsetWidth,height:el2.offsetHeight});
+          var el2 = document.getElementById('tv-chart-'+idx);
+          var wg2 = widgets[idx];
+          if(wg2 && wg2.lwChart && el2) wg2.lwChart.applyOptions({width:el2.offsetWidth,height:el2.offsetHeight});
         }, 50);
         document.removeEventListener('keydown', onEsc);
       }
@@ -2753,13 +2939,17 @@ window.addEventListener('DOMContentLoaded',function(){
   localStorage.setItem('zeus_forecast_count_visits', visitCount);
   // Banner only shows via 2-hour time limit, not visit count
 
-  document.getElementById('pair-input').value='BTCUSDT';
   setTimeout(function(){
     var hg=document.getElementById('hot-coins-grid');
     if(!hg||!hg.innerHTML) renderCryptoGrids([]);
   },500);
   setInterval(function(){fetchAllTickers();},30000);
-  setTimeout(function(){runForecast(true);},1000);
+  // Only widget #1 auto-runs on load, matching the original single-chart behaviour.
+  // Widgets #2 and #3 stay idle until the visitor clicks their own ZEUS-AI button,
+  // so a guest's free forecast allowance isn't consumed three times over on page load.
+  setTimeout(function(){runForecast(1, true);},1000);
+  showOverlay(2, true, false);
+  showOverlay(3, true, false);
   setTimeout(function(){if(typeof loadCryptoProfile==='function')loadCryptoProfile('BTCUSD');},2500);
   setTimeout(function(){if(typeof loadZMIGainers==='function')loadZMIGainers();},3000);
   // Retry crypto boxes after 3s if still empty
@@ -2774,35 +2964,33 @@ window.addEventListener('DOMContentLoaded',function(){
   }, 3000);
   });
 
-// Signal tab logic
+// Trades / Signal / Track Record tab logic (per widget)
 document.addEventListener('click', function(e){
-  if(e.target && e.target.id === 'signal-tab'){
-    var tl = document.getElementById('trades-list');
-    var sp = document.getElementById('signal-panel');
-    var tc = document.querySelector('.trades-cols');
-    if(tl && sp){
-      var isSignal = sp.style.display !== 'none';
-      if(isSignal){
-        sp.style.display='none';
-        if(tl) tl.style.display='';
-        if(tc) tc.style.display='';
-        e.target.classList.remove('active');
-      } else {
-        sp.style.display='block';
-        if(tl) tl.style.display='none';
-        if(tc) tc.style.display='none';
-        e.target.classList.add('active');
-      }
-    }
-  }
+  var t = e.target;
+  if(!t || !t.classList || !t.classList.contains('trades-tab')) return;
+  var idx = t.getAttribute('data-widget');
+  var tab = t.getAttribute('data-tab');
+  if(!idx || !tab) return;
+  lastActiveWidget = parseInt(idx);
+  var tl = document.getElementById('trades-list-'+idx);
+  var tc = document.getElementById('trades-cols-'+idx);
+  var sp = document.getElementById('signal-panel-'+idx);
+  var rp = document.getElementById('record-panel-'+idx);
+  if(tl) tl.style.display = (tab==='trades') ? '' : 'none';
+  if(tc) tc.style.display = (tab==='trades') ? '' : 'none';
+  if(sp) sp.style.display = (tab==='signal') ? 'block' : 'none';
+  if(rp) rp.style.display = (tab==='record') ? 'block' : 'none';
+  document.querySelectorAll('.trades-tab[data-widget="'+idx+'"]').forEach(function(x){x.classList.remove('active');});
+  t.classList.add('active');
+  if(tab==='record') renderTrackRecord();
 });
 
-function updateSignalPanel(data, signalName, interval){
-  var dir = document.getElementById('sig-direction');
-  var conf = document.getElementById('sig-conf');
-  var target = document.getElementById('sig-target');
-  var intv = document.getElementById('sig-interval');
-  var advice = document.getElementById('sig-advice');
+function updateSignalPanel(idx, data, signalName, interval){
+  var dir = document.getElementById('sig-direction-'+idx);
+  var conf = document.getElementById('sig-conf-'+idx);
+  var target = document.getElementById('sig-target-'+idx);
+  var intv = document.getElementById('sig-interval-'+idx);
+  var advice = document.getElementById('sig-advice-'+idx);
   if(!dir) return;
 
   var colors = {BULLISH:'#0ecb81', BEARISH:'#f6465d', NEUTRAL:'#607a99'};
@@ -2858,10 +3046,14 @@ function saveTrackRecord(symbol, interval, signalName, lastClose, forecastTarget
 }
 
 function renderTrackRecord(){
-  var list = document.getElementById('record-list');
-  if(!list) return;
+  var lists = [];
+  for(var _i=1;_i<=3;_i++){
+    var _l = document.getElementById('record-list-'+_i);
+    if(_l) lists.push(_l);
+  }
+  if(!lists.length) return;
   if(_trackRecords.length === 0){
-    list.innerHTML = '<div style="text-align:center;color:#607a99;padding:20px;">Run a forecast to start tracking</div>';
+    lists.forEach(function(l){ l.innerHTML = '<div style="text-align:center;color:#607a99;padding:20px;">Run a forecast to start tracking</div>'; });
     return;
   }
   var wins = _trackRecords.filter(function(r){return r.result==='WIN';}).length;
@@ -2898,35 +3090,8 @@ function renderTrackRecord(){
     html += '<div style="font-size:9px;font-weight:700;color:'+resColor+';">'+resText+'</div>';
     html += '</div>';
   });
-  list.innerHTML = html;
+  lists.forEach(function(l){ l.innerHTML = html; });
 }
-
-// Track Record tab click handler
-document.addEventListener('click', function(e){
-  if(e.target && e.target.id === 'record-tab'){
-    var rp = document.getElementById('record-panel');
-    var sp = document.getElementById('signal-panel');
-    var tl = document.getElementById('trades-list');
-    var tc = document.querySelector('.trades-cols');
-    if(!rp) return;
-    var isOpen = rp.style.display !== 'none';
-    // Hide all panels first
-    if(sp) sp.style.display='none';
-    if(tl) tl.style.display='none';
-    if(tc) tc.style.display='none';
-    document.querySelectorAll('.trades-tab').forEach(function(t){t.classList.remove('active');});
-    if(isOpen){
-      rp.style.display='none';
-      if(tl) tl.style.display='';
-      if(tc) tc.style.display='';
-      document.querySelector('.trades-tab').classList.add('active');
-    } else {
-      rp.style.display='block';
-      e.target.classList.add('active');
-      renderTrackRecord();
-    }
-  }
-});
 
 // Init on load
 renderTrackRecord();
