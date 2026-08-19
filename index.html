@@ -159,30 +159,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .trades-header{display:flex;align-items:center;gap:16px;padding:6px 12px;border-bottom:1px solid var(--border);}
 .trades-tab{font-size:11px;color:var(--text2);cursor:pointer;padding-bottom:4px;border-bottom:2px solid transparent;}
 .trades-tab.active{color:var(--text);border-bottom-color:var(--accent);}
-.trades-cols{display:grid;grid-template-columns:1fr 1fr 1fr;padding:3px 12px;font-size:10px;color:var(--text2);}
-.trades-list{flex:1;overflow-y:auto;scrollbar-width:none;}
-.trades-list::-webkit-scrollbar{display:none;}
-.trade-row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:2px 12px;font-family:var(--mono);font-size:11px;}
 .right-panel{display:flex;flex-direction:column;background:var(--bg2);border-left:1px solid var(--border);overflow-y:auto;overflow-x:hidden;min-width:0;}
-.zeus-panel{padding:8px;border-bottom:1px solid var(--border);overflow:hidden;}
-.zeus-title{font-size:10px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;font-family:var(--mono);}
-.zeus-price-card{background:var(--surface);border:1px solid var(--border2);border-radius:4px;padding:8px 10px;margin-bottom:6px;}
-.zeus-price-label{font-size:9px;color:var(--text2);margin-bottom:3px;}
-.zeus-price-val{font-family:var(--mono);font-size:clamp(14px,1.8vw,17px);font-weight:700;color:var(--accent);}
-.zeus-price-sub{font-size:10px;color:var(--text2);margin-top:2px;}
-.conf-row{display:flex;justify-content:space-between;font-size:10px;color:var(--text2);margin-bottom:3px;}
-.conf-track{height:3px;background:var(--border2);border-radius:2px;margin-bottom:6px;}
-.conf-fill{height:3px;border-radius:2px;background:linear-gradient(90deg,var(--blue),var(--green));transition:width .8s;}
-.sigs{display:flex;gap:4px;margin-bottom:6px;}
-.sig{flex:1;text-align:center;padding:5px 4px;border-radius:3px;font-size:9px;font-weight:700;opacity:.3;transition:opacity .3s;}
-.sig.active{opacity:1;}
-.sig.bull{background:rgba(14,203,129,0.12);color:var(--green);border:1px solid rgba(14,203,129,0.2);}
-.sig.bear{background:rgba(246,70,93,0.12);color:var(--red);border:1px solid rgba(246,70,93,0.2);}
-.sig.neut{background:rgba(132,142,156,0.12);color:var(--text2);border:1px solid var(--border2);}
-.acc-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;}
-.acc-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:5px 7px;}
-.acc-label{font-size:9px;color:var(--text2);margin-bottom:2px;}
-.acc-val{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--green);}
 .pairs-header{display:flex;align-items:center;padding:6px 10px;border-bottom:1px solid var(--border);}
 .pairs-search{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border2);border-radius:3px;padding:3px 8px;flex:1;}
 .pairs-search input{background:transparent;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:11px;width:100%;}
@@ -567,19 +544,16 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
     </div>
     <div class="trades-panel">
       <div class="trades-header">
-        <span class="trades-tab active" data-widget="1" data-tab="trades">Market Trades</span>
-        <span class="trades-tab" data-widget="1" data-tab="signal" style="margin-left:12px;">Signal</span>
+        <span class="trades-tab active" data-widget="1" data-tab="signal">Signal</span>
         <span class="trades-tab" data-widget="1" data-tab="record" style="margin-left:12px;">Track Record</span>
       </div>
-      <div class="trades-cols" id="trades-cols-1"><span>Price(USDT)</span><span>Amount</span><span>Time</span></div>
-      <div class="trades-list" id="trades-list-1"></div>
       <div id="record-panel-1" style="display:none;padding:10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;max-height:300px;">
         <div style="font-size:9px;color:#607a99;letter-spacing:2px;text-align:center;margin-bottom:8px;">AI FORECAST TRACK RECORD</div>
         <div id="record-list-1" style="font-size:10px;">
           <div style="text-align:center;color:#607a99;padding:20px;">Run a forecast to start tracking</div>
         </div>
       </div>
-      <div id="signal-panel-1" style="display:none;padding:12px 10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;">
+      <div id="signal-panel-1" style="display:block;padding:12px 10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;">
         <div style="text-align:center;margin-bottom:10px;">
           <div id="sig-direction-1" style="font-size:18px;font-weight:700;padding:10px 16px;border-radius:8px;display:inline-block;border:2px solid #1e2a40;background:#0b0f1a;min-width:160px;">&#8212;</div>
           <div style="font-size:9px;color:#607a99;letter-spacing:2px;margin-top:6px;">FORECAST DIRECTION</div>
@@ -646,19 +620,16 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
     </div>
     <div class="trades-panel">
       <div class="trades-header">
-        <span class="trades-tab active" data-widget="2" data-tab="trades">Market Trades</span>
-        <span class="trades-tab" data-widget="2" data-tab="signal" style="margin-left:12px;">Signal</span>
+        <span class="trades-tab active" data-widget="2" data-tab="signal">Signal</span>
         <span class="trades-tab" data-widget="2" data-tab="record" style="margin-left:12px;">Track Record</span>
       </div>
-      <div class="trades-cols" id="trades-cols-2"><span>Price(USDT)</span><span>Amount</span><span>Time</span></div>
-      <div class="trades-list" id="trades-list-2"></div>
       <div id="record-panel-2" style="display:none;padding:10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;max-height:300px;">
         <div style="font-size:9px;color:#607a99;letter-spacing:2px;text-align:center;margin-bottom:8px;">AI FORECAST TRACK RECORD</div>
         <div id="record-list-2" style="font-size:10px;">
           <div style="text-align:center;color:#607a99;padding:20px;">Run a forecast to start tracking</div>
         </div>
       </div>
-      <div id="signal-panel-2" style="display:none;padding:12px 10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;">
+      <div id="signal-panel-2" style="display:block;padding:12px 10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;">
         <div style="text-align:center;margin-bottom:10px;">
           <div id="sig-direction-2" style="font-size:18px;font-weight:700;padding:10px 16px;border-radius:8px;display:inline-block;border:2px solid #1e2a40;background:#0b0f1a;min-width:160px;">&#8212;</div>
           <div style="font-size:9px;color:#607a99;letter-spacing:2px;margin-top:6px;">FORECAST DIRECTION</div>
@@ -725,19 +696,16 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
     </div>
     <div class="trades-panel">
       <div class="trades-header">
-        <span class="trades-tab active" data-widget="3" data-tab="trades">Market Trades</span>
-        <span class="trades-tab" data-widget="3" data-tab="signal" style="margin-left:12px;">Signal</span>
+        <span class="trades-tab active" data-widget="3" data-tab="signal">Signal</span>
         <span class="trades-tab" data-widget="3" data-tab="record" style="margin-left:12px;">Track Record</span>
       </div>
-      <div class="trades-cols" id="trades-cols-3"><span>Price(USDT)</span><span>Amount</span><span>Time</span></div>
-      <div class="trades-list" id="trades-list-3"></div>
       <div id="record-panel-3" style="display:none;padding:10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;max-height:300px;">
         <div style="font-size:9px;color:#607a99;letter-spacing:2px;text-align:center;margin-bottom:8px;">AI FORECAST TRACK RECORD</div>
         <div id="record-list-3" style="font-size:10px;">
           <div style="text-align:center;color:#607a99;padding:20px;">Run a forecast to start tracking</div>
         </div>
       </div>
-      <div id="signal-panel-3" style="display:none;padding:12px 10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;">
+      <div id="signal-panel-3" style="display:block;padding:12px 10px;font-family:'IBM Plex Mono',monospace;width:100%;box-sizing:border-box;overflow-y:auto;">
         <div style="text-align:center;margin-bottom:10px;">
           <div id="sig-direction-3" style="font-size:18px;font-weight:700;padding:10px 16px;border-radius:8px;display:inline-block;border:2px solid #1e2a40;background:#0b0f1a;min-width:160px;">&#8212;</div>
           <div style="font-size:9px;color:#607a99;letter-spacing:2px;margin-top:6px;">FORECAST DIRECTION</div>
@@ -765,27 +733,6 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
   </div>
 
   <div class="right-panel">
-    <div class="zeus-panel">
-      <div class="zeus-title">ZEUS-AI Prediction · 60H</div>
-      <div class="zeus-price-card">
-        <div class="zeus-price-label">FORECAST TARGET</div>
-        <div class="zeus-price-val" id="fc-price">—</div>
-        <div class="zeus-price-sub" id="fc-chg">Run ZEUS-AI to see prediction</div>
-        <div class="conf-row" style="margin-top:8px;"><span>Confidence</span><span id="fc-conf">—</span></div>
-        <div class="conf-track"><div class="conf-fill" id="conf-fill" style="width:0%"></div></div>
-        <div class="sigs">
-          <div class="sig bull" id="sig-bull">▲ BULL</div>
-          <div class="sig neut active" id="sig-neut">● NEUT</div>
-          <div class="sig bear" id="sig-bear">▼ BEAR</div>
-        </div>
-      </div>
-      <div class="acc-grid">
-        <div class="acc-card"><div class="acc-label">Avg Price-7</div><div class="acc-val" id="m-acc7">—</div></div>
-        <div class="acc-card"><div class="acc-label">Avg Price-25</div><div class="acc-val" id="m-acc25">—</div></div>
-        <div class="acc-card"><div class="acc-label">Avg Price-3</div><div class="acc-val" id="m-acc3">—</div></div>
-        <div class="acc-card"><div class="acc-label">Avg Price-V</div><div class="acc-val" id="m-accv">—</div></div>
-      </div>
-    </div>
 <div id="upgrade-prompt" style="display:none;margin:8px 10px;padding:12px;background:linear-gradient(135deg,#0a1f14,#0d1f2d);border:1px solid #0ecb81;border-radius:8px;font-family:'IBM Plex Mono',monospace;text-align:center;">
         <div style="font-size:10px;color:#0ecb81;font-weight:700;margin-bottom:4px;">⚡ UNLOCK UNLIMITED FORECASTS</div>
         <div id="upgrade-prompt-msg" style="font-size:9px;color:#607a99;margin-bottom:8px;line-height:1.6;">You've used <span id="up-used">0</span> of your free forecasts today</div>
@@ -2009,13 +1956,6 @@ async function fetchLiveTicker(){
   }
 }
 
-// ── TRADES ───────────────────────
-function renderTrades(idx, lastClose){
-  var list=document.getElementById('trades-list-'+idx);if(!list)return;
-  var price=lastClose||currentPrice||50000,rows='';
-  for(var i=0;i<15;i++){var tp=(price*(1+(Math.random()-0.5)*0.0008)).toFixed(2),ta=(Math.random()*2).toFixed(4),up=Math.random()>0.5,now=new Date(),time=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(Math.max(0,now.getSeconds()-i)).padStart(2,'0');rows+='<div class="trade-row"><span style="color:'+(up?'#0ecb81':'#f6465d')+'">'+tp+'</span><span style="text-align:right;color:#607a99;">'+ta+'</span><span style="text-align:right;color:#344a66;">'+time+'</span></div>';}
-  list.innerHTML=rows;
-}
 
 // ── MARKETS ───────────────────────────────────
 var currentMarketQuote = 'USDT';
@@ -2312,7 +2252,7 @@ function renderAll(idx, data) {
   var isUp=pct>=0;
   if(el('hdr-chg')){el('hdr-chg').textContent=(isUp?'+':'')+pct.toFixed(2)+'%';el('hdr-chg').className='pair-change'+(isUp?'':' dn');}
   if(el('hdr-chg2')){el('hdr-chg2').textContent=(isUp?'+':'')+pct.toFixed(2)+'%';el('hdr-chg2').style.color=isUp?'var(--green)':'var(--red)';}
-  renderChart(idx, data);renderTrades(idx, data.last_close);
+  renderChart(idx, data);
   // Show banner after 30 forecasts
   if(!currentUser){
     var fc=parseInt(localStorage.getItem('zeus_forecast_count')||'0');
@@ -2972,12 +2912,8 @@ document.addEventListener('click', function(e){
   var tab = t.getAttribute('data-tab');
   if(!idx || !tab) return;
   lastActiveWidget = parseInt(idx);
-  var tl = document.getElementById('trades-list-'+idx);
-  var tc = document.getElementById('trades-cols-'+idx);
   var sp = document.getElementById('signal-panel-'+idx);
   var rp = document.getElementById('record-panel-'+idx);
-  if(tl) tl.style.display = (tab==='trades') ? '' : 'none';
-  if(tc) tc.style.display = (tab==='trades') ? '' : 'none';
   if(sp) sp.style.display = (tab==='signal') ? 'block' : 'none';
   if(rp) rp.style.display = (tab==='record') ? 'block' : 'none';
   document.querySelectorAll('.trades-tab[data-widget="'+idx+'"]').forEach(function(x){x.classList.remove('active');});
