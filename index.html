@@ -75,7 +75,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
   .logo{font-size:13px;}
   #desktop-nav{display:none!important;}
   .hamburger{display:flex!important;}
-  .ob-panel,.right-panel{display:none!important;}
+  .right-panel{display:none!important;}
   .main-layout{grid-template-columns:1fr!important;height:auto!important;overflow:visible!important;}
   .chart-area{height:clamp(280px,45vw,500px)!important;}
   .chart-controls{overflow-x:auto!important;scrollbar-width:none!important;}
@@ -123,24 +123,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .stat{display:flex;flex-direction:column;gap:2px;}
 .stat-label{font-size:10px;color:var(--text2);}
 .stat-val{font-size:12px;font-family:var(--mono);}
-.main-layout{display:grid;grid-template-columns:clamp(160px,18vw,240px) 1fr clamp(200px,22vw,300px);height:calc(100vh - 110px);overflow:hidden;position:sticky;top:0;z-index:1;}
-.ob-panel{display:flex;flex-direction:column;background:var(--bg2);border-right:1px solid var(--border);overflow:hidden;}
-.ob-header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--border);}
-.ob-title{font-size:11px;font-weight:700;letter-spacing:0.5px;}
-.ob-cols{display:grid;grid-template-columns:1fr 1fr 1fr;padding:4px 8px;font-size:10px;color:var(--text2);}
-.ob-list{flex:1;overflow-y:auto;scrollbar-width:none;}
-.ob-list::-webkit-scrollbar{display:none;}
-.ob-row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:2px 8px;position:relative;}
-.ob-bar{position:absolute;top:0;bottom:0;right:0;opacity:0.15;}
-.ob-row.ask .ob-bar{background:var(--red);}
-.ob-row.bid .ob-bar{background:var(--green);}
-.ob-row.ask .ob-price{color:var(--red);font-family:var(--mono);font-size:11px;}
-.ob-row.bid .ob-price{color:var(--green);font-family:var(--mono);font-size:11px;}
-.ob-amt,.ob-total{font-family:var(--mono);font-size:11px;color:var(--text2);text-align:right;}
-.ob-total{color:var(--text3);}
-.ob-spread{display:flex;align-items:center;justify-content:space-between;padding:4px 8px;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-.ob-spread-val{font-family:var(--mono);font-size:11px;color:var(--accent);}
-.ob-spread-label{font-size:10px;color:var(--text2);}
+.main-layout{display:grid;grid-template-columns:1fr clamp(200px,22vw,300px);height:calc(100vh - 110px);overflow:hidden;position:sticky;top:0;z-index:1;}
 .chart-panel{display:flex;flex-direction:column;overflow:hidden;}
 .chart-controls{display:flex;align-items:center;gap:0;height:36px;background:var(--bg2);border-bottom:1px solid var(--border);padding:0 8px;overflow:hidden;}
 .interval-tabs{display:flex;}
@@ -355,7 +338,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 @media(max-width:768px){
   .hamburger{display:flex!important;}
   #desktop-nav{display:none!important;}
-  .ob-panel,.right-panel{display:none!important;}
+  .right-panel{display:none!important;}
   .main-layout{grid-template-columns:1fr!important;height:auto!important;overflow:visible!important;}
   .chart-area{height:320px!important;}
   .markets-grid{grid-template-columns:1fr!important;}
@@ -538,14 +521,6 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 </div>
 
 <div class="main-layout">
-  <div class="ob-panel">
-    <div class="ob-header"><span class="ob-title">ORDER BOOK</span></div>
-    <div class="ob-cols"><span>Price(USDT)</span><span style="text-align:right">Amount</span><span style="text-align:right">Total</span></div>
-    <div class="ob-list" id="asks-list" style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;"></div>
-    <div class="ob-spread"><span class="ob-spread-label">Spread</span><span class="ob-spread-val" id="ob-spread-val">—</span></div>
-    <div class="ob-list" id="bids-list" style="flex:1;"></div>
-  </div>
-
   <div class="chart-panel">
     <div class="chart-controls">
       <div class="interval-tabs">
@@ -1856,16 +1831,7 @@ async function fetchLiveTicker(){
   }
 }
 
-// ── ORDER BOOK & TRADES ───────────────────────
-function renderOrderBook(lastClose){
-  var asks=document.getElementById('asks-list'),bids=document.getElementById('bids-list'),spread=document.getElementById('ob-spread-val');
-  if(!asks||!bids)return;
-  var price=lastClose||currentPrice||50000,askRows='',bidRows='',totalAsk=0,totalBid=0;
-  for(var i=0;i<12;i++){var ap=(price*(1+(12-i)*0.00015+Math.random()*0.0001)).toFixed(2),aa=(Math.random()*3+0.1).toFixed(4);totalAsk+=parseFloat(aa);askRows+='<div class="ob-row ask"><span class="ob-price">'+ap+'</span><span class="ob-amt">'+aa+'</span><span class="ob-total">'+totalAsk.toFixed(3)+'</span><div class="ob-bar" style="width:'+(Math.random()*60+10)+'%"></div></div>';}
-  for(var j=0;j<12;j++){var bp=(price*(1-j*0.00015-Math.random()*0.0001)).toFixed(2),ba=(Math.random()*3+0.1).toFixed(4);totalBid+=parseFloat(ba);bidRows+='<div class="ob-row bid"><span class="ob-price">'+bp+'</span><span class="ob-amt">'+ba+'</span><span class="ob-total">'+totalBid.toFixed(3)+'</span><div class="ob-bar" style="width:'+(Math.random()*60+10)+'%"></div></div>';}
-  asks.innerHTML=askRows;bids.innerHTML=bidRows;
-  if(spread)spread.textContent='$'+(price*0.0003).toFixed(2);
-}
+// ── TRADES ───────────────────────
 function renderTrades(lastClose){
   var list=document.getElementById('trades-list');if(!list)return;
   var price=lastClose||currentPrice||50000,rows='';
@@ -2167,7 +2133,7 @@ function renderAll(data) {
   var isUp=pct>=0;
   if(el('hdr-chg')){el('hdr-chg').textContent=(isUp?'+':'')+pct.toFixed(2)+'%';el('hdr-chg').className='pair-change'+(isUp?'':' dn');}
   if(el('hdr-chg2')){el('hdr-chg2').textContent=(isUp?'+':'')+pct.toFixed(2)+'%';el('hdr-chg2').style.color=isUp?'var(--green)':'var(--red)';}
-  renderChart(data);renderOrderBook(data.last_close);renderTrades(data.last_close);
+  renderChart(data);renderTrades(data.last_close);
   // Show banner after 30 forecasts
   if(!currentUser){
     var fc=parseInt(localStorage.getItem('zeus_forecast_count')||'0');
