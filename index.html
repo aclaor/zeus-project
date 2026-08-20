@@ -127,16 +127,17 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .stat-label{font-size:10px;color:var(--text2);}
 .stat-val{font-size:12px;font-family:var(--mono);}
 .main-layout{display:block;overflow:visible;}
-.panel-main{display:flex;flex-direction:column;min-width:0;overflow:hidden;}
-.panel-pairs{display:flex;flex-direction:column;border-left:1px solid var(--border);background:var(--bg2);min-width:0;overflow:hidden;}
+.panel-main{display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden;}
+.panel-pairs{display:flex;flex-direction:column;border-left:1px solid var(--border);background:var(--bg2);min-width:0;min-height:0;overflow:hidden;}
 .quote-tab-bar-w{display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border);padding:0 6px;}
 .quote-tab-bar-w::-webkit-scrollbar{display:none;}
-.side-slim{padding:0 12px 12px;}
-@media(max-width:900px){.widgets-col .chart-panel{grid-template-columns:1fr!important;}.panel-pairs{border-left:none;border-top:1px solid var(--border);height:220px;}}
+.side-slim{padding:12px 12px 0;}
+.side-slim #upgrade-prompt{margin:0!important;max-width:520px;}
+@media(max-width:640px){.widgets-col .chart-panel{grid-template-columns:1fr!important;height:auto!important;}.panel-pairs{border-left:none;border-top:1px solid var(--border);height:200px;}}
 .widgets-col{display:flex;flex-direction:column;gap:12px;padding:12px;min-width:0;}
-.widgets-col .chart-panel{flex:0 0 auto;min-height:0;background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;display:grid;grid-template-columns:1fr clamp(190px,20vw,260px);}
-.widgets-col .chart-panel .chart-area{flex:0 0 auto;height:clamp(300px,38vh,430px);min-height:0;}
-.widgets-col .chart-panel .trades-panel{height:170px;}
+.widgets-col .chart-panel{flex:0 0 auto;background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) clamp(150px,17vw,230px);height:clamp(460px,58vh,600px);}
+.widgets-col .chart-panel .chart-area{flex:1 1 auto;height:auto;min-height:0;}
+.widgets-col .chart-panel .trades-panel{flex:0 0 auto;height:160px;}
 .widgets-col .chart-panel .chart-controls{background:var(--bg3);border-bottom:1px solid var(--border);}
 .widgets-col .chart-panel .trades-panel{border-top:1px solid var(--border);}
 .widgets-col .chart-panel .chart-legend{background:var(--bg3);}
@@ -178,7 +179,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .pairs-search{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border2);border-radius:3px;padding:3px 8px;flex:1;}
 .pairs-search input{background:transparent;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:11px;width:100%;}
 .pairs-cols{display:grid;grid-template-columns:1.5fr 1fr 0.8fr;padding:4px 10px;font-size:10px;color:var(--text2);border-bottom:1px solid var(--border);}
-.pairs-list{flex:1 1 auto;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#243350 transparent;}
+.pairs-list{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:#243350 transparent;}
 .pair-row{cursor:pointer;display:grid;grid-template-columns:1.2fr 1fr 0.8fr;padding:5px 8px;align-items:center;border-bottom:1px solid #0d1520;transition:background .15s;}
 .pair-row:hover{background:#0f1824;}
 .pair-row.active-pair{background:#0f1824;border-left:2px solid #0ff;}
@@ -326,6 +327,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 }
 @media(min-width:769px){
   .hamburger{display:none!important;}
+}
 
 /* ── FULLSCREEN MODE ─────────────────────────────────── */
 .fullscreen-btn{background:rgba(14,203,129,0.12);border:1px solid #0ecb81;border-radius:4px;padding:4px 10px;cursor:pointer;color:#0ecb81;font-size:14px;font-weight:700;line-height:1;transition:all .15s;}
@@ -501,6 +503,14 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 </div>
 
 <div class="main-layout">
+  <div class="side-slim">
+<div id="upgrade-prompt" style="display:none;margin:8px 10px;padding:12px;background:linear-gradient(135deg,#0a1f14,#0d1f2d);border:1px solid #0ecb81;border-radius:8px;font-family:'IBM Plex Mono',monospace;text-align:center;">
+        <div style="font-size:10px;color:#0ecb81;font-weight:700;margin-bottom:4px;">⚡ UNLOCK UNLIMITED FORECASTS</div>
+        <div id="upgrade-prompt-msg" style="font-size:9px;color:#607a99;margin-bottom:8px;line-height:1.6;">You've used <span id="up-used">0</span> of your free forecasts today</div>
+        <button onclick="showPricing()" style="width:100%;background:linear-gradient(135deg,#0ecb81,#00b4d8);border:none;border-radius:6px;padding:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:#000;cursor:pointer;">🚀 Upgrade to Pro — $17/mo</button>
+        <div style="font-size:8px;color:#607a99;margin-top:4px;">Cancel anytime · No hidden fees</div>
+      </div>
+  </div>
   <div class="widgets-col">
   <div class="chart-panel" data-widget="1">
     <div class="panel-main">
@@ -795,14 +805,6 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
   </div>
   </div>
 
-  <div class="side-slim">
-<div id="upgrade-prompt" style="display:none;margin:8px 10px;padding:12px;background:linear-gradient(135deg,#0a1f14,#0d1f2d);border:1px solid #0ecb81;border-radius:8px;font-family:'IBM Plex Mono',monospace;text-align:center;">
-        <div style="font-size:10px;color:#0ecb81;font-weight:700;margin-bottom:4px;">⚡ UNLOCK UNLIMITED FORECASTS</div>
-        <div id="upgrade-prompt-msg" style="font-size:9px;color:#607a99;margin-bottom:8px;line-height:1.6;">You've used <span id="up-used">0</span> of your free forecasts today</div>
-        <button onclick="showPricing()" style="width:100%;background:linear-gradient(135deg,#0ecb81,#00b4d8);border:none;border-radius:6px;padding:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:#000;cursor:pointer;">🚀 Upgrade to Pro — $17/mo</button>
-        <div style="font-size:8px;color:#607a99;margin-top:4px;">Cancel anytime · No hidden fees</div>
-      </div>
-  </div>
 </div>
 
 
