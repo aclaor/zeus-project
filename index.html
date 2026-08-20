@@ -126,11 +126,11 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .stat{display:flex;flex-direction:column;gap:2px;}
 .stat-label{font-size:10px;color:var(--text2);}
 .stat-val{font-size:12px;font-family:var(--mono);}
-.main-layout{display:grid;grid-template-columns:1fr clamp(200px,22vw,300px);align-items:stretch;overflow:visible;}
+.main-layout{display:grid;grid-template-columns:1fr clamp(200px,22vw,300px);align-items:start;overflow:visible;}
 .widgets-col{display:flex;flex-direction:column;gap:12px;padding:12px;min-width:0;}
 .widgets-col .chart-panel{flex:0 0 auto;min-height:0;background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
-.widgets-col .chart-panel .chart-area{flex:0 0 auto;height:clamp(220px,26vh,300px);min-height:0;}
-.widgets-col .chart-panel .trades-panel{height:150px;}
+.widgets-col .chart-panel .chart-area{flex:0 0 auto;height:clamp(300px,38vh,430px);min-height:0;}
+.widgets-col .chart-panel .trades-panel{height:170px;}
 .widgets-col .chart-panel .chart-controls{background:var(--bg3);border-bottom:1px solid var(--border);}
 .widgets-col .chart-panel .trades-panel{border-top:1px solid var(--border);}
 .widgets-col .chart-panel .chart-legend{background:var(--bg3);}
@@ -167,7 +167,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .trades-header{display:flex;align-items:center;gap:16px;padding:6px 12px;border-bottom:1px solid var(--border);}
 .trades-tab{font-size:11px;color:var(--text2);cursor:pointer;padding-bottom:4px;border-bottom:2px solid transparent;}
 .trades-tab.active{color:var(--text);border-bottom-color:var(--accent);}
-.right-panel{display:flex;flex-direction:column;background:var(--bg2);border-left:1px solid var(--border);overflow-x:hidden;min-width:0;height:100%;}
+.right-panel{display:flex;flex-direction:column;background:var(--bg2);border-left:1px solid var(--border);overflow-x:hidden;min-width:0;position:sticky;top:110px;height:calc(100vh - 118px);}
 .pairs-header{display:flex;align-items:center;padding:6px 10px;border-bottom:1px solid var(--border);}
 .pairs-search{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border2);border-radius:3px;padding:3px 8px;flex:1;}
 .pairs-search input{background:transparent;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:11px;width:100%;}
