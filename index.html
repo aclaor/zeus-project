@@ -126,9 +126,15 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .stat{display:flex;flex-direction:column;gap:2px;}
 .stat-label{font-size:10px;color:var(--text2);}
 .stat-val{font-size:12px;font-family:var(--mono);}
-.main-layout{display:grid;grid-template-columns:1fr clamp(200px,22vw,300px);align-items:start;overflow:visible;}
+.main-layout{display:block;overflow:visible;}
+.panel-main{display:flex;flex-direction:column;min-width:0;overflow:hidden;}
+.panel-pairs{display:flex;flex-direction:column;border-left:1px solid var(--border);background:var(--bg2);min-width:0;overflow:hidden;}
+.quote-tab-bar-w{display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border);padding:0 6px;}
+.quote-tab-bar-w::-webkit-scrollbar{display:none;}
+.side-slim{padding:0 12px 12px;}
+@media(max-width:900px){.widgets-col .chart-panel{grid-template-columns:1fr!important;}.panel-pairs{border-left:none;border-top:1px solid var(--border);height:220px;}}
 .widgets-col{display:flex;flex-direction:column;gap:12px;padding:12px;min-width:0;}
-.widgets-col .chart-panel{flex:0 0 auto;min-height:0;background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.widgets-col .chart-panel{flex:0 0 auto;min-height:0;background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;display:grid;grid-template-columns:1fr clamp(190px,20vw,260px);}
 .widgets-col .chart-panel .chart-area{flex:0 0 auto;height:clamp(300px,38vh,430px);min-height:0;}
 .widgets-col .chart-panel .trades-panel{height:170px;}
 .widgets-col .chart-panel .chart-controls{background:var(--bg3);border-bottom:1px solid var(--border);}
@@ -167,7 +173,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .trades-header{display:flex;align-items:center;gap:16px;padding:6px 12px;border-bottom:1px solid var(--border);}
 .trades-tab{font-size:11px;color:var(--text2);cursor:pointer;padding-bottom:4px;border-bottom:2px solid transparent;}
 .trades-tab.active{color:var(--text);border-bottom-color:var(--accent);}
-.right-panel{display:flex;flex-direction:column;background:var(--bg2);border-left:1px solid var(--border);overflow-x:hidden;min-width:0;position:sticky;top:110px;height:calc(100vh - 118px);}
+.right-panel{display:flex;flex-direction:column;background:var(--bg2);border-left:1px solid var(--border);overflow-x:hidden;min-width:0;}
 .pairs-header{display:flex;align-items:center;padding:6px 10px;border-bottom:1px solid var(--border);}
 .pairs-search{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border2);border-radius:3px;padding:3px 8px;flex:1;}
 .pairs-search input{background:transparent;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:11px;width:100%;}
@@ -497,6 +503,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 <div class="main-layout">
   <div class="widgets-col">
   <div class="chart-panel" data-widget="1">
+    <div class="panel-main">
     <div class="chart-controls">
       <span class="widget-tag">#1</span>
       <div class="interval-tabs">
@@ -571,8 +578,29 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
         </div>
       </div>
     </div>
+    </div>
+    <div class="panel-pairs">
+      <div class="pairs-header">
+        <div class="pairs-search">
+          <span style="color:var(--text3);font-size:11px;">&#8890;</span>
+          <input type="text" placeholder="Search..." oninput="filterPairs(1, this.value)">
+        </div>
+      </div>
+      <div class="quote-tab-bar-w">
+        <button onclick="setQuoteFor(1,this,'USDT')" class="qtab2 active">USDT</button>
+        <button onclick="setQuoteFor(1,this,'USDC')" class="qtab2">USDC</button>
+        <button onclick="setQuoteFor(1,this,'BNB')" class="qtab2">BNB</button>
+        <button onclick="setQuoteFor(1,this,'BTC')" class="qtab2">BTC</button>
+        <button onclick="setQuoteFor(1,this,'ETH')" class="qtab2">ETH</button>
+        <button onclick="setQuoteFor(1,this,'FDUSD')" class="qtab2">FDUSD</button>
+        <button onclick="setQuoteFor(1,this,'ALTS')" class="qtab2">ALTS</button>
+      </div>
+      <div class="pairs-cols"><span>Pair</span><span>Last Price</span><span>Change</span></div>
+      <div class="pairs-list" id="pairs-list-1"></div>
+    </div>
   </div>
   <div class="chart-panel" data-widget="2">
+    <div class="panel-main">
     <div class="chart-controls">
       <span class="widget-tag">#2</span>
       <div class="interval-tabs">
@@ -647,8 +675,29 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
         </div>
       </div>
     </div>
+    </div>
+    <div class="panel-pairs">
+      <div class="pairs-header">
+        <div class="pairs-search">
+          <span style="color:var(--text3);font-size:11px;">&#8890;</span>
+          <input type="text" placeholder="Search..." oninput="filterPairs(2, this.value)">
+        </div>
+      </div>
+      <div class="quote-tab-bar-w">
+        <button onclick="setQuoteFor(2,this,'USDT')" class="qtab2 active">USDT</button>
+        <button onclick="setQuoteFor(2,this,'USDC')" class="qtab2">USDC</button>
+        <button onclick="setQuoteFor(2,this,'BNB')" class="qtab2">BNB</button>
+        <button onclick="setQuoteFor(2,this,'BTC')" class="qtab2">BTC</button>
+        <button onclick="setQuoteFor(2,this,'ETH')" class="qtab2">ETH</button>
+        <button onclick="setQuoteFor(2,this,'FDUSD')" class="qtab2">FDUSD</button>
+        <button onclick="setQuoteFor(2,this,'ALTS')" class="qtab2">ALTS</button>
+      </div>
+      <div class="pairs-cols"><span>Pair</span><span>Last Price</span><span>Change</span></div>
+      <div class="pairs-list" id="pairs-list-2"></div>
+    </div>
   </div>
   <div class="chart-panel" data-widget="3">
+    <div class="panel-main">
     <div class="chart-controls">
       <span class="widget-tag">#3</span>
       <div class="interval-tabs">
@@ -723,34 +772,36 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
         </div>
       </div>
     </div>
+    </div>
+    <div class="panel-pairs">
+      <div class="pairs-header">
+        <div class="pairs-search">
+          <span style="color:var(--text3);font-size:11px;">&#8890;</span>
+          <input type="text" placeholder="Search..." oninput="filterPairs(3, this.value)">
+        </div>
+      </div>
+      <div class="quote-tab-bar-w">
+        <button onclick="setQuoteFor(3,this,'USDT')" class="qtab2 active">USDT</button>
+        <button onclick="setQuoteFor(3,this,'USDC')" class="qtab2">USDC</button>
+        <button onclick="setQuoteFor(3,this,'BNB')" class="qtab2">BNB</button>
+        <button onclick="setQuoteFor(3,this,'BTC')" class="qtab2">BTC</button>
+        <button onclick="setQuoteFor(3,this,'ETH')" class="qtab2">ETH</button>
+        <button onclick="setQuoteFor(3,this,'FDUSD')" class="qtab2">FDUSD</button>
+        <button onclick="setQuoteFor(3,this,'ALTS')" class="qtab2">ALTS</button>
+      </div>
+      <div class="pairs-cols"><span>Pair</span><span>Last Price</span><span>Change</span></div>
+      <div class="pairs-list" id="pairs-list-3"></div>
+    </div>
   </div>
   </div>
 
-  <div class="right-panel">
+  <div class="side-slim">
 <div id="upgrade-prompt" style="display:none;margin:8px 10px;padding:12px;background:linear-gradient(135deg,#0a1f14,#0d1f2d);border:1px solid #0ecb81;border-radius:8px;font-family:'IBM Plex Mono',monospace;text-align:center;">
         <div style="font-size:10px;color:#0ecb81;font-weight:700;margin-bottom:4px;">⚡ UNLOCK UNLIMITED FORECASTS</div>
         <div id="upgrade-prompt-msg" style="font-size:9px;color:#607a99;margin-bottom:8px;line-height:1.6;">You've used <span id="up-used">0</span> of your free forecasts today</div>
         <button onclick="showPricing()" style="width:100%;background:linear-gradient(135deg,#0ecb81,#00b4d8);border:none;border-radius:6px;padding:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;color:#000;cursor:pointer;">🚀 Upgrade to Pro — $17/mo</button>
         <div style="font-size:8px;color:#607a99;margin-top:4px;">Cancel anytime · No hidden fees</div>
       </div>
-    <div class="pairs-header">
-      <div class="pairs-search">
-        <span style="color:var(--text3);font-size:11px;">⚲</span>
-        <input type="text" placeholder="Search..." oninput="filterPairs(this.value)">
-      </div>
-    </div>
-    <!-- Scrollable quote tabs like Binance -->
-    <div style="display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border);padding:0 8px;gap:0;" id="quote-tab-bar">
-      <button onclick="setQuote(this,'USDT')" class="qtab2 active">USDT</button>
-      <button onclick="setQuote(this,'USDC')" class="qtab2">USDC</button>
-      <button onclick="setQuote(this,'BNB')" class="qtab2">BNB</button>
-      <button onclick="setQuote(this,'BTC')" class="qtab2">BTC</button>
-      <button onclick="setQuote(this,'ETH')" class="qtab2">ETH</button>
-      <button onclick="setQuote(this,'FDUSD')" class="qtab2">FDUSD</button>
-      <button onclick="setQuote(this,'ALTS')" class="qtab2">ALTS</button>
-    </div>
-    <div class="pairs-cols"><span>Pair</span><span>Last Price</span><span>Change</span></div>
-    <div class="pairs-list" id="pairs-list"></div>
   </div>
 </div>
 
@@ -1241,6 +1292,8 @@ const widgets = {
   3:{chartData:null,currentRange:200,currentInterval:'1h',lwChart:null,lwResizeObs:null,lwCandleData:null,lwStepSec:3600,lwLastTime:0}
 };
 let currentQuote = 'USDT', authMode = 'signup', selectedPlan = 'free';
+// each widget keeps its own quote currency for its pairs list
+var widgetQuote = {1:'USDT', 2:'USDT', 3:'USDT'};
 let marketsRefreshTimer = null;
 
 // ── SUPABASE INIT ─────────────────────────────
@@ -1506,21 +1559,31 @@ function zoomChart(dir, idx) {
 }
 function resetZoom(idx){if(widgets[idx]&&widgets[idx].chartData)renderChart(idx,widgets[idx].chartData);}
 function setQuote(el,q){
+  // quote tabs inside a chart's control bar — scope to that widget
+  var panel = el.closest ? el.closest('.chart-panel') : null;
+  var idx = panel ? parseInt(panel.getAttribute('data-widget')) : lastActiveWidget;
   currentQuote=q;
-  // Update ALL quote tabs - both in chart controls and right panel
-  document.querySelectorAll('.qtab,.qtab2').forEach(function(t){
-    t.classList.toggle('active', t.textContent.trim()===q);
-  });
-  // Update search box to show default pair for selected quote
+  widgetQuote[idx]=q;
+  lastActiveWidget=idx;
+  if(panel) panel.querySelectorAll('.qtab').forEach(function(t){ t.classList.toggle('active', t.textContent.trim()===q); });
+  var bar = document.querySelector('#pairs-list-'+idx) ? document.querySelector('.chart-panel[data-widget="'+idx+'"] .quote-tab-bar-w') : null;
+  if(bar) bar.querySelectorAll('.qtab2').forEach(function(t){ t.classList.toggle('active', t.textContent.trim()===q); });
   var defaultPairs = {
     'USDT':'BTCUSDT','USDC':'BTCUSDC','BNB':'ETHBNB',
     'BTC':'ETHBTC','ETH':'BNBETH','FDUSD':'BTCFDUSD','ALTS':'ADAETH'
   };
-  var input = document.getElementById('pair-input-'+lastActiveWidget);
+  var input = document.getElementById('pair-input-'+idx);
   if(input && defaultPairs[q]) input.value = defaultPairs[q];
-  updatePairsList();
+  updatePairsList(idx);
 }
-function filterPairs(q){var query=q.toUpperCase().trim();document.querySelectorAll('.pair-row').forEach(function(row){var sym=(row.getAttribute('data-sym')||'').toUpperCase();row.style.display=(!query||sym.includes(query))?'':'none';});}
+function filterPairs(idx, q){
+  var listEl=document.getElementById('pairs-list-'+idx); if(!listEl) return;
+  var query=(q||'').toUpperCase().trim();
+  listEl.querySelectorAll('.pair-row').forEach(function(row){
+    var sym=(row.getAttribute('data-sym')||'').toUpperCase();
+    row.style.display=(!query||sym.includes(query))?'':'none';
+  });
+}
 // Store live ticker data for all quotes
 var allTickerData = {};
 
@@ -1544,24 +1607,48 @@ async function fetchAllTickers() {
   } catch(e){ console.log('Ticker unavailable:', e); }
 }
 
-function updatePairsList() {
-  var pairs=quotePairs[currentQuote]||quotePairs['USDT'];
-  var listEl=document.getElementById('pairs-list'); if(!listEl) return;
-  
-  // Sort by volume/change - put active pairs first
-  var pairsWithData = pairs.map(function(sym){
-    var ticker = allTickerData[sym] || {p:0,c:0};
-    return {sym:sym, p:ticker.p, c:ticker.c};
-  }).sort(function(a,b){ return Math.abs(b.c)-Math.abs(a.c); });
+function updatePairsList(idx) {
+  var targets = (idx ? [idx] : [1,2,3]);
+  targets.forEach(function(w){
+    var quote = widgetQuote[w] || 'USDT';
+    var pairs = quotePairs[quote] || quotePairs['USDT'];
+    var listEl = document.getElementById('pairs-list-'+w);
+    if(!listEl) return;
 
-  listEl.innerHTML=pairsWithData.map(function(item){
-    var sym=item.sym, base=sym.replace(currentQuote,'');
-    var up=item.c>=0;
-    var priceStr=item.p>0?item.p.toLocaleString(undefined,{maximumFractionDigits:8}):'—';
-    var chgStr=item.c!==0?(up?'+':'')+item.c.toFixed(2)+'%':'—';
-    return '<div class="pair-row" data-sym="'+sym+'"><span class="pr-sym">'+base+'<span class="pr-quote">/'+currentQuote+'</span></span><span class="pr-price '+(up&&item.p>0?'up':'dn')+'">'+priceStr+'</span><span class="pr-chg '+(up?'up':'dn')+'">'+chgStr+'</span></div>';
-  }).join('');
-  listEl.querySelectorAll('.pair-row').forEach(function(row){row.addEventListener('click',function(){var _in=document.getElementById('pair-input-'+lastActiveWidget);if(_in)_in.value=this.getAttribute('data-sym');listEl.querySelectorAll('.pair-row').forEach(function(r){r.classList.remove('active-pair');});this.classList.add('active-pair');runForecast(lastActiveWidget);});});
+    var rows = pairs.map(function(sym){
+      var t = allTickerData[sym] || {p:0,c:0};
+      return {sym:sym, p:t.p, c:t.c};
+    }).sort(function(a,b){ return Math.abs(b.c)-Math.abs(a.c); });
+
+    listEl.innerHTML = rows.map(function(item){
+      var sym=item.sym, base=sym.replace(quote,'');
+      var up=item.c>=0;
+      var priceStr=item.p>0?item.p.toLocaleString(undefined,{maximumFractionDigits:8}):'\u2014';
+      var chgStr=item.c!==0?(up?'+':'')+item.c.toFixed(2)+'%':'\u2014';
+      return '<div class="pair-row" data-sym="'+sym+'"><span class="pr-sym">'+base+'<span class="pr-quote">/'+quote+'</span></span><span class="pr-price '+(up&&item.p>0?'up':'dn')+'">'+priceStr+'</span><span class="pr-chg '+(up?'up':'dn')+'">'+chgStr+'</span></div>';
+    }).join('');
+
+    // clicking a row forecasts in THIS widget only
+    listEl.querySelectorAll('.pair-row').forEach(function(row){
+      row.addEventListener('click', function(){
+        lastActiveWidget = w;
+        var inp = document.getElementById('pair-input-'+w);
+        if(inp) inp.value = this.getAttribute('data-sym');
+        listEl.querySelectorAll('.pair-row').forEach(function(r){ r.classList.remove('active-pair'); });
+        this.classList.add('active-pair');
+        runForecast(w);
+      });
+    });
+  });
+}
+
+// quote tab inside a widget's own pairs list
+function setQuoteFor(idx, el, q){
+  widgetQuote[idx] = q;
+  lastActiveWidget = idx;
+  var bar = el.parentElement;
+  if(bar) bar.querySelectorAll('.qtab2').forEach(function(t){ t.classList.toggle('active', t===el); });
+  updatePairsList(idx);
 }
 function drawSparkline(canvas, changePercent){
   if(!canvas) return;
@@ -1687,7 +1774,7 @@ async function fetchLiveTicker(){
     // Then update crypto overview boxes
     updateCryptoBoxes(data);
     
-    if(currentQuote==='USDT') updatePairsList();
+    updatePairsList();
   }catch(e){
     console.log('Ticker error:', e.message||e);
   }
@@ -2012,7 +2099,7 @@ function renderAll(idx, data) {
       .catch(function(){});
     }
   }
-  for(var qi2=0;qi2<quotes.length;qi2++){if(sym.endsWith(quotes[qi2])){if(currentQuote!==quotes[qi2]){currentQuote=quotes[qi2];document.querySelectorAll('.qtab,.qtab2').forEach(function(t){t.classList.toggle('active',t.textContent.trim()===currentQuote);});updatePairsList();}break;}}
+  for(var qi2=0;qi2<quotes.length;qi2++){if(sym.endsWith(quotes[qi2])){if(widgetQuote[idx]!==quotes[qi2]){widgetQuote[idx]=quotes[qi2];var _p=document.querySelector('.chart-panel[data-widget="'+idx+'"]');if(_p)_p.querySelectorAll('.qtab,.qtab2').forEach(function(t){t.classList.toggle('active',t.textContent.trim()===widgetQuote[idx]);});updatePairsList(idx);}break;}}
 }
 
 // ── RUN FORECAST ──────────────────────────────
@@ -2069,7 +2156,7 @@ async function runForecast(idx, isAutoRun){
   var symbol=_inp.value.trim().toUpperCase().replace(/[\/\-\s]/g,'')||'BTCUSDT';
   _inp.value=symbol;
   var quotes=['FDUSD','USDC','USDT','BNB','BTC','ETH'];
-  for(var qi=0;qi<quotes.length;qi++){if(symbol.endsWith(quotes[qi])){if(currentQuote!==quotes[qi]){currentQuote=quotes[qi];document.querySelectorAll('.qtab,.qtab2').forEach(function(t){t.classList.toggle('active',t.textContent.trim()===currentQuote);});updatePairsList();}break;}}
+  for(var qi=0;qi<quotes.length;qi++){if(symbol.endsWith(quotes[qi])){if(widgetQuote[idx]!==quotes[qi]){widgetQuote[idx]=quotes[qi];var _p2=document.querySelector('.chart-panel[data-widget="'+idx+'"]');if(_p2)_p2.querySelectorAll('.qtab,.qtab2').forEach(function(t){t.classList.toggle('active',t.textContent.trim()===widgetQuote[idx]);});updatePairsList(idx);}break;}}
   var btn=document.getElementById('run-btn-'+idx);
   if(btn){btn.disabled=true;btn.textContent='... COMPUTING';}
   showOverlay(idx, true, true);
