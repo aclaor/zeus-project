@@ -334,6 +334,11 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .fullscreen-btn:hover{border-color:var(--accent);color:var(--accent);}
 .chart-panel.is-fullscreen{position:fixed!important;top:0!important;left:0!important;width:100vw!important;height:100vh!important;z-index:9999!important;background:var(--bg)!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;}
 .chart-panel.is-fullscreen .chart-controls{flex-shrink:0;}
+/* In fullscreen the panel becomes a single column, so the chart wrapper must
+   fill the space and the side pairs list steps out of the way. */
+.chart-panel.is-fullscreen .panel-main{flex:1 1 auto!important;min-height:0!important;display:flex!important;flex-direction:column!important;}
+.chart-panel.is-fullscreen .panel-pairs{display:none!important;}
+.chart-panel.is-fullscreen .trades-panel{flex:0 0 auto!important;}
 .chart-panel.is-fullscreen .chart-area{flex:1!important;height:auto!important;min-height:0!important;position:relative!important;}
 .chart-panel.is-fullscreen .chart-area [id^="tv-chart"]{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;}
 .chart-panel.is-fullscreen .pair-header{flex-shrink:0;}
