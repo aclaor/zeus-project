@@ -8,8 +8,10 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#00ffff">
+<meta name="theme-color" content="#060810">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ZEUS Vision">
 
 <!-- SEO -->
@@ -304,6 +306,12 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .hd-btns{display:flex;gap:6px;padding:10px 14px;}
 .hd-btn-p{flex:1;padding:8px;border-radius:4px;font-family:var(--mono);font-size:10px;font-weight:700;cursor:pointer;border:none;background:linear-gradient(135deg,#0af,#0ff);color:#000;}
 .hd-btn-s{flex:1;padding:8px;border-radius:4px;font-family:var(--mono);font-size:10px;cursor:pointer;background:transparent;border:1px solid #243350;color:#607a99;}
+#install-app-btn{display:none;align-items:center;gap:6px;background:linear-gradient(135deg,#f0b90b,#ffd84d);border:none;border-radius:4px;padding:5px 12px;font-family:var(--mono);font-size:11px;font-weight:700;color:#000;cursor:pointer;white-space:nowrap;}
+#install-app-btn:hover{filter:brightness(1.08);}
+#ios-install-hint{display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:38px;z-index:99999;max-width:92vw;background:#0b0f1a;border:1px solid #f0b90b;border-radius:10px;padding:14px 16px;font-family:var(--mono);font-size:11px;color:#d0e0f0;line-height:1.7;box-shadow:0 8px 30px rgba(0,0,0,.5);}
+#ios-install-hint b{color:#f0b90b;}
+#ios-install-hint button{margin-top:8px;width:100%;background:transparent;border:1px solid #243350;border-radius:6px;padding:7px;color:#607a99;font-size:10px;cursor:pointer;font-family:var(--mono);}
+@media(max-width:768px){#install-app-btn{padding:5px 9px;font-size:10px;}}
 .hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:4px;background:transparent;border:none;}
 .hamburger span{width:20px;height:2px;background:#607a99;border-radius:1px;}
 @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-33.333%)}}
@@ -380,6 +388,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
     <button class="hamburger" onclick="toggleMobileNav()"><span></span><span></span><span></span></button>
   </div>
   <div style="display:flex;align-items:center;gap:6px;">
+    <button id="install-app-btn" title="Install ZEUS Vision as an app">&#11015; Install App</button>
     <div id="auth-buttons" style="display:flex;align-items:center;gap:6px;">
       <button class="nav-btn" onclick="showModal('login')">Log In</button>
       <button class="nav-btn cta" onclick="showModal('signup')">Sign Up</button>
@@ -2958,5 +2967,50 @@ function updateUpgradePrompt(){
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<div id="ios-install-hint">
+  <b>Install ZEUS Vision</b><br>
+  Tap the Share button, then choose <b>Add to Home Screen</b>.
+  <button onclick="document.getElementById('ios-install-hint').style.display='none';localStorage.setItem('zv_ios_hint','1');">Got it</button>
+</div>
+
+<script>
+// ── PWA: service worker + install prompt ──────────────────
+(function(){
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('/sw.js').catch(function(e){
+        console.log('SW registration failed:', e);
+      });
+    });
+  }
+  var deferred = null;
+  var btn = document.getElementById('install-app-btn');
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault(); deferred = e;
+    if(btn) btn.style.display = 'inline-flex';
+  });
+  if(btn){
+    btn.addEventListener('click', async function(){
+      if(!deferred) return;
+      deferred.prompt();
+      var choice = await deferred.userChoice;
+      deferred = null; btn.style.display = 'none';
+      if(choice && choice.outcome === 'accepted') console.log('PWA installed');
+    });
+  }
+  window.addEventListener('appinstalled', function(){
+    if(btn) btn.style.display='none'; deferred = null;
+  });
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  var standalone = window.navigator.standalone === true ||
+                   window.matchMedia('(display-mode: standalone)').matches;
+  if(isIOS && !standalone && !localStorage.getItem('zv_ios_hint')){
+    setTimeout(function(){
+      var h=document.getElementById('ios-install-hint');
+      if(h) h.style.display='block';
+    }, 4000);
+  }
+})();
+</script>
 </body>
 </html>
