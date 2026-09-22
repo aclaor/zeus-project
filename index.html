@@ -249,6 +249,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .pricing-modal{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:999999;display:flex;align-items:center;justify-content:center;}
 .pricing-modal.hidden{display:none!important;}
 .pricing-box{background:#0b0f1a;border:1px solid #1e2a40;border-radius:12px;width:860px;max-width:96vw;padding:36px;position:relative;max-height:90vh;overflow-y:auto;}
+#pricing-modal .pricing-box{width:1060px;}   /* room for all five plans in one row */
 .pricing-title{font-family:var(--mono);font-size:22px;font-weight:700;color:#0ff;text-align:center;margin-bottom:6px;letter-spacing:2px;}
 .pricing-sub{font-family:var(--mono);font-size:12px;color:#607a99;text-align:center;margin-bottom:32px;}
 .plans-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
@@ -1124,7 +1125,6 @@ body{padding-bottom:30px;}
     <span style="color:#0af;font-size:14px;">✉️</span> 24/7 Support
   </div>
 </div>
-    </div>
     <div style="text-align:center;margin-bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#0ecb81;">⭐ Join 500+ traders already using ZEUS-AI</div>
     <div style="text-align:center;margin-bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#f6465d;">🔴 <span id="live-visitors">312</span> traders viewing forecasts right now</div><div class="plans-grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-bottom:24px;align-items:stretch;">
 
@@ -1207,6 +1207,7 @@ body{padding-bottom:30px;}
       </div>
 
 
+</div>
 </div>
 </div>
 <!-- TUTORIAL MODAL -->
