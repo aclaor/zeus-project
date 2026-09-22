@@ -350,6 +350,12 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
 .chart-panel.is-fullscreen .chart-area{flex:1!important;height:auto!important;min-height:0!important;position:relative!important;}
 .chart-panel.is-fullscreen .chart-area [id^="tv-chart"]{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;}
 .chart-panel.is-fullscreen .pair-header{flex-shrink:0;}
+
+/* floating price bar, fixed to the bottom of the screen */
+.floating-ticker{position:fixed;left:0;right:0;bottom:0;height:30px;padding:0;overflow:hidden;z-index:400;
+  background:#0b0f1a;border-top:1px solid var(--border);border-bottom:none;}
+body{padding-bottom:30px;}
+@media(max-width:768px){.floating-ticker{height:26px;}body{padding-bottom:26px;}}
 </style>
 <!-- Google Analytics GA4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NZN2M89TW9"></script>
@@ -1787,6 +1793,7 @@ async function fetchLiveTicker(){
     data.forEach(function(t){
       allTickerData[t.symbol]={p:parseFloat(t.lastPrice||0),c:parseFloat(t.priceChangePercent||0)};
     });
+    updateTopTicker();   // draw / refresh the scrolling price strip
     // Then update crypto overview boxes
     updateCryptoBoxes(data);
     
@@ -2831,6 +2838,7 @@ window.addEventListener('DOMContentLoaded',function(){
   fetchLivePairs();
   updatePairsList();
   setTimeout(function(){ fetchLiveTicker(); }, 500);
+  setInterval(function(){ fetchLiveTicker(); }, 60000);   // keep the scrolling prices live
   setTimeout(function(){ fetchAllTickers(); }, 1500);
   // Track visits - show banner after 3 visits OR 30 forecasts
   var visitCount = parseInt(localStorage.getItem('zeus_forecast_count_visits')||'0') + 1;
@@ -3302,5 +3310,8 @@ function updateUpgradePrompt(){
   }
 })();
 </script>
+<div class="ticker-bar floating-ticker" id="ticker-bar">
+  <div id="top-ticker-inner" style="display:flex;white-space:nowrap;"></div>
+</div>
 </body>
 </html>
