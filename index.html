@@ -1213,7 +1213,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-si
     <div class="step-card"><div class="step-num">2</div><div><div class="step-title">Choose an Interval</div><div class="step-desc">Select 1m, 5m, 15m, 1H, 4H or 1D based on your trading style.</div></div></div>
     <div class="step-card"><div class="step-num">3</div><div><div class="step-title">Click ZEUS-AI</div><div class="step-desc">The AI will analyze the chart and generate a 60-bar forecast.</div></div></div>
     <div class="step-card"><div class="step-num">4</div><div><div class="step-title">Read the Forecast</div><div class="step-desc">The dashed lines show predicted price direction. Check the accuracy score and BULL/BEAR signal.</div><div class="step-tip">💡 Higher accuracy = more reliable signal</div></div></div>
-    <div class="step-card"><div class="step-num">5</div><div><div class="step-title">MA Lines Guide</div><div class="step-desc"><span style="color:#1890ff">■ Blue</span> MA-7 · <span style="color:#f6465d">■ Red</span> MA-3 · <span style="color:#00cc44">■ Green</span> MA-25 · <span style="color:#f0b90b">■ Yellow</span> VWAP-60 · <span style="color:#ff69b4">■ Pink</span> VWAP-200</div></div></div>
+    <div class="step-card"><div class="step-num">5</div><div><div class="step-title">MA Lines Guide</div><div class="step-desc"><span style="color:#1890ff">■ Blue</span> MA-7 · <span style="color:#f6465d">■ Red</span> MA-3 · <span style="color:#00cc44">■ Green</span> MA-25 · <span style="color:#f0b90b">■ Yellow</span> VWAP-60 · <span style="background:linear-gradient(90deg,#1a44c8,#00D9FF,#8ff3ff);-webkit-background-clip:text;background-clip:text;color:transparent;">■ Blue gradient</span> VWAP-200. The glowing cyan forecast carries a wide band showing the expected range of price based on recent volatility; the other forecasts each show a soft band for that average's own expected range.</div></div></div>
   </div>
 </div>
 
@@ -1957,6 +1957,218 @@ function showGuestLimit(){
 function closeGuestLimit(){var o=document.getElementById('guest-limit-overlay');if(o)o.style.display='none';}
 
 // ── CHART RENDERING ───────────────────────────
+// ══════════════════════════════════════════════════════════════
+// FORECAST STYLING (canvas overlay, one per widget)
+//   MA-200 : cyan neon glow, dashed core, ringed dots, curly lines and a
+//            wide band sized to recent PRICE volatility.
+//   Others : drawn by the chart as plain dashed lines (unchanged),
+//            plus a soft band sized to that average's own expected
+//            range — a slow average moves far less than price, so
+//            its honest band is much narrower.
+// ══════════════════════════════════════════════════════════════
+var FX_Z = 1.7;                       // band half-width, in spread units
+var _fxHonest = {};                   // memo: n -> spread table
+function fxHonest(n, i){
+  // Spread of a future n-bar moving average over a random walk, in units
+  // of 1-bar price volatility. Only prices after "now" are uncertain.
+  if(!_fxHonest[n]) _fxHonest[n] = [0];
+  var T = _fxHonest[n];
+  for(var k = T.length; k <= i; k++){
+    var a = Math.max(1, k - n + 1), b = k, v = 0;
+    for(var m = 1; m <= b; m++){ var c = b - Math.max(a, m) + 1; v += c * c; }
+    T.push(Math.sqrt(v) / n);
+  }
+  return T[i];
+}
+function fxRgba(hex, a){ var n = parseInt(hex.slice(1), 16);
+  return 'rgba(' + (n>>16&255) + ',' + (n>>8&255) + ',' + (n&255) + ',' + a + ')'; }
+function fxLighten(hex, t){ var n = parseInt(hex.slice(1), 16);
+  function m(c){ return Math.round(c + (255 - c) * t); }
+  return 'rgb(' + m(n>>16&255) + ',' + m(n>>8&255) + ',' + m(n&255) + ')'; }
+
+function fxMix(a, b, t){ // blend two hex colours, t in 0..1
+  var A = parseInt(a.slice(1),16), B = parseInt(b.slice(1),16);
+  function ch(s){ var x = (A>>s&255), y = (B>>s&255); return Math.round(x + (y - x) * t); }
+  return '#' + [16,8,0].map(function(s){ return ch(s).toString(16).padStart(2,'0'); }).join('');
+}
+function fxBandWidth(L, sd, i){
+  return L.hero ? sd * Math.sqrt(i) * FX_Z : sd * fxHonest(L.n, i) * FX_Z;
+}
+
+function fxSetup(idx, chart, cs, candles, lines, boxId){
+  // recent 1-bar volatility of price
+  var cl = candles.slice(-101).map(function(c){ return c.close; });
+  var ss = 0, cnt = 0;
+  for(var i = 1; i < cl.length; i++){ var d = cl[i] - cl[i-1]; ss += d*d; cnt++; }
+  var sd = cnt ? Math.sqrt(ss / cnt) : 0;
+
+  // invisible series so autoscale keeps every band (and the curls) in view
+  lines.forEach(function(L){
+    var pad = L.hero ? 1.45 : 1.0;   // curls swing ~40% beyond the band edge
+    [1, -1].forEach(function(s){
+      chart.addLineSeries({color:'rgba(0,0,0,0)', lineWidth:1, priceLineVisible:false,
+        lastValueVisible:false, crosshairMarkerVisible:false})
+        .setData(L.pts.map(function(p, i){ return {time:p.time, value:p.value + s*fxBandWidth(L, sd, i)*pad}; }));
+    });
+  });
+
+  var w = widgets[idx];
+  w.fx = {chart:chart, cs:cs, lines:lines, sd:sd, boxId:boxId};
+
+  // one overlay canvas per widget, living in the chart area
+  var area = document.getElementById(boxId).parentElement;
+  var cvs = document.getElementById('fx-overlay-'+idx);
+  if(!cvs){
+    cvs = document.createElement('canvas');
+    cvs.id = 'fx-overlay-'+idx;
+    cvs.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:2;';
+    area.appendChild(cvs);
+    // dragging the price axis or scrolling doesn't always fire a range change
+    ['wheel','pointermove','pointerup'].forEach(function(ev){
+      area.addEventListener(ev, function(){ fxRedraw(idx); }, {passive:true});
+    });
+  }
+  chart.timeScale().subscribeVisibleLogicalRangeChange(function(){ fxRedraw(idx); });
+  setTimeout(function(){ fxRedraw(idx); }, 50);
+}
+
+var _fxRaf = {};
+function fxRedraw(idx){
+  if(_fxRaf[idx]) cancelAnimationFrame(_fxRaf[idx]);
+  _fxRaf[idx] = requestAnimationFrame(function(){ _fxRaf[idx] = 0; fxDraw(idx); });
+}
+
+function fxDraw(idx){
+  var w = widgets[idx], cvs = document.getElementById('fx-overlay-'+idx);
+  if(!cvs) return;
+  var ctx = cvs.getContext('2d');
+  var fx = w.fx;
+  var live = w.lwChart || w.chart;
+  if(!fx || !live || live !== fx.chart){ ctx.clearRect(0,0,cvs.width,cvs.height); return; }
+  var chart = fx.chart, cs = fx.cs, sd = fx.sd;
+  var box = document.getElementById(fx.boxId);
+  var W, Hh;
+  try{
+    W  = box.clientWidth  - chart.priceScale('right').width();
+    Hh = box.clientHeight - chart.timeScale().height();
+  }catch(e){ return; }
+  if(W <= 0 || Hh <= 0) return;
+  var dpr = window.devicePixelRatio || 1;
+  cvs.style.width = W + 'px'; cvs.style.height = Hh + 'px';
+  if(cvs.width !== Math.round(W*dpr) || cvs.height !== Math.round(Hh*dpr)){
+    cvs.width = Math.round(W*dpr); cvs.height = Math.round(Hh*dpr);
+  }
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,W,Hh);
+  ctx.save(); ctx.beginPath(); ctx.rect(0,0,W,Hh); ctx.clip();
+
+  var ts = chart.timeScale();
+  function X(t){ return ts.timeToCoordinate(t); }
+  function Y(v){ return cs.priceToCoordinate(v); }
+  function line(P){ ctx.beginPath(); P.forEach(function(q,i){ i ? ctx.lineTo(q[0],q[1]) : ctx.moveTo(q[0],q[1]); }); }
+
+  // back-to-front (same order as the approved preview)
+  fx.lines.slice().reverse().forEach(function(L){
+    var f = L.pts, H = f.length - 1;
+    var pts = f.map(function(p){ return [X(p.time), Y(p.value)]; });
+    if(pts.some(function(q){ return q[0]==null || q[1]==null; })) return;
+    var x0 = pts[0][0], x1 = pts[H][0];
+    var bw = function(i, z){ return fxBandWidth(L, sd, i) * (z / FX_Z); };
+
+    if(!L.hero){
+      // honest band: soft fill + faint edges in the line's own colour
+      var up = f.map(function(p,i){ return [X(p.time), Y(p.value + bw(i,FX_Z))]; });
+      var lo = f.map(function(p,i){ return [X(p.time), Y(p.value - bw(i,FX_Z))]; });
+      var g = ctx.createLinearGradient(x0,0,x1,0);
+      g.addColorStop(0, fxRgba(L.color,0.02)); g.addColorStop(1, fxRgba(L.color,0.08));
+      line(up); lo.slice().reverse().forEach(function(q){ ctx.lineTo(q[0],q[1]); });
+      ctx.closePath(); ctx.fillStyle = g; ctx.fill();
+      [up, lo].forEach(function(E){
+        var ge = ctx.createLinearGradient(x0,0,x1,0);
+        ge.addColorStop(0, fxRgba(L.color,0.08)); ge.addColorStop(1, fxRgba(L.color,0.45));
+        line(E); ctx.strokeStyle = ge; ctx.lineWidth = 1; ctx.stroke();
+      });
+      return;
+    }
+
+    var bright = fxLighten(L.color, 0.45);
+
+    // ambient bloom
+    var mid = pts[Math.floor(pts.length*0.6)];
+    var am = ctx.createRadialGradient(mid[0],mid[1],0,mid[0],mid[1],260);
+    am.addColorStop(0, fxRgba(L.color,0.10)); am.addColorStop(1, fxRgba(L.color,0));
+    ctx.fillStyle = am; ctx.fillRect(0,0,W,Hh);
+
+    // wide band: outer + inner fill
+    function band(z, sign){ return f.map(function(p,i){ return [X(p.time), Y(p.value + sign*bw(i,z))]; }); }
+    function fillBand(A, B, a0, a1){
+      var g = ctx.createLinearGradient(x0,0,x1,0);
+      g.addColorStop(0, fxRgba(L.color,a0)); g.addColorStop(1, fxRgba(L.color2||L.color,a1));
+      line(A); B.slice().reverse().forEach(function(q){ ctx.lineTo(q[0],q[1]); });
+      ctx.closePath(); ctx.fillStyle = g; ctx.fill();
+    }
+    fillBand(band(1.7,1), band(1.7,-1), 0.03, 0.10);
+    fillBand(band(0.9,1), band(0.9,-1), 0.04, 0.14);
+
+    // curly boundary lines, sampled 4x per bar for smooth curves
+    var xs = f.map(function(p){ return X(p.time); });
+    function strand(sign, amp, period, phase, aEnd, lw){
+      var SUB = 4; ctx.beginPath();
+      for(var j = 0; j <= H*SUB; j++){
+        var i = j/SUB, i0 = Math.floor(i), i1 = Math.min(H, i0+1), t = i - i0;
+        var x = xs[i0] + (xs[i1] - xs[i0]) * t;
+        var base = f[i0].value + (f[i1].value - f[i0].value) * t;
+        var wave = Math.sin(i/period*6.283 + phase)*amp
+                 + Math.sin(i/(period*0.5)*6.283 + phase*1.7)*amp*0.18;
+        var y = Y(base + sign*fxBandWidth(L, sd, Math.round(i))*(1 + wave));
+        j ? ctx.lineTo(x,y) : ctx.moveTo(x,y);
+      }
+      var g = ctx.createLinearGradient(x0,0,x1,0);
+      g.addColorStop(0, fxRgba(L.color,0.10)); g.addColorStop(1, fxRgba(L.color2||L.color,aEnd));
+      ctx.strokeStyle = g; ctx.lineWidth = lw; ctx.shadowColor = L.color; ctx.shadowBlur = 9;
+      ctx.stroke(); ctx.shadowBlur = 0;
+    }
+    strand(+1, 0.30, 11.0, 0.0, 0.90, 1.4);
+    strand(+1, 0.20, 14.5, 2.1, 0.45, 1.0);
+    strand(-1, 0.30, 11.5, 1.3, 0.90, 1.4);
+    strand(-1, 0.20, 15.0, 3.4, 0.45, 1.0);
+
+    // neon glow
+    var gw = ctx.createLinearGradient(x0,0,x1,0);
+    gw.addColorStop(0, fxRgba(L.color,0.35)); gw.addColorStop(1, fxRgba(L.color2||L.color,0.9));
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    [[6,22],[3,12]].forEach(function(s){
+      line(pts); ctx.strokeStyle = gw; ctx.lineWidth = s[0]; ctx.shadowColor = L.color; ctx.shadowBlur = s[1]; ctx.stroke();
+    });
+    ctx.shadowBlur = 0;
+
+    // bright dashed core
+    var gc = ctx.createLinearGradient(x0,0,x1,0);
+    gc.addColorStop(0, 'rgba(255,255,255,0.55)'); gc.addColorStop(1, fxLighten(L.color2||L.color, 0.35));
+    line(pts); ctx.setLineDash([7,5]); ctx.strokeStyle = gc; ctx.lineWidth = 2; ctx.stroke(); ctx.setLineDash([]);
+
+    // ringed dots with white centres, every 7 bars
+    pts.forEach(function(q,i){
+      if(i===0 || i%7) return;
+      var t = i/H, dc = L.color2 ? fxMix(L.color, L.color2, t) : L.color, rg = ctx.createRadialGradient(q[0],q[1],0,q[0],q[1],19);
+      rg.addColorStop(0, fxRgba(dc,0.45*(0.5+t/2))); rg.addColorStop(1, fxRgba(dc,0));
+      ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(q[0],q[1],19,0,7); ctx.fill();
+      ctx.beginPath(); ctx.arc(q[0],q[1],6.2,0,7); ctx.fillStyle = fxRgba(dc,0.95);
+      ctx.shadowColor = dc; ctx.shadowBlur = 16; ctx.fill(); ctx.shadowBlur = 0;
+      ctx.lineWidth = 1.5; ctx.strokeStyle = fxLighten(dc, 0.45); ctx.stroke();
+      ctx.beginPath(); ctx.arc(q[0],q[1],2.6,0,7); ctx.fillStyle = '#EFFFFF'; ctx.fill();
+    });
+
+    // glowing start point
+    var s0 = pts[0], sg = ctx.createRadialGradient(s0[0],s0[1],0,s0[0],s0[1],20);
+    sg.addColorStop(0, fxRgba(L.color,0.55)); sg.addColorStop(1, fxRgba(L.color,0));
+    ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(s0[0],s0[1],20,0,7); ctx.fill();
+    ctx.beginPath(); ctx.arc(s0[0],s0[1],5.2,0,7); ctx.fillStyle = bright; ctx.fill();
+    ctx.lineWidth = 1.2; ctx.strokeStyle = '#ffffff'; ctx.stroke();
+  });
+  ctx.restore();
+}
+
 function renderChart(idx, data) {
   var w=widgets[idx];
   w.chartData=data;
@@ -1994,22 +2206,38 @@ function renderChart(idx, data) {
   var _lv3=addLine(data.ma3,'#f6465d',1);
   var _lv25=addLine(data.ma25,'#00cc44',1.2);
   var _lv600=addLine(data.vwap600,'#f0b90b',1.5);
-  var _lv200=addLine(data.vwap200,'#ff69b4',1);
+  var _lv200=(function(){
+    // MA-200 history as a blue gradient: deep blue in the past, cyan at "now"
+    var s=chart.addLineSeries({color:'#00D9FF',lineWidth:1.6,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});
+    var pts=[];
+    for(var i=0;i<data.vwap200.length;i++){
+      var v=data.vwap200[i];
+      if(v===null||v===undefined||isNaN(v))continue;
+      if(lwCandles[i]&&lwCandles[i].time>0) pts.push({time:lwCandles[i].time,value:v});
+    }
+    var n=pts.length;
+    pts.forEach(function(p,k){ p.color=fxMix('#1a44c8','#00D9FF', n>1 ? k/(n-1) : 1); });
+    try{if(n>0)s.setData(pts);}catch(e){}
+    return n>0 ? pts[n-1].value : null;
+  })();
   var freqMins={'1m':1,'5m':5,'15m':15,'1h':60,'4h':240,'1d':1440};
   var stepSec=(freqMins[w.currentInterval]||60)*60,lastTime=lwCandles[lwCandles.length-1].time;
-  function addForecast(fcData,startVal,color){var s=chart.addLineSeries({color:color,lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});if(!fcData||!fcData.length||startVal===null||startVal===undefined)return;var fc0=null;for(var _i=0;_i<fcData.length;_i++){if(fcData[_i]!==null&&fcData[_i]!==undefined&&!isNaN(fcData[_i])){fc0=fcData[_i];break;}}if(fc0===null)return;var offset=startVal-fc0;var pts=[{time:lastTime,value:startVal}];fcData.slice(0,60).forEach(function(v,i){if(v!==null&&v!==undefined&&!isNaN(v))pts.push({time:lastTime+(i+1)*stepSec,value:v+offset});});try{if(pts.length>1)s.setData(pts);}catch(e){}}
+  function addForecast(fcData,startVal,color,hero){var s=chart.addLineSeries({color:hero?'rgba(0,0,0,0)':color,lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});if(!fcData||!fcData.length||startVal===null||startVal===undefined)return null;var fc0=null;for(var _i=0;_i<fcData.length;_i++){if(fcData[_i]!==null&&fcData[_i]!==undefined&&!isNaN(fcData[_i])){fc0=fcData[_i];break;}}if(fc0===null)return null;var offset=startVal-fc0;var pts=[{time:lastTime,value:startVal}];fcData.slice(0,60).forEach(function(v,i){if(v!==null&&v!==undefined&&!isNaN(v))pts.push({time:lastTime+(i+1)*stepSec,value:v+offset});});try{if(pts.length>1)s.setData(pts);}catch(e){}return pts.length>1?pts:null;}
   // Use exact last plotted value from addLine so forecast connects perfectly
-  addForecast(data.forecast_ma7,_lv7,'#1890ff');
-  addForecast(data.forecast_ma3,_lv3,'#f6465d');
-  addForecast(data.forecast_ma25,_lv25,'#00cc44');
-  addForecast(data.forecast_vwap600,_lv600,'#f0b90b');
-  addForecast(data.forecast_vwap200,_lv200,'#ff69b4');
+  var fxLines=[
+    {key:'ma7',    n:7,   color:'#1890ff', pts:addForecast(data.forecast_ma7,_lv7,'#1890ff')},
+    {key:'ma3',    n:3,   color:'#f6465d', pts:addForecast(data.forecast_ma3,_lv3,'#f6465d')},
+    {key:'ma25',   n:25,  color:'#00cc44', pts:addForecast(data.forecast_ma25,_lv25,'#00cc44')},
+    {key:'vwap600',n:60,  color:'#f0b90b', pts:addForecast(data.forecast_vwap600,_lv600,'#f0b90b')},
+    {key:'vwap200',n:200, color:'#00D9FF', pts:addForecast(data.forecast_vwap200,_lv200,'#00D9FF',true), hero:true, color2:'#8ff3ff'}
+  ].filter(function(L){return L.pts;});
+  fxSetup(idx, chart, candleSeries, lwCandles, fxLines, 'tv-chart-'+idx);
   // Show last 200 candles by default - user can scroll left for more history
   var defaultVis = {'1m':200,'5m':200,'15m':150,'1h':150,'4h':100,'1d':100};
   var vis = Math.min(defaultVis[w.currentInterval]||200, lwCandles.length);
   var fromTime=lwCandles[Math.max(0,lwCandles.length-vis)].time,toTime=lastTime+61*stepSec;
   try{chart.timeScale().setVisibleRange({from:fromTime,to:toTime});}catch(e){}
-  w.lwResizeObs=new ResizeObserver(function(){if(!w.lwChart)return;try{var rw=container.clientWidth||800,rh=container.clientHeight||400;if(rw>0&&rh>0)w.lwChart.resize(rw,rh);}catch(e){}});
+  w.lwResizeObs=new ResizeObserver(function(){if(!w.lwChart)return;try{var rw=container.clientWidth||800,rh=container.clientHeight||400;if(rw>0&&rh>0)w.lwChart.resize(rw,rh);}catch(e){}fxRedraw(idx);});
   w.lwResizeObs.observe(container);
   w.lwCandleData=lwCandles;w.lwStepSec=stepSec;w.lwLastTime=lastTime;
 }
